@@ -85,7 +85,7 @@
 
                 <div class="row">
 
-                    <div class="task-list mb-3" style="height: 630px;">
+                    <div class="col" style="height: 630px;">
                         <div class="card shadow-none h-100">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start">
                                 <div class="flex-grow-1">
@@ -125,7 +125,7 @@
                         </div>
                     </div>
 
-                    <div class="task-list mb-3" style="height: 630px;">
+                    <div class="col" style="height: 630px;">
                         <div class="card shadow-none h-100">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start">
                                 <div class="flex-grow-1">
