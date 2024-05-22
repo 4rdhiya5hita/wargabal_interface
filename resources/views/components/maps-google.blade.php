@@ -101,8 +101,8 @@
         
         @include("partials/vendor-scripts")
 
-        <!-- google maps api -->
-        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCtSAR45TFgZjOs4nBFFZnII-6mMHLfSYI"></script>
+        <!-- google maps api
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCtSAR45TFgZjOs4nBFFZnII  -  6mMHLfSYI"></script> -->
 
         <!-- Gmaps file -->
         <script src="assets/libs/gmaps/gmaps.min.js"></script>
