@@ -317,7 +317,7 @@ class LayananController extends Controller
             $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
         } else {
             $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
-            $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+            $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
         }
         // dd($info_mengatur_dewasa);
 
@@ -529,7 +529,7 @@ class LayananController extends Controller
                 $bulan_dicari = $this->ubahAngkaBulan($bulan);
                 $tahun_dicari = $request->tahun_dicari;
 
-                $info_piodalan = $this->callPiodalan($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+                $info_piodalan = $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
 
                 $item_piodalan = [];
                 $item_kalender = [];
