@@ -85,7 +85,7 @@
 
                 <div class="row">
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <div class="card shadow-none h-100">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start">
                                 <div class="flex-grow-1">
@@ -125,7 +125,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <div class="card shadow-none h-100">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start">
                                 <div class="flex-grow-1">
@@ -170,7 +170,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <div class="row mb-0">
                             <div class="card bg-transparent shadow-none mb-0">
                                 <div class="card mini-stat bg-primary">
