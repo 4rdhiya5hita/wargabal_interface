@@ -104,7 +104,9 @@
                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                         <h4>
                                             <span class="text-white font-weight-bold">Elemen Tanggal Lahir</span>
-                                            <span class="text-white close float-end" data-bs-dismiss="modal" aria-hidden="true">&times;</span>
+                                            <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
+                                                <i class="mdi mdi-close"></i>
+                                            </a>
                                         </h4>
                                     </div>
                                 </div>
@@ -143,11 +145,57 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <p class="text-secondary text-xs mt-1 mb-0">{{ $elemen_kalender_bali }}</p>
+                                                    <div class="row">
+                                                        <div class="col d-flex align-items-center">
+                                                            <span class="text-secondary text-xs mt-1 mb-0">{{ $elemen_kalender_bali }}</span>
+                                                        </div>
+                                                        <div class="col d-flex align-items-center justify-content-end">
+                                                            <a href="#" class="text-primary" data-loop-iteration="{{ $elemen['tanggal'] }}_{{ $key }}">
+                                                                @foreach($keterangan as $k => $ket)
+                                                                @if($k == $key)
+                                                                <i class="mdi mdi-arrow-right"></i>
+                                                                @endif
+                                                                @endforeach
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
+
+                                            <div class="modal fade" id="detail-{{ $elemen['tanggal'] }}_{{ $key }}" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body directory-card">
+                                                            <div class="directory-bg text-center">
+                                                                <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                                    <h4 class="mt-2">
+                                                                        <span class="text-white font-weight-bold">{{ $elemen_kalender_bali }}</span>
+                                                                        <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
+                                                                            <i class="mdi mdi-close"></i>
+                                                                        </a>
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body pt-0">
+                                                            <div class="shadow p-4">
+                                                                <div class="table-responsive">
+                                                                    <h5>Penjelasan:</h5>
+                                                                @foreach($keterangan as $k => $ket)
+                                                                @if($k == $key)
+                                                                @foreach($ket as $value)
+                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                    <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
+                                                                @endif
+                                                                @endforeach
+                                                                @endif
+                                                                @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             @endforeach
                                         </table>
                                     </div>
@@ -156,7 +204,7 @@
                             </div>
                             <div class="modal-body directory-card">
                                 <div class="row mt-2">
-                                    <button type="button" class="btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="close-all-modal btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -164,14 +212,16 @@
                 </div>
 
                 <div class="modal fade" id="dewasaTanggalLahirform" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered container">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-body directory-card">
                                 <div class="directory-bg text-center">
                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                         <h4>
                                             <span class="text-white font-weight-bold">Dewasa Tanggal Lahir</span>
-                                            <span class="text-white close float-end" data-bs-dismiss="modal" aria-hidden="true">&times;</span>
+                                            <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
+                                                <i class="mdi mdi-close"></i>
+                                            </a>
                                         </h4>
                                     </div>
                                 </div>
@@ -180,21 +230,15 @@
                                 <div class="row">
                                 @foreach ($info_dewasa_tanggal_lahir as $key => $dewasa)
                                     @foreach ($dewasa['ala_ayuning_dewasa'] as $key => $ala_ayuning_dewasa)
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="card bg-transparent shadow-none mb-0">
                                             <div class="card mini-stat bg-white">
                                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <div class="mini-stat-icon">
-                                                                <img src="../assets/images/services/servis-vector-info-02.svg">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-10">
-                                                            <h5 class="mt-1 mb-2">{{ $ala_ayuning_dewasa['nama'] }}</h5>
-                                                            <p>{{ $ala_ayuning_dewasa['keterangan'] }}</p>
-                                                        </div>
+                                                    <div class="mini-stat-icon">
+                                                        <img src="../assets/images/services/servis-vector-info-02.svg" class="float-end" width="70" height="70">
                                                     </div>
+                                                    <h5 class="mt-1 mb-2">{{ $ala_ayuning_dewasa['nama'] }}</h5>
+                                                    <p>{{ $ala_ayuning_dewasa['keterangan'] }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -205,7 +249,7 @@
                             </div>
                             <div class="modal-body directory-card">
                                 <div class="row mt-2">
-                                    <button type="button" class="btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="close-all-modal btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -291,6 +335,10 @@
             modal.show();
         });
 
+        var openKalendar = [];
+        var keterangan = @json($keterangan);
+        const keteranganArray = Object.entries(keterangan);
+
         var addEvent = $("#event-modal");
         var modalTitle = $("#modal-title");
         var formEvent = $("#form-event");
@@ -303,7 +351,7 @@
         var eventObject = null;
         var modalHariRaya = document.getElementById('modalHariRaya');
         var widthKalender = `<div class="modal-dialog modal-dialog-centered">`;
-        var widthDewasa = `<div class="modal-dialog modal-dialog-centered container">`;
+        var widthDewasa = `<div class="modal-dialog modal-dialog-centered">`;
         var modalHeader = `
                 <div class="modal-content">
                     <div class="modal-body directory-card">
@@ -311,7 +359,9 @@
                             <div class="directory-overlay" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                 <h4>
                                     <span class="text-white font-weight-bold">Wargabal Kalender Bali</span>
-                                    <span class="text-white close float-end" data-bs-dismiss="modal" aria-hidden="true">&times;</span>
+                                    <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
+                                        <i class="mdi mdi-close"></i>
+                                    </a>
                                 </h4>
                             </div>
                         </div>
@@ -326,7 +376,7 @@
                     </div>
                     <div class="modal-body directory-card">
                         <div class="row mt-2">
-                            <button type="button" class="btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="close-all-modal btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -394,7 +444,8 @@
             return formattedDate;
         }
 
-        function fetchElemenKalenderBali(start, end) {
+        function fetchElemenKalenderBali(start, end, keterangan) {
+            console.log(keterangan);
             fetch('/fetchElemenKalenderBali?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
@@ -405,6 +456,7 @@
                         elemenKalenderInnerHTML += `
                             <div class="modal fade" id="elemen_${elemen['tanggal']}" tabindex="-1">
                             `;
+                        openKalendar.push(elemen['tanggal']);
                         elemenKalenderInnerHTML += widthKalender;
                         elemenKalenderInnerHTML += modalHeader;
                         elemenKalenderInnerHTML += `
@@ -453,19 +505,73 @@
                                         `;
                                     }
 
+                                    let formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                                     elemenKalenderInnerHTML += `
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <p class="text-secondary text-xs mt-1 mb-0">${key}</p>
+                                                    <p class="text-secondary text-xs mt-1 mb-0">${formattedKey}</p>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <p class="text-secondary text-xs mt-1 mb-0">${elemen['kalender'][key]}</p>
+                                                <div class="row">
+                                                    <div class="col d-flex align-items-center">
+                                                        <span class="text-secondary text-xs mt-1 mb-0">${elemen['kalender'][key]}</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center justify-content-end">
+                                                        <a href="#" class="text-primary" data-loop-iteration="${elemen['tanggal']}_${key}">
+                                                        `;
+                                                        console.log(keterangan);
+                                                            for (let k in keterangan) {
+                                                                console.log(k);
+                                                                if (k == key) {
+                                                                    elemenKalenderInnerHTML += '<i class="mdi mdi-arrow-right"></i>';
+                                                                }
+                                                            }
+
+                                    elemenKalenderInnerHTML += `
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="detail-${elemen['tanggal']}_${key}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body directory-card">
+                                                        <div class="directory-bg text-center">
+                                                            <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                                <h4 class="mt-2">
+                                                                    <span class="text-white font-weight-bold">${elemen['kalender'][key]}</span>
+                                                                    <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
+                                                                        <i class="mdi mdi-close"></i>
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body pt-0">
+                                                        <div class="shadow p-4">
+                                                            <div class="table-responsive">
+                                                                <h5>Penjelasan:</h5>
+                                                                `;
+
+                                                                for (let k in keterangan) {
+                                                                    if (k == key) {
+                                                                        for (let value of keterangan[k]) {
+                                                                            if (value['nama'].toLowerCase() == elemen['kalender'][key].toLowerCase()) {
+                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${value['keterangan']}</span>`;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                    elemenKalenderInnerHTML += `
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     `;
                                 }
 
@@ -535,21 +641,15 @@
                                                     `;
                                                     for (let key in item['ala_ayuning_dewasa']) {
                                                         alaAyuningDewasaInnerHTML += `
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-12">
                                                             <div class="card bg-transparent shadow-none mb-0">
                                                                 <div class="card mini-stat bg-white">
                                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
-                                                                        <div class="row">
-                                                                            <div class="col-md-2">
-                                                                                <div class="mini-stat-icon">
-                                                                                    <img src="../assets/images/services/servis-vector-info-02.svg">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-10">
-                                                                                <h5 class="mt-1 mb-2">${item['ala_ayuning_dewasa'][key]['nama']}</h5>
-                                                                                <p>${item['ala_ayuning_dewasa'][key]['keterangan']}</p>
-                                                                            </div>
+                                                                        <div class="mini-stat-icon">
+                                                                            <img src="../assets/images/services/servis-vector-info-02.svg" class="float-end" width="70" height="70">
                                                                         </div>
+                                                                        <h5 class="mt-1 mb-2">${item['ala_ayuning_dewasa'][key]['nama']}</h5>
+                                                                        <p>${item['ala_ayuning_dewasa'][key]['keterangan']}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -652,6 +752,41 @@
             var day = String(date.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
+        
+
+        var openModal = []; // array untuk menyimpan id modal yang sedang terbuka
+        $('body').on('click', 'a[data-loop-iteration]', function(event) {
+            event.preventDefault(); // Mencegah tindakan default dari anchor link
+            var loopIteration = $(this).data('loop-iteration');
+            var modalId = 'detail-' + loopIteration;
+            openModal.push(modalId); // tambahkan openModal baru ke array
+
+            if (openModal.length > 1) {
+                // jika ada lebih dari 1 modal yang terbuka, maka sembunyikan modal yang pertama
+                $('#' + openModal[0]).modal('hide');
+                openModal.shift(); // hapus openModal pertama dari array
+            }
+            $('#' + modalId).modal('show');
+            $('#elemenTanggalLahirform').css('height', 0);
+            $('#elemen_' + openKalendar).css('height', 0);
+
+            // $('.icon-close-modal').hide();
+        });
+
+        $('body').on('click', '.icon-close-detail', function() {
+            $('#elemenTanggalLahirform').css('height', '100%');
+            $('#elemen_' + openKalendar).css('height', '100%');
+            // $('.icon-close-modal').show();
+        });
+
+        // $('body').on('click', '.close-all-modal', function() {
+        //     for (var i = 0; i < openModal.length; i++) {
+        //         $('#' + openModal[i]).modal('hide');
+        //     }
+        //     openModal = [];
+        //     $('.icon-close-modal').show();
+        //     console.log(openModal);
+        // });
 
     });
 </script>

@@ -1,0 +1,9 @@
+{
+    "http:\/\/localhost:8002": 19,
+    "http:\/\/localhost:8002\/calendar": 7,
+    "http:\/\/localhost:8002\/fetchHariRaya?end=2024-07-06&start=2024-05-25": 6,
+    "http:\/\/localhost:8002\/fetchHariRaya": 8,
+    "http:\/\/localhost:8002\/assets\/libs\/bootstrap\/js\/bootstrap.bundle.min.js.map": 2,
+    "http:\/\/localhost:8002\/assets\/libs\/metismenu\/metisMenu.min.js.map": 2,
+    "http:\/\/localhost:8002\/assets\/libs\/node-waves\/waves.min.js.map": 2
+}

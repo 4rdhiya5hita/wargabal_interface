@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         <div class="card bg-transparent shadow-none mb-0">
-                            <div class="card mini-stat bg-info">
+                            <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                     <div class="text-white">
                                         <div class="pt-4 pb-3">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="card bg-transparent shadow-none mb-0">
-                            <div class="card mini-stat bg-info">
+                            <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                     <div class="mini-stat-icon">
                                         <img src="../assets/images/services/servis-vector-white-05.svg" class="float-end" width="110" height="110">
@@ -72,7 +72,7 @@
                                     <h5>Kriteria dicari</h5>
                                     <div class="row mt-3" id="kriteria_dicari_container">
                                     </div>
-                                    <a type="button" class="btn btn-info mt-4 mb-0" id="tambah_dropdown_dicari">Tambah Kriteria Dicari</a>
+                                    <a type="button" class="btn btn-primary mt-4 mb-0" id="tambah_dropdown_dicari">Tambah Kriteria Dicari</a>
                                 </div>
                             </div>
                         </div>
@@ -83,14 +83,14 @@
                                     <h5>Kriteria dihindari</h5>
                                     <div class="row mt-3" id="kriteria_dihindari_container">
                                     </div>
-                                    <a type="button" class="btn btn-info mt-4 mb-0" id="tambah_dropdown_dihindari">Tambah Kriteria Dihindari</a>
+                                    <a type="button" class="btn btn-primary mt-4 mb-0" id="tambah_dropdown_dihindari">Tambah Kriteria Dihindari</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-info btn-soft w-100 mb-0" style="display: none;">Cari Dewasa</button>
+                        <button type="submit" class="btn btn-primary btn-soft w-100 mb-0" style="display: none;">Cari Dewasa</button>
                     </div>
                 </form>
             </div>

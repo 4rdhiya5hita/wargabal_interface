@@ -28,6 +28,9 @@ Route::get('/calendar', [CalendarController::class, 'calendar'])->name('calendar
 Route::get('/fetchHariRaya', [CalendarController::class, 'fetchHariRaya'])->name('fetchHariRaya');
 Route::get('/fetchAlaAyuningDewasa', [CalendarController::class, 'fetchAlaAyuningDewasa'])->name('fetchAlaAyuningDewasa');
 Route::get('/fetchElemenKalenderBali', [CalendarController::class, 'fetchElemenKalenderBali'])->name('fetchElemenKalenderBali');
+Route::get('/fetchKeterangan', [CalendarController::class, 'fetchKeterangan'])->name('fetchKeterangan');
+Route::get('/fetchPiodalan', [CalendarController::class, 'fetchPiodalan'])->name('fetchPiodalan');
+Route::get('/fetchZodiak', [CalendarController::class, 'fetchZodiak'])->name('fetchZodiak');
 
 Route::get('/kalender_bali_page', [DashboardController::class, 'kalender_bali_page'])->name('kalender_bali_page');
 Route::get('/hari_raya_page', [LayananController::class, 'hari_raya_page'])->name('hari_raya_page');

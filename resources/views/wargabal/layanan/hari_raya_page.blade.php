@@ -249,7 +249,7 @@
 
     $(function() {
         $(document).on('click', '#btn-submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // cancel submission
             // console.log('submit');
             var tahun = $('#tahun_dicari').val();
 

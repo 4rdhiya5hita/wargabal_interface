@@ -34,6 +34,14 @@
                     <div class="col-xl-3">
                         <div class="card">
                             <div class="card-body">
+                                <div id="zodiakList"></div>
+                                
+                                <hr class="horizontal light my-3">
+                                <h5>Piodalan bulan ini :</h5>
+                                <p class="fst-italic">Selengkapnya dapat dilihat pada tombol di atas</p>
+                                <div id="piodalanList"></div>
+
+                                <hr class="horizontal light my-3">
                                 <h5 class="mb-4">Hari Raya bulan ini :</h5>
                                 <ul class="list-unstyled activity-feed ms-1" id="hariRayaList">
                                 </ul>
@@ -51,6 +59,8 @@
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->
+
+                
 
                 <!-- chooseEventForm -->
                 <div class="modal fade" id="chooseEventForm" tabindex="-1">
@@ -75,6 +85,7 @@
                 </div>
 
                 <div id="modalHariRaya"></div>
+                <div id="modalSelengkapnya"></div>
 
             </div>
             <!-- end modal-->
@@ -109,7 +120,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        var openKalendar = [];
         var addEvent = $("#event-modal");
+        var addEventMore = $("#event-more-modal");
         var modalTitle = $("#modal-title");
         var formEvent = $("#form-event");
         var chooseEvent = $("#chooseEventForm");
@@ -120,8 +133,9 @@
         var newEventData = null;
         var eventObject = null;
         var modalHariRaya = document.getElementById('modalHariRaya');
+        var modalSelengkapnya = document.getElementById('modalSelengkapnya');
         var widthKalender = `<div class="modal-dialog modal-dialog-centered">`;
-        var widthDewasa = `<div class="modal-dialog modal-dialog-centered container">`;
+        var widthDewasa = `<div class="modal-dialog modal-dialog-centered">`;
         var modalHeader = `
                 <div class="modal-content">
                     <div class="modal-body directory-card">
@@ -129,7 +143,9 @@
                             <div class="directory-overlay" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                 <h4>
                                     <span class="text-white font-weight-bold">Wargabal Kalender Bali</span>
-                                    <span class="text-white close float-end" data-bs-dismiss="modal" aria-hidden="true">&times;</span>
+                                    <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
+                                        <i class="mdi mdi-close"></i>
+                                    </a>
                                 </h4>
                             </div>
                         </div>
@@ -144,7 +160,7 @@
                     </div>
                     <div class="modal-body directory-card">
                         <div class="row mt-2">
-                            <button type="button" class="btn btn-dark me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="close-all-modal btn btn-dark me-1 close-all-modal" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -264,7 +280,8 @@
             return formattedDate;
         }
 
-        function fetchElemenKalenderBali(start, end) {
+        function fetchElemenKalenderBali(start, end, keterangan) {
+            console.log('fetchElemenKalenderBali', start, end);
             fetch('/fetchElemenKalenderBali?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
@@ -275,6 +292,7 @@
                         elemenKalenderInnerHTML += `
                             <div class="modal fade" id="elemen_${elemen['tanggal']}" tabindex="-1">
                             `;
+                        openKalendar.push(elemen['tanggal']);
                         elemenKalenderInnerHTML += widthKalender;
                         elemenKalenderInnerHTML += modalHeader;
                         elemenKalenderInnerHTML += `
@@ -323,19 +341,71 @@
                                         `;
                                     }
 
+                                    let formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                                     elemenKalenderInnerHTML += `
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <p class="text-secondary text-xs mt-1 mb-0">${key}</p>
+                                                    <p class="text-secondary text-xs mt-1 mb-0">${formattedKey}</p>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <p class="text-secondary text-xs mt-1 mb-0">${elemen['kalender'][key]}</p>
+                                                <div class="row">
+                                                    <div class="col d-flex align-items-center">
+                                                        <span class="text-secondary text-xs mt-1 mb-0">${elemen['kalender'][key]}</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center justify-content-end">
+                                                        <a href="#" class="text-primary" data-loop-iteration="${elemen['tanggal']}_${key}">
+                                                        `;
+                                                            for (let k in keterangan) {
+                                                                if (k == key) {
+                                                                    elemenKalenderInnerHTML += '<i class="mdi mdi-arrow-right"></i>';
+                                                                }
+                                                            }
+
+                                    elemenKalenderInnerHTML += `
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="detail-${elemen['tanggal']}_${key}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body directory-card">
+                                                        <div class="directory-bg text-center">
+                                                            <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                                <h4 class="mt-2">
+                                                                    <span class="text-white font-weight-bold">${elemen['kalender'][key]}</span>
+                                                                    <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
+                                                                        <i class="mdi mdi-close"></i>
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body pt-0">
+                                                        <div class="shadow p-4">
+                                                            <div class="table-responsive">
+                                                                <h5>Penjelasan:</h5>
+                                                                `;
+
+                                                                for (let k in keterangan) {
+                                                                    if (k == key) {
+                                                                        for (let value of keterangan[k]) {
+                                                                            if (value['nama'].toLowerCase() == elemen['kalender'][key].toLowerCase()) {
+                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${value['keterangan']}</span>`;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                    elemenKalenderInnerHTML += `
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     `;
                                 }
 
@@ -377,92 +447,151 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
 
-        function fetchAlaAyuningDewasa(start, end) {
+        var dataAlaAyuningDewasa = [];
+        var dataZodiak = [];
+        var dataPiodalan = [];
+        var keteranganAlaAyuningDewasa = @json($keterangan_ala_ayuning_dewasa);
+        function fetchAlaAyuningDewasa(start, end, fungsi) {
             fetch('/fetchAlaAyuningDewasa?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
-                    var alaAyuningDewasaInnerHTML = '';
-                    var strToday = formatDateIndonesia(start);
-
-                    data.forEach(item => {
-                        if (item['tanggal'] == start) {
-                        alaAyuningDewasaInnerHTML += `
-                            <div class="modal fade" id="dewasa_${item['tanggal']}" tabindex="-1">
-                            `;
-                        alaAyuningDewasaInnerHTML += widthDewasa;
-                        alaAyuningDewasaInnerHTML += modalHeader;
-                        alaAyuningDewasaInnerHTML += `
-                                            <div class="modal-body pb-4 pr-4 pl-2" name="event-form">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="card px-2 pt-2 text-center bg-info">
-                                                            <h5>
-                                                                <span class="text-white font-weight-bold">Ala Ayuning Dewasa - ${strToday}</span>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
+                    if (fungsi == null || fungsi == false) {
+                        console.log('klik');
+                        var alaAyuningDewasaInnerHTML = '';
+                        var strToday = formatDateIndonesia(start);
+    
+                        data.forEach(item => {
+                            if (item['tanggal'] == start) {
+                            alaAyuningDewasaInnerHTML += `
+                                <div class="modal fade" id="dewasa_${item['tanggal']}" tabindex="-1">
+                                `;
+                            alaAyuningDewasaInnerHTML += widthDewasa;
+                            alaAyuningDewasaInnerHTML += modalHeader;
+                            alaAyuningDewasaInnerHTML += `
+                                                <div class="modal-body pb-4 pr-4 pl-2" name="event-form">
                                                     <div class="row">
-                                                    `;
-                                                    for (let key in item['ala_ayuning_dewasa']) {
-                                                        alaAyuningDewasaInnerHTML += `
-                                                        <div class="col-md-4">
-                                                            <div class="card bg-transparent shadow-none mb-0">
-                                                                <div class="card mini-stat bg-white">
-                                                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
-                                                                        <div class="row">
-                                                                            <div class="col-md-2">
-                                                                                <div class="mini-stat-icon">
-                                                                                    <img src="../assets/images/services/servis-vector-info-02.svg">
-                                                                                </div>
+                                                        <div class="col-12">
+                                                            <div class="card px-2 pt-2 text-center bg-info">
+                                                                <h5>
+                                                                    <span class="text-white font-weight-bold">Ala Ayuning Dewasa - ${strToday}</span>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                        `;
+                                                        for (let key in item['ala_ayuning_dewasa']) {
+                                                            alaAyuningDewasaInnerHTML += `
+                                                            <div class="col-md-12">
+                                                                <div class="card bg-transparent shadow-none mb-0">
+                                                                    <div class="card mini-stat bg-white">
+                                                                        <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                                                            <div class="mini-stat-icon">
+                                                                                <img src="../assets/images/services/servis-vector-info-02.svg" class="float-end" width="70" height="70">
                                                                             </div>
-                                                                            <div class="col-md-10">
-                                                                                <h5 class="mt-1 mb-2">${item['ala_ayuning_dewasa'][key]['nama']}</h5>
-                                                                                <p>${item['ala_ayuning_dewasa'][key]['keterangan']}</p>
-                                                                            </div>
+                                                                            <h5 class="mt-1 mb-2">${item['ala_ayuning_dewasa'][key]['nama']}</h5>
+                                                                            <p>${item['ala_ayuning_dewasa'][key]['keterangan']}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            `;
+                                                        }
+    
+                            alaAyuningDewasaInnerHTML += `
                                                         </div>
-                                                        `;
-                                                    }
-
-                        alaAyuningDewasaInnerHTML += `
                                                     </div>
                                                 </div>
-                                            </div>
-                                        `;
-                        alaAyuningDewasaInnerHTML += modalFooter;
-                        alaAyuningDewasaInnerHTML += `
-                        </div>
-                        `;
-                        }
-                    });
+                                            `;
+                            alaAyuningDewasaInnerHTML += modalFooter;
+                            alaAyuningDewasaInnerHTML += `
+                            </div>
+                            `;
+                            }
+                        });
+    
+                        // console.log(alaAyuningDewasaInnerHTML);
+    
+                        // Tambahkan elemen ke dalam elemen HTML yang diinginkan
+                        modalHariRaya.innerHTML = alaAyuningDewasaInnerHTML;
+    
+                        // Buat objek modal baru
+                        var modal = new bootstrap.Modal(document.getElementById('dewasa_' + start), {
+                            keyboard: false
+                        });
+    
+                        // Tampilkan modal
+                        modal.show();
+                    }
 
-                    // console.log(alaAyuningDewasaInnerHTML);
+                    else {
+                        console.log('render');
+                        dataAlaAyuningDewasa = [];
+                        const groupedData = {};
 
-                    // Tambahkan elemen ke dalam elemen HTML yang diinginkan
-                    modalHariRaya.innerHTML = alaAyuningDewasaInnerHTML;
+                        // Iterasi data utama
+                        data.forEach(item => {
+                            const strTanggal = formatDateIndonesia(item['tanggal']); // 'Minggu, 1 Agustus 2021'
+                            const tanpaHari = strTanggal.split(', ')[1]; // '1 Agustus 2021'
+                            const tanggal = tanpaHari.split(' ').slice(0, 2).join(' '); // '1 Agustus'
 
-                    // Buat objek modal baru
-                    var modal = new bootstrap.Modal(document.getElementById('dewasa_' + start), {
-                        keyboard: false
-                    });
+                            // Iterasi setiap ala_ayuning_dewasa dalam item
+                            item.ala_ayuning_dewasa.forEach(ayuning => {
+                                const nama = ayuning['nama'];
+                                const keterangan = ayuning['keterangan'];
 
-                    // Tampilkan modal
-                    modal.show();
+                                // Inisialisasi array tanggal jika belum ada
+                                if (!groupedData[nama]) {
+                                    groupedData[nama] = {
+                                        nama: nama,
+                                        tanggal: [],
+                                        keterangan: keterangan // Tambahkan keterangan di sini jika diperlukan
+                                    };
+                                }
+                                groupedData[nama].tanggal.push(tanggal);
+                            });
+                        });
+
+                        const formattedData = Object.values(groupedData).map(item => {
+                            return {
+                                nama: item.nama,
+                                tanggal: item.tanggal.join(', '),
+                                keterangan: item.keterangan
+                            };
+                        });
+
+                        dataAlaAyuningDewasa.push(...formattedData);
+
+                    }
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
 
+        function fetchKeterangan(start, end) {
+            return fetch('/fetchKeterangan?start=' + start + '&end=' + end)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    throw error; // Re-throw the error to handle it in the calling function
+                });
+        }
+
+        const keterangan = @json($keterangan);            
         document.getElementById('elemenKalenderBalibtn').addEventListener('click', function() {
-            strDate = newEventData.date.toISOString().split('T')[0];
-            fetchElemenKalenderBali(strDate, strDate);
+            var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
+            var startDate = new Date(startISOString); // Mengonversi ke objek Date
+            startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
+
+            var strDate = startDate.toISOString().split('T')[0];
+            fetchElemenKalenderBali(strDate, strDate, keterangan);
         });
 
         document.getElementById('alaAyuningDewasabtn').addEventListener('click', function() {
-            strDate = newEventData.date.toISOString().split('T')[0];
-            fetchAlaAyuningDewasa(strDate, strDate);
+            var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
+            var startDate = new Date(startISOString); // Mengonversi ke objek Date
+            startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
+
+            var strDate = startDate.toISOString().split('T')[0];
+            fetchAlaAyuningDewasa(strDate, strDate, false);
         });
        
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -479,25 +608,30 @@
                 // right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
             eventClick: function(info) {
-                addEvent.modal('show');
-                formEvent[0].reset();
-                selectedEvent = info.event;
-                $("#event-title").val(selectedEvent.title);
-                $('#event-category').val(selectedEvent.classNames[0]);
-                newEventData = null;
-                modalTitle.text('Edit Event');
-                newEventData = null;
+                var eventTitle = info.event.title;
+                fetchKeteranganHariRaya(eventTitle);
             },
             datesRender: function(info) {
-                var start = info.view.activeStart.toISOString().split('T')[0];
+                var title = info.view.title; // Mengembalikan bulan dan tahun dalam format string
+                var [monthName, year] = title.split(' ');
+                var monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(monthName) + 1;
+
+                var start = new Date(info.view.activeStart.getTime() + 86400000).toISOString().split('T')[0]; // Menambahkan satu hari dan mengonversi ke string ISO
                 var end = info.view.activeEnd.toISOString().split('T')[0];
-                fetchHariRaya(start, end); // Panggil fungsi untuk mengambil data baru
+
+                // kosongkan data dengan splice
+                dataZodiak.splice(0, dataZodiak.length);
+                dataPiodalan.splice(0, dataPiodalan.length);
+                dataAlaAyuningDewasa.splice(0, dataAlaAyuningDewasa.length);
+                fetchZodiak(monthIndex);
+                fetchPiodalan(start, end);
+                fetchHariRaya(start, end);
+                fetchAlaAyuningDewasa(start, end, 'fungsi');
             },
             dateClick: function(info) {
                 newEventData = info;
                 chooseEvent.modal('show');
             }
-
         });
         calendar.render();
 
@@ -508,6 +642,52 @@
             return `${year}-${month}-${day}`;
         }
 
+        function fetchKeteranganHariRaya(eventTitle) {
+            const hariRaya = @json($keterangan_hari_raya);
+            var keteranganHariRaya = '';
+
+            hariRaya.forEach(function(elemen) {
+                if (elemen['hari_raya'] === eventTitle) { // Membandingkan dengan judul event
+                    keteranganHariRaya += `
+                        <div class="modal fade" id="event-modal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body directory-card">
+                                        <div class="directory-bg text-center">
+                                            <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                <h4 class="mt-2">
+                                                    <span class="text-white font-weight-bold">${eventTitle}</span>
+                                                    <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
+                                                        <i class="mdi mdi-close"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body pt-0">
+                                        <div class="shadow p-4">
+                                            <div class="table-responsive">
+                                                <h5>Penjelasan:</h5>
+                                                <span class="text-secondary font-size-14 mt-1 mb-0">${elemen['description']}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            modalHariRaya.innerHTML = keteranganHariRaya;
+
+            var modal = new bootstrap.Modal(document.getElementById('event-modal'), {
+                keyboard: false
+            });
+
+            modal.show();
+        }
+
         function fetchHariRaya(start, end) {
             fetch('/fetchHariRaya?start=' + start + '&end=' + end)
                 .then(response => response.json())
@@ -516,40 +696,347 @@
                     calendar.addEventSource(data);
 
                     document.getElementById('hariRayaList').innerHTML = '';
+                    let count = 0;
 
                     data.forEach(function(item) {
-                        var listItem = document.createElement('li');
-                        listItem.classList.add('feed-item');
+                        // jika sudah loop ke 3, maka tampilkan 'Dan lainnya ...'
+                        count++;
+                        if (count <= 3) {
 
-                        var listItemContent = document.createElement('div');
-                        listItemContent.classList.add('feed-item-list');
+                            var listItem = document.createElement('li');
+                            listItem.classList.add('feed-item');
+    
+                            var listItemContent = document.createElement('div');
+                            listItemContent.classList.add('feed-item-list');
+    
+                            var contentDiv = document.createElement('div');
+    
+                            var dateDiv = document.createElement('div');
+                            dateDiv.classList.add('date');
+                            dateDiv.textContent = item.start;
+    
+                            var activityText = document.createElement('p');
+                            activityText.classList.add('activity-text', 'mb-0');
+                            activityText.textContent = item.title;
+    
+                            contentDiv.appendChild(dateDiv);
+                            contentDiv.appendChild(activityText);
+    
+                            listItemContent.appendChild(contentDiv);
+                            listItem.appendChild(listItemContent);
+    
+                            document.getElementById('hariRayaList').appendChild(listItem);
 
-                        var contentDiv = document.createElement('div');
-
-                        var dateDiv = document.createElement('div');
-                        dateDiv.classList.add('date');
-                        dateDiv.textContent = item.start;
-
-                        var activityText = document.createElement('p');
-                        activityText.classList.add('activity-text', 'mb-0');
-                        activityText.textContent = item.title;
-
-                        contentDiv.appendChild(dateDiv);
-                        contentDiv.appendChild(activityText);
-
-                        listItemContent.appendChild(contentDiv);
-                        listItem.appendChild(listItemContent);
-
-                        document.getElementById('hariRayaList').appendChild(listItem);
+                        } else if (count == 4) {
+                            
+                            var listItem = document.createElement('li');
+                            listItem.classList.add('feed-item');
+    
+                            var listItemContent = document.createElement('div');
+                            listItemContent.classList.add('feed-item-list');
+    
+                            var contentDiv = document.createElement('div');
+    
+                            var dateDiv = document.createElement('div');
+                            dateDiv.classList.add('date');
+                            dateDiv.textContent = '';
+    
+                            var activityText = document.createElement('p');
+                            activityText.classList.add('activity-text', 'mb-0');
+                            activityText.textContent = 'Dan lainnya ...';
+    
+                            contentDiv.appendChild(dateDiv);
+                            contentDiv.appendChild(activityText);
+    
+                            listItemContent.appendChild(contentDiv);
+                            listItem.appendChild(listItemContent);
+    
+                            document.getElementById('hariRayaList').appendChild(listItem);
+                        } else  {
+                            return;
+                        }
                     });
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
-        
-        
 
+        function fetchZodiak(month) {
+            fetch('/fetchZodiak?month=' + month)
+                .then(response => response.json())
+                .then(data => {
+                    dataZodiak.push(data[0]);
+                    console.log('dataZodiak', dataZodiak);
+                    calendar.addEventSource(data);
+                    var zodiakInnerHTML = '';
 
-        
+                    // data berupa {id: 7, nama: 'Capricorn', tanggal_mulai: '22 Desember', tanggal_selesai: '19 Januari', keterangan: 'Keterangan}
+                    data.forEach(function(item) {
+                        zodiakInnerHTML += `
+                            <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                <h5 class="d-flex justify-content-center">${item.nama}</h5>
+                                <p class="d-flex justify-content-center">${item.tanggal_mulai}-${item.tanggal_selesai}</p>
+                                <hr class="horizontal light my-3">
+                                <div class="d-flex justify-content-center">
+                                    <img src="../assets/images/zodiak/Asset_${month}.svg" height="125" width="125">
+                                </div>
+                                <hr class="horizontal light my-3">
+                                <p class="mb-0">${item.keterangan.substring(0, 100)}...</p>
+                                <div class="btn btn-primary w-100 my-3" id="btn-Selengkapnya" value="${month}">Selengkapnya</div>
+                            </div>
+                        `;
+                    });
+
+                    document.getElementById('zodiakList').innerHTML = zodiakInnerHTML;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function fetchPiodalan(start, end) {
+            fetch('/fetchPiodalan?start=' + start + '&end=' + end)
+                .then(response => response.json())
+                .then(data => {
+                    dataPiodalan.push(data);
+                    calendar.addEventSource(data);
+                    var piodalanInnerHTML = '';
+                    let count = 0;
+
+                    data.forEach(piodalan => {
+                        if (piodalan.pura != '-') {
+                            count++;
+                            if (count <= 3) {
+                                piodalanInnerHTML += `
+                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                        <h6>${piodalan.hari}</h6>
+                                        <div class="text-dark">
+                                            <span class="badge bg-primary"></span><span class="mx-2">+${piodalan.pura.length} Pura</span>
+                                        </div>
+                                    </div>
+                                `;
+                            } else if (count == 4) {
+                                piodalanInnerHTML += `
+                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                        <h6>Dan lainnya ...</h6>
+                                    </div>
+                                `;
+                            } else {
+                                return;
+                            }
+                        }
+                    });
+
+                    document.getElementById('piodalanList').innerHTML = piodalanInnerHTML;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        let eventMoreModal = null; // Variabel untuk menyimpan modal
+
+        // Event handler untuk tombol close dengan icon
+        $('body').on('click', '.icon-close-penjelasan', function() {
+            if (eventMoreModal) {
+                eventMoreModal.remove(); // Hapus modal dari DOM
+                eventMoreModal = null; // Kosongkan variabel modal
+            }
+        });
+
+        // Event handler untuk tombol close dengan teks
+        $('body').on('click', '.close-modal-penjelasan', function() {
+            if (eventMoreModal) {
+                eventMoreModal.remove(); // Hapus modal dari DOM
+                eventMoreModal = null; // Kosongkan variabel modal
+            }
+        });
+
+        $('body').on('click', '#btn-Selengkapnya', function() {
+            var month = $(this).attr('value');
+
+            openSelengkapnya(month);            
+        });
+
+        function openSelengkapnya (month) {
+            bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];                    
+
+            dataZodiakList = dataZodiak[0];
+            dataPiodalanList = dataPiodalan[0];
+            dataAlaAyuningDewasaList = dataAlaAyuningDewasa;
+            var selengkapnyaInnerHTML = '';
+
+            selengkapnyaInnerHTML += `
+                <div class="modal fade d-flex" id="event-more-modal" tabindex="-1">
+                    <div class="modal-dialog container">
+                        <div class="modal-content">
+                            <div class="modal-body directory-card">
+                                <div class="directory-bg text-center">
+                                    <div class="p-2" style="background-color: rgba(var(--bs-light-rgb), 0.7);">
+                                        <h4 class="mt-2">
+                                            <span class="text-dark font-weight-bold">Bulan ${bulan[month - 1]}</span>
+                                            <a href="#" class="text-dark close float-end icon-close-penjelasan" data-bs-dismiss="modal" aria-hidden="true">
+                                                <i class="mdi mdi-close"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body directory-card">
+                                <div class="row">
+                                    <div class="card task-box">
+                                        <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                            <h5 class="d-flex justify-content-center">${dataZodiakList.nama}</h5>
+                                            <p class="d-flex justify-content-center">${dataZodiakList.tanggal_mulai}-${dataZodiakList.tanggal_selesai}</p>
+                                            <hr class="horizontal light my-3">
+                                            <p class="d-flex justify-content-center mb-0">${dataZodiakList.keterangan}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card task-box">
+                                            <div class="card-body pb-0">
+                                                <h5 class="d-flex justify-content-center">Ala Ayuning Dewasa bulan ini</h5>
+                                                <hr class="horizontal light mt-3">
+                                            </div>
+                                        </div>
+                                        <div data-simplebar class="tasklist-content py-3" style="max-height: calc(100vh - 155px);">
+                                        `;
+                                        for (let dataAlaAyuningDewasa of dataAlaAyuningDewasaList) {
+                                            const idTanpaSpasi = dataAlaAyuningDewasa.nama.toLowerCase().replace(/\s/g, '');
+                                            selengkapnyaInnerHTML += `
+                                                <div class="card task-box">
+                                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                                        <h6 class="text-uppercase font-size-16">${dataAlaAyuningDewasa.nama}</h6>
+                                                        <div class="text-dark">
+                                                            <span class="mx-2">${dataAlaAyuningDewasa.tanggal}</span>
+                                                        </div>
+                                                        <div class="text-dark mt-2" style="display: none;" id="penjelasan-${idTanpaSpasi}">
+                                                            <h6 class="font-weight-bold mb-0">Keterangan:</h6>
+                                                            <p>${dataAlaAyuningDewasa.keterangan}</p>
+                                                        </div>
+                                                        <div class="btn btn-primary mt-2 btn-Penjelasan" value="${idTanpaSpasi}">lihat penjelasan</div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }
+
+                    selengkapnyaInnerHTML += `
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card task-box">
+                                            <div class="card-body pb-0">
+                                                <h5 class="d-flex justify-content-center">Piodalan bulan ini</h5>
+                                                <hr class="horizontal light mt-3">
+                                            </div>
+                                        </div>
+                                        <div data-simplebar class="tasklist-content py-3" style="max-height: calc(100vh - 155px);">
+                                `;
+                                    for (let dataPiodalan of dataPiodalanList) {
+                                        if (dataPiodalan.pura != '-') {
+                                            selengkapnyaInnerHTML += `
+                                            <div class="card task-box">
+                                                <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                                    <div class="mini-stat-icon">
+                                                        <img src="../assets/images/services/servis-vector-danger-01.svg" class="float-end" width="70" height="70">
+                                                    </div>
+                                                    <h6 class="text-uppercase font-size-16">${dataPiodalan.hari}</h6>
+                                                    <p class="mb-3s">${dataPiodalan.tanggal}</p>
+                                                    `;
+                                                    for (let piodalan of dataPiodalan.pura) {
+                                                        selengkapnyaInnerHTML += `
+                                                        <div class="text-dark">
+                                                            <span>- </span><span class="mx-2">${piodalan.nama_pura}</span>
+                                                        </div>
+                                                        `;
+                                                    }
+                                                    selengkapnyaInnerHTML += `
+                                                        <span class="badge bg-warning">
+                                                    `;
+                                                    var tanggal_sekarang = new Date();
+                                                    var tanggal_piodalan = new Date(dataPiodalan.tanggal);
+                                                    var timeDiff = Math.abs(tanggal_piodalan - tanggal_sekarang);
+                                                    var hari = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                                                    selengkapnyaInnerHTML += 
+                                                            `${hari} hari lagi</span>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                            `;
+                                        }
+                                    }
+                selengkapnyaInnerHTML += `
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body directory-card">
+                                <div class="row mt-2">
+                                    <button type="button" class="close-all-modal btn btn-dark me-1 close-modal-penjelasan" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (eventMoreModal) {
+                eventMoreModal.remove(); // Hapus modal yang ada sebelumnya dari DOM jika ada
+            }
+            $('body').append(selengkapnyaInnerHTML); // Tambahkan modal ke dalam body
+            eventMoreModal = $('#event-more-modal'); // Simpan modal dalam variabel
+
+            var modal = new bootstrap.Modal(document.getElementById('event-more-modal'), {
+                keyboard: false
+            });
+
+            modal.show();
+        }
+
+        var openModal = []; // array untuk menyimpan id modal yang sedang terbuka
+        $('body').on('click', 'a[data-loop-iteration]', function(event) {
+            event.preventDefault(); // Mencegah tindakan default dari anchor link
+            var loopIteration = $(this).data('loop-iteration');
+            console.log(loopIteration);
+            var modalId = 'detail-' + loopIteration;
+            openModal.push(modalId); // tambahkan openModal baru ke array
+
+            if (openModal.length > 1) {
+                // jika ada lebih dari 1 modal yang terbuka, maka sembunyikan modal yang pertama
+                $('#' + openModal[0]).modal('hide');
+                openModal.shift(); // hapus openModal pertama dari array
+            }
+            $('#' + modalId).modal('show');
+            $('#elemen_' + openKalendar).css('height', 0);
+
+            // $('.icon-close-modal').hide();
+        });
+
+        $('body').on('click', '.icon-close-detail', function() {
+            $('#elemen_' + openKalendar).css('height', '100%');
+            // $('.icon-close-modal').show();
+        });
+
+       
+        $('body').on('click', '.btn-Penjelasan', function() {
+            var nama = $(this).attr('value');
+            
+            if ($('#penjelasan-' + nama).css('display') == 'none') {
+                $(this).text('sembunyikan penjelasan');
+                $('#penjelasan-' + nama).css('display', 'block');
+            } else {
+                $(this).text('lihat penjelasan');
+                $('#penjelasan-' + nama).css('display', 'none');
+            }
+        });
+
+        // $('body').on('click', '.close-all-modal', function() {
+        //     for (var i = 0; i < openModal.length; i++) {
+        //         $('#' + openModal[i]).modal('hide');
+        //     }
+        //     openModal = [];
+        //     $('.icon-close-modal').show();
+        //     console.log(openModal);
+        // });
+
+              
 
         /*Add new event*/
         // Form to add new event
@@ -597,6 +1084,8 @@
         //     });
         // });
     });
+
+    
 </script>
 
 </body>

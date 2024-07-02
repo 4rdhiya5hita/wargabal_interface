@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class LayananController extends Controller
 {
     public function hari_raya_page()
     {
-        $data = $this->keteranganHariRaya();
+        $data = Cache::remember('data_hari_raya', now()->addDays(365), function() {
+            return $this->keteranganHariRaya();
+        });
         $hari_raya = collect($data)->where('type', 'hari raya')->sortBy('nama');
-        // dd($hari_raya);
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
         $tanggal_sekarang = date('Y-m-d');
         $tanggal_mulai = date('Y-m-01');
         $tanggal_selesai = date('Y-m-t');
-        $info_hari_raya = $this->callHariRaya($tanggal_mulai, $tanggal_selesai);
-        // dd($info_hari_raya);
+        $info_hari_raya = Cache::get('info_hari_raya_'. $tanggal_mulai . '_' . $tanggal_selesai);
 
         foreach ($info_hari_raya as $key => $item) {
             if ($item['tanggal'] == $tanggal_sekarang) {
@@ -54,8 +55,36 @@ class LayananController extends Controller
             return redirect()->back()->withInput()->withErrors($validatedData);
         }
 
-        $info_hari_raya = $this->callHariRaya($tanggal_mulai, $tanggal_selesai);
-        $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        // $info_hari_raya = $this->callHariRaya($tanggal_mulai, $tanggal_selesai);
+        // cache 
+        $info_hari_raya = Cache::remember('info_hari_raya_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+            $layanan = new LayananController();
+            $hari_raya = $layanan->callHariRaya($tanggal_mulai, $tanggal_selesai);
+            return $hari_raya;
+        });
+
+        // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        // cache
+        $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+            $layanan = new LayananController();
+            $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+            return $elemen_kalender_bali;
+        });
+
+        $keterangan = $this->callKeteranganElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        // dd($keterangan);
+    // foreach($keterangan as $k => $ket){
+    //     if ($k == 'pancasudha') {
+    //         foreach($ket as $value) {
+    //             dd($value);
+    //             if($value['nama'] == 'sumur sinaba') {
+    //                 dd('done');
+    //             }
+    //         }
+    //     }
+    // }
+        
+
         // foreach ($data as $key => $item) {
         //     foreach ($item['hari_raya'] as $key => $hari_raya) {
         //         if ($hari_raya != '-') {
@@ -67,14 +96,14 @@ class LayananController extends Controller
         // }
         // dd($info_hari_raya);
 
-        return view('wargabal.layanan.pencarian_hari_raya_page', compact('info_hari_raya', 'info_elemen_kalender_bali', 'nama_hari_raya_dicari', 'tahun_dicari'));
+        return view('wargabal.layanan.pencarian_hari_raya_page', compact('info_hari_raya', 'info_elemen_kalender_bali', 'nama_hari_raya_dicari', 'tahun_dicari', 'keterangan'));
     }
 
     public function callHariRaya($tanggal_mulai, $tanggal_selesai)
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariHariRaya?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariHariRaya?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -87,7 +116,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/keteranganHariRaya', [
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganHariRaya', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -100,7 +129,188 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariElemenKalenderBali?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariElemenKalenderBali?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callZodiak(){
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganZodiak', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callKeteranganElemenKalenderBali()
+    {
+        $info_eka_jala_sri = Cache::remember('info_eka_jala_sri', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $eka_jala_sri = $layanan->keteranganEkaJalaSri();
+            return $eka_jala_sri;
+        });
+
+        $info_panca_sudha = Cache::remember('info_panca_sudha', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $panca_sudha = $layanan->keteranganPancaSudha();
+            return $panca_sudha;
+        });
+
+        $info_pangarasan = Cache::remember('info_pangarasan', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $pangarasan = $layanan->keteranganPangarasan();
+            return $pangarasan;
+        });
+
+        $info_pratiti = Cache::remember('info_pratiti', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $pratiti = $layanan->keteranganPratiti();
+            return $pratiti;
+        });
+
+        $info_zodiak = Cache::remember('info_zodiak', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $zodiak = $layanan->keteranganZodiak();
+            return $zodiak;
+        });
+
+        $info_pancawara = Cache::remember('info_pancawara', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $pancawara = $layanan->keteranganPancawara();
+            return $pancawara;
+        });
+
+        $info_saptawara = Cache::remember('info_saptawara', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $saptawara = $layanan->keteranganSaptawara();
+            return $saptawara;
+        });
+
+        $info_wuku = Cache::remember('info_wuku', now()->addDays(365), function() {
+            $layanan = new LayananController();
+            $wuku = $layanan->keteranganWuku();
+            return $wuku;
+        });
+
+        $keterangan = 
+        [
+            'ekajalasri' => $info_eka_jala_sri,
+            'pancasudha' => $info_panca_sudha,
+            'pangarasan' => $info_pangarasan,
+            'pratiti' => $info_pratiti,
+            'zodiak' => $info_zodiak,
+            'pancawara' => $info_pancawara,
+            'saptawara' => $info_saptawara,
+            'wuku' => $info_wuku
+        ];
+
+        return $keterangan;
+    }
+
+    public function keteranganEkaJalaSri()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganEkaJalaSri', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+    
+    public function keteranganPancaSudha()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPancaSudha', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganPangarasan()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPangarasan', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganPratiti()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPratiti', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganZodiak()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganZodiak', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganPancawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPancawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganSaptawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganSaptawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganWuku()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganWuku', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -111,15 +321,23 @@ class LayananController extends Controller
 
     public function ala_ayuning_dewasa_page()
     {
-        $data = $this->keteranganAlaAyuningDewasa();
+        $data = Cache::remember('data_dewasa', now()->addDays(365), function () {
+            return $this->keteranganAlaAyuningDewasa();
+        });
         $ala_ayuning_dewasa = collect($data)->sortBy('ala_ayuning_dewasa');
-        // dd($ala_ayuning_dewasa);
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
         $tanggal_sekarang = date('Y-m-d');
         $tanggal_mulai = date('Y-m-01');
         $tanggal_selesai = date('Y-m-t');
-        $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+
+        // $info_ala_ayuning_dewasa = Cache::get('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai);
+        // cache
+        $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+            $layanan = new LayananController();
+            $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+            return $ala_ayuning_dewasa;
+        });
         // dd($info_ala_ayuning_dewasa);
 
         return view('wargabal.layanan.ala_ayuning_dewasa_page', compact('tanggal_sekarang', 'bulan', 'ala_ayuning_dewasa', 'info_ala_ayuning_dewasa'));
@@ -128,6 +346,8 @@ class LayananController extends Controller
     public function cari_ala_ayuning_dewasa(Request $request)
     {
         $cari_dengan = $request->cari_dengan;
+        $keterangan = $this->callKeteranganElemenKalenderBali();
+        
         if ($cari_dengan == 'nama') {
             $validatedData = $request->validate([
                 'nama_ala_ayuning_dewasa_dicari' => 'required',
@@ -143,7 +363,13 @@ class LayananController extends Controller
                 $tanggal_mulai = $tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-01';
                 $tanggal_selesai = $tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-' . date('t', strtotime($tanggal_mulai));
 
-                $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+                // $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+                // cache
+                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                    $layanan = new LayananController();
+                    $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+                    return $ala_ayuning_dewasa;
+                });
                 $tanggal_dewasa = [];
                 $keterangan_dewasa = '';
                 foreach ($info_ala_ayuning_dewasa as $key => $item) {
@@ -154,8 +380,14 @@ class LayananController extends Controller
                         }
                     }
                 }
-                $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
-                return view('wargabal.layanan.pencarian_ala_ayuning_dewasa_page', compact('info_ala_ayuning_dewasa', 'info_elemen_kalender_bali', 'tanggal_dewasa', 'keterangan_dewasa', 'nama_ala_ayuning_dewasa_dicari', 'tahun_dicari', 'bulan_dicari', 'cari_dengan'));
+                // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+                // cache
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                    $layanan = new LayananController();
+                    $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+                    return $elemen_kalender_bali;
+                });
+                return view('wargabal.layanan.pencarian_ala_ayuning_dewasa_page', compact('info_ala_ayuning_dewasa', 'info_elemen_kalender_bali', 'tanggal_dewasa', 'keterangan_dewasa', 'nama_ala_ayuning_dewasa_dicari', 'tahun_dicari', 'bulan_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -169,9 +401,22 @@ class LayananController extends Controller
                 $tanggal_mulai = $tanggal_dicari;
                 $tanggal_selesai = $tanggal_dicari;
 
-                $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
-                $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
-                return view('wargabal.layanan.pencarian_ala_ayuning_dewasa_page', compact('info_ala_ayuning_dewasa', 'info_elemen_kalender_bali', 'tanggal_dicari', 'cari_dengan'));
+                // $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+                // cache
+                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                    $layanan = new LayananController();
+                    $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
+                    return $ala_ayuning_dewasa;
+                });
+
+                // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+                // cache
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                    $layanan = new LayananController();
+                    $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+                    return $elemen_kalender_bali;
+                });
+                return view('wargabal.layanan.pencarian_ala_ayuning_dewasa_page', compact('info_ala_ayuning_dewasa', 'info_elemen_kalender_bali', 'tanggal_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -182,7 +427,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariAlaAyuningDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariAlaAyuningDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -195,7 +440,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/keteranganAlaAyuningDewasa', [
+        $response = $client->request('GET', 'http://localhost:8000/api/keteranganAlaAyuningDewasa', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -219,6 +464,7 @@ class LayananController extends Controller
         $bulan_dicari = $request->bulan_dicari;
         $tahun_dicari = $request->tahun_dicari;
 
+
         return view('wargabal.layanan.mengatur_kriteria_parameter_page', compact(
             'cari_dengan',
             'dewasa_ayu',
@@ -230,6 +476,8 @@ class LayananController extends Controller
     public function cari_kriteria_dewasa(Request $request)
     {
         $bulan = $request->bulan_dicari;
+        $keterangan = $this->callKeteranganElemenKalenderBali();
+
         if ($bulan == 'Semua Bulan') {
             $bulan_dicari = 'Semua Bulan';
         } else {
@@ -313,22 +561,47 @@ class LayananController extends Controller
 
         // dd($finalLogicAND[0]);
         if ($bulan_dicari == "Semua Bulan") {
-            $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $finalLogicAND[0]);
-            $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
-        } else {
-            $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
-            $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
-        }
-        // dd($info_mengatur_dewasa);
+            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $finalLogicAND[0]);
+            // cache
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31_'. $finalLogicAND[0], now()->addDays(365), function() use ($tahun_dicari, $finalLogicAND) {
+                $layanan = new LayananController();
+                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $finalLogicAND[0]);
+                return $mengatur_dewasa;
+            });
 
-        return view('wargabal.layanan.hasil_cari_kriteria_dewasa_page', compact('info_mengatur_dewasa', 'info_elemen_kalender_bali',  'bulan', 'tahun_dicari'));
+            // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+            // cache
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                $layanan = new LayananController();
+                $elemen_kalender_bali = $layanan->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                return $elemen_kalender_bali;
+            });
+        } else {
+            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
+            // cache
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari .'_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')) . '_'. $finalLogicAND[0], now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari, $finalLogicAND) {
+                $layanan = new LayananController();
+                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
+                return $mengatur_dewasa;
+            });
+
+            // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+            // cache
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari . '_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari) {
+                $layanan = new LayananController();
+                $elemen_kalender_bali = $layanan->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+                return $elemen_kalender_bali;
+            });
+        }
+
+        return view('wargabal.layanan.hasil_cari_kriteria_dewasa_page', compact('info_mengatur_dewasa', 'info_elemen_kalender_bali',  'bulan', 'tahun_dicari', 'keterangan'));
     }
 
     public function callMengaturDewasa($tanggal_mulai, $tanggal_selesai, $kriteria)
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
+        $response = $client->request('GET', 'http://localhost:8000/api/mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -434,7 +707,9 @@ class LayananController extends Controller
 
     public function piodalan_page()
     {
-        $info_pura = $this->callPura();
+        $info_pura = Cache::remember('info_pura', now()->addDays(365), function () {
+            return $this->callPura(); 
+        });
 
         $saptawara = ['Redite', 'Soma', 'Anggara', 'Buda', 'Wraspati', 'Sukra', 'Saniscara'];
         $pancawara = ['Umanis', 'Paing', 'Pon', 'Wage', 'Kliwon'];
@@ -447,6 +722,7 @@ class LayananController extends Controller
     public function cari_piodalan(Request $request)
     {
         $cari_dengan = $request->cari_dengan;
+        $keterangan = $this->callKeteranganElemenKalenderBali();
 
         if ($cari_dengan == 'pura') {
             $validatedData = $request->validate([
@@ -460,8 +736,11 @@ class LayananController extends Controller
                 $bulan = $request->bulan_dicari;
                 $bulan_dicari = $this->ubahAngkaBulan($bulan);
 
-                $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
-                // dd($info_piodalan);
+                // $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                // cache info_piodalan
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                    return $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                });
 
                 // $info_piodalan = $this->callPiodalan($tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-01', $tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-' . date('t', strtotime($tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-01')));
                 // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-01', $tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-' . date('t', strtotime($tahun_dicari . '-' . str_pad($bulan_dicari + 1, 2, '0', STR_PAD_LEFT) . '-01')));
@@ -481,7 +760,7 @@ class LayananController extends Controller
                     }
                 }
                 // dd($item_kalender);
-                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'bulan_dicari', 'tahun_dicari', 'cari_dengan'));
+                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -500,7 +779,11 @@ class LayananController extends Controller
                 $wewaran_dicari = $saptawara_dicari . ' ' . $pancawara_dicari . ' ' . $wuku_dicari;
                 $tahun_dicari = $request->tahun_dicari;
 
-                $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                // $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                // cache info_piodalan
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                    return $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
+                });
                 // dd($info_piodalan);
                 $item_piodalan = [];
                 $item_kalender = [];
@@ -508,13 +791,17 @@ class LayananController extends Controller
                 foreach ($info_piodalan as $item) {
                     if ($item['hari'] == $wewaran_dicari) {
                         $item_piodalan[] = $item;
-                        $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        // $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        // cache 
+                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function() use ($item) {
+                            return $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        });
                     }
                 }
                 // dd($item_piodalan);
                 // dd($item_kalender);
 
-                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_kalender', 'item_piodalan', 'saptawara_dicari', 'pancawara_dicari', 'wuku_dicari', 'wewaran_dicari', 'tahun_dicari', 'cari_dengan'));
+                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_kalender', 'item_piodalan', 'saptawara_dicari', 'pancawara_dicari', 'wuku_dicari', 'wewaran_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -529,18 +816,26 @@ class LayananController extends Controller
                 $bulan_dicari = $this->ubahAngkaBulan($bulan);
                 $tahun_dicari = $request->tahun_dicari;
 
-                $info_piodalan = $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+                // $info_piodalan = $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+                // cache info_piodalan
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_' . $bulan_dicari . '_01_' . $tahun_dicari . '_' . $bulan_dicari . '_' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari) {
+                    return $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
+                });
 
                 $item_piodalan = [];
                 $item_kalender = [];
                 foreach ($info_piodalan as $item) {
                     if ($item['pura'] != "-") {
                         $item_piodalan[] = $item;
-                        $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        // $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        // cache
+                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function() use ($item) {
+                            return $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
+                        });
                     }
                 }
                 // dd($item_kalender);
-                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_kalender', 'item_piodalan', 'bulan', 'bulan_dicari', 'tahun_dicari', 'cari_dengan'));
+                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_kalender', 'item_piodalan', 'bulan', 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -551,7 +846,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/lihatPura', [
+        $response = $client->request('GET', 'http://localhost:8000/api/lihatPura', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -564,7 +859,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariPiodalan?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariPiodalan?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -586,6 +881,8 @@ class LayananController extends Controller
     {
         // dd($request->all());
         $cari_dengan = $request->cari_dengan;
+        $keterangan = $this->callKeteranganElemenKalenderBali();
+
         if ($cari_dengan == 'tanggal_lahir') {
             $validatedData = $request->validate([
                 'tanggal_lahir_dicari' => 'required|date',
@@ -595,16 +892,32 @@ class LayananController extends Controller
             if ($validatedData) {
                 $tanggal_lahir_dicari = $request->tanggal_lahir_dicari;
                 $tahun_dicari = $request->tahun_dicari;
-                $info_otonan = $this->callOtonan($tanggal_lahir_dicari, $tahun_dicari);
-                $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+                // $info_otonan = $this->callOtonan($tanggal_lahir_dicari, $tahun_dicari);
+                // cache info_otonan
+                $info_otonan = Cache::remember('info_otonan_' . $tanggal_lahir_dicari . '_' . $tahun_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari, $tahun_dicari) {
+                    return $this->callOtonan($tanggal_lahir_dicari, $tahun_dicari);
+                });
+                // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+                // cache info_elemen_kalender_bali
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                    return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+                });
 
-                $info_otonan_pertama = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_pertama'], $info_otonan['otonan_terdekat_pertama']);
-                $info_otonan_kedua = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_kedua'], $info_otonan['otonan_terdekat_kedua']);
+                // $info_otonan_pertama = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_pertama'], $info_otonan['otonan_terdekat_pertama']);
+                // cache
+                $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_pertama'] . '_' . $info_otonan['otonan_terdekat_pertama'], now()->addDays(365), function() use ($info_otonan) {
+                    return $this->callElemenKalenderBali($info_otonan['otonan_terdekat_pertama'], $info_otonan['otonan_terdekat_pertama']);
+                });
+                // $info_otonan_kedua = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_kedua'], $info_otonan['otonan_terdekat_kedua']);
+                // cache
+                $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_kedua'] . '_' . $info_otonan['otonan_terdekat_kedua'], now()->addDays(365), function() use ($info_otonan) {
+                    return $this->callElemenKalenderBali($info_otonan['otonan_terdekat_kedua'], $info_otonan['otonan_terdekat_kedua']);
+                });
                 // dd($info_otonan_pertama, $info_otonan_kedua);
 
                 $tanggal_otonan = [0 => '-', 1 => '-'];
 
-                return view('wargabal.layanan.pencarian_otonan_page', compact('info_otonan', 'info_otonan_pertama', 'info_otonan_kedua', 'tanggal_otonan', 'info_elemen_kalender_bali', 'tanggal_lahir_dicari', 'tahun_dicari', 'cari_dengan'));
+                return view('wargabal.layanan.pencarian_otonan_page', compact('info_otonan', 'info_otonan_pertama', 'info_otonan_kedua', 'tanggal_otonan', 'info_elemen_kalender_bali', 'tanggal_lahir_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -623,7 +936,11 @@ class LayananController extends Controller
                 $tahun_dicari = $request->tahun_dicari;
                 $tanggal_otonan = [];
 
-                $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari + 1 . '-12-31');
+                // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari + 1 . '-12-31');
+                // cache info_elemen_kalender_bali
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tahun_dicari . '_01_01_' . $tahun_dicari + 1 . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                    return $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari + 1 . '-12-31');
+                });
                 foreach ($info_elemen_kalender_bali as $key => $item) {
                     if ($item['kalender']['saptawara'] == $saptawara_dicari && $item['kalender']['pancawara'] == $pancawara_dicari && $item['kalender']['wuku'] == $wuku_dicari) {
                         $tanggal_otonan[] = $item['tanggal'];
@@ -640,8 +957,16 @@ class LayananController extends Controller
                     $info_otonan_pertama = '-';
                     $info_otonan_kedua = '-';
                 } else {
-                    $info_otonan_pertama = $this->callElemenKalenderBali($tanggal_otonan[0], $tanggal_otonan[0]);
-                    $info_otonan_kedua = $this->callElemenKalenderBali($tanggal_otonan[1], $tanggal_otonan[1]);
+                    // $info_otonan_pertama = $this->callElemenKalenderBali($tanggal_otonan[0], $tanggal_otonan[0]);
+                    // cache
+                    $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[0] . '_' . $tanggal_otonan[0], now()->addDays(365), function() use ($tanggal_otonan) {
+                        return $this->callElemenKalenderBali($tanggal_otonan[0], $tanggal_otonan[0]);
+                    });
+                    // $info_otonan_kedua = $this->callElemenKalenderBali($tanggal_otonan[1], $tanggal_otonan[1]);
+                    // cache
+                    $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[1] . '_' . $tanggal_otonan[1], now()->addDays(365), function() use ($tanggal_otonan) {
+                        return $this->callElemenKalenderBali($tanggal_otonan[1], $tanggal_otonan[1]);
+                    });
                 }
 
 
@@ -651,7 +976,7 @@ class LayananController extends Controller
                     'otonan_terdekat_kedua' => '-'
                 ];
 
-                return view('wargabal.layanan.pencarian_otonan_page', compact('info_otonan', 'info_otonan_pertama', 'info_otonan_kedua', 'tanggal_otonan', 'saptawara_dicari', 'pancawara_dicari', 'wuku_dicari', 'tahun_dicari', 'tanggal_lahir_dicari', 'cari_dengan'));
+                return view('wargabal.layanan.pencarian_otonan_page', compact('info_otonan', 'info_otonan_pertama', 'info_otonan_kedua', 'tanggal_otonan', 'saptawara_dicari', 'pancawara_dicari', 'wuku_dicari', 'tahun_dicari', 'tanggal_lahir_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -662,7 +987,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariOtonan?tanggal_lahir=' . $tanggal_lahir . '&tahun_dicari=' . $tahun_dicari, [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariOtonan?tanggal_lahir=' . $tanggal_lahir . '&tahun_dicari=' . $tahun_dicari, [
             'headers' => $headers
         ]);
         $data = json_decode($response->getBody()->getContents(), true);
@@ -678,16 +1003,25 @@ class LayananController extends Controller
     public function cari_ramalan_sifat(Request $request)
     {
         // dd($request->all());
+        $keterangan = $this->callKeteranganElemenKalenderBali();
         $validatedData = $request->validate([
             'tanggal_lahir_dicari' => 'required|date',
         ]);
 
         if ($validatedData) {
             $tanggal_lahir_dicari = $request->tanggal_lahir_dicari;
-            $info_ramalan_sifat = $this->callRamalanSifat($tanggal_lahir_dicari);
-            $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            // $info_ramalan_sifat = $this->callRamalanSifat($tanggal_lahir_dicari);
+            // cache info_ramalan_sifat
+            $info_ramalan_sifat = Cache::remember('info_ramalan_sifat_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                return $this->callRamalanSifat($tanggal_lahir_dicari);
+            });
+            // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            // cache info_elemen_kalender_bali
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            });
 
-            return view('wargabal.layanan.pencarian_ramalan_sifat_page', compact('info_ramalan_sifat', 'info_elemen_kalender_bali', 'tanggal_lahir_dicari'));
+            return view('wargabal.layanan.pencarian_ramalan_sifat_page', compact('info_ramalan_sifat', 'info_elemen_kalender_bali', 'tanggal_lahir_dicari', 'keterangan'));
         } else {
             return redirect()->back()->withInput()->withErrors($validatedData);
         }
@@ -697,7 +1031,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/ramalanSifat?tanggal_lahir=' . $tanggal_lahir, [
+        $response = $client->request('GET', 'http://localhost:8000/api/ramalanSifat?tanggal_lahir=' . $tanggal_lahir, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -755,6 +1089,12 @@ class LayananController extends Controller
     public function cari_wariga_personal(Request $request)
     {
         // dd($request->all());
+        $keterangan = Cache::remember('keterangan_elemen_kalender_bali', now()->addDays(365), function () {
+            $layanan = new LayananController();
+            $keterangan = $layanan->callKeteranganElemenKalenderBali();
+            return $keterangan;
+        });
+        
         $validatedData = $request->validate([
             'tanggal_lahir_dicari' => 'required|date',
             'bulan_dicari' => 'required',
@@ -774,9 +1114,21 @@ class LayananController extends Controller
 
             $events = array();
 
-            $info_wariga_personal = $this->callWarigaPersonal($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari);
-            $info_elemen_tanggal_lahir = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
-            $info_dewasa_tanggal_lahir = $this->callAlaAyuningDewasa($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            // $info_wariga_personal = $this->callWarigaPersonal($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari);
+            // cache info_wariga_personal
+            $info_wariga_personal = Cache::remember('info_wariga_personal_' . $tanggal_mulai . '_' . $tanggal_selesai . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari) {
+                return $this->callWarigaPersonal($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari);
+            });
+            // $info_elemen_tanggal_lahir = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            // cache info_elemen_tanggal_lahir
+            $info_elemen_tanggal_lahir = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            });
+            // $info_dewasa_tanggal_lahir = $this->callAlaAyuningDewasa($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            // cache info_dewasa_tanggal_lahir
+            $info_dewasa_tanggal_lahir = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                return $this->callAlaAyuningDewasa($tanggal_lahir_dicari, $tanggal_lahir_dicari);
+            });
             foreach ($info_wariga_personal['wariga_personal'] as $key => $wariga_personal) {
                 if ($wariga_personal['wariga'] == 'Guru') {
                     $events[] = [
@@ -815,7 +1167,7 @@ class LayananController extends Controller
             // dd($bulan_dicari);
             // dd($events);
 
-            return view('wargabal.layanan.wariga_calendar', compact('events', 'info_wariga_personal', 'info_elemen_tanggal_lahir', 'info_dewasa_tanggal_lahir', 'tanggal_lahir_dicari', 'bulan_dicari', 'tahun_dicari'));
+            return view('wargabal.layanan.wariga_calendar', compact('events', 'info_wariga_personal', 'info_elemen_tanggal_lahir', 'info_dewasa_tanggal_lahir', 'tanggal_lahir_dicari', 'bulan_dicari', 'tahun_dicari', 'keterangan'));
         } else {
             return redirect()->back()->withInput()->withErrors($validatedData);
         }
@@ -825,7 +1177,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'https://wargabal-ims-4065061e96e3.herokuapp.com/api/cariWarigaPersonal?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&tanggal_lahir=' . $tanggal_lahir, [
+        $response = $client->request('GET', 'http://localhost:8000/api/cariWarigaPersonal?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&tanggal_lahir=' . $tanggal_lahir, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);

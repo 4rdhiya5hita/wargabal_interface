@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         <div class="card bg-transparent shadow-none mb-0">
-                            <div class="card mini-stat bg-danger">
+                            <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                     <div class="text-white">
                                         <div class="pt-4 pb-3">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="card bg-transparent shadow-none mb-0">
-                            <div class="card mini-stat bg-danger">
+                            <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                     <div class="mini-stat-icon">
                                         <img src="../assets/images/services/servis-vector-white-04.svg" class="float-end" width="110" height="110">
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        <button type="submit" id="btn-submit" class="btn btn-danger btn-soft w-100 mt-4 mb-0">Cari</button>
+                                        <button type="submit" id="btn-submit" class="btn btn-primary btn-soft w-100 mt-4 mb-0">Cari</button>
                                     </div>
                                 </form>
                             </div>
