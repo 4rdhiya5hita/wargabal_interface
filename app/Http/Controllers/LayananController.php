@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Cache;
 
 class LayananController extends Controller
 {
+    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api_local = 'http://localhost:8000/api/';
+
     public function hari_raya_page()
     {
         $data = Cache::remember('data_hari_raya', now()->addDays(365), function() {
@@ -103,7 +106,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariHariRaya?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
+        $response = $client->request('GET', $this->url_api . 'cariHariRaya?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -116,7 +119,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganHariRaya', [
+        $response = $client->request('GET', $this->url_api . 'keteranganHariRaya', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -129,7 +132,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariElemenKalenderBali?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+        $response = $client->request('GET', $this->url_api . 'cariElemenKalenderBali?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -141,7 +144,7 @@ class LayananController extends Controller
     public function callZodiak(){
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganZodiak', [
+        $response = $client->request('GET', $this->url_api . 'keteranganZodiak', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -219,7 +222,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganEkaJalaSri', [
+        $response = $client->request('GET', $this->url_api . 'keteranganEkaJalaSri', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -232,7 +235,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPancaSudha', [
+        $response = $client->request('GET', $this->url_api . 'keteranganPancaSudha', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -245,7 +248,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPangarasan', [
+        $response = $client->request('GET', $this->url_api . 'keteranganPangarasan', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -258,7 +261,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPratiti', [
+        $response = $client->request('GET', $this->url_api . 'keteranganPratiti', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -271,7 +274,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganZodiak', [
+        $response = $client->request('GET', $this->url_api . 'keteranganZodiak', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -284,7 +287,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganPancawara', [
+        $response = $client->request('GET', $this->url_api . 'keteranganPancawara', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -297,7 +300,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganSaptawara', [
+        $response = $client->request('GET', $this->url_api . 'keteranganSaptawara', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -310,7 +313,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganWuku', [
+        $response = $client->request('GET', $this->url_api . 'keteranganWuku', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -427,7 +430,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariAlaAyuningDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
+        $response = $client->request('GET', $this->url_api . 'cariAlaAyuningDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&beserta_keterangan', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -440,7 +443,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/keteranganAlaAyuningDewasa', [
+        $response = $client->request('GET', $this->url_api . 'keteranganAlaAyuningDewasa', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -585,6 +588,14 @@ class LayananController extends Controller
                 return $mengatur_dewasa;
             });
 
+            // foreach info_mengatur_dewasa['ala_ayuning_dewasa'] apabila kosong maka kosongkan info_mengatur_dewasa
+            $count_info_mengatur_dewasa = collect($info_mengatur_dewasa)->filter(function ($value, $key) {
+                return count($value['ala_ayuning_dewasa']) > 0;
+            });
+            if ($count_info_mengatur_dewasa->count() == 0) {
+                $info_mengatur_dewasa = [];
+            }
+
             // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
             // cache
             $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari . '_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari) {
@@ -601,7 +612,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
+        $response = $client->request('GET', $this->url_api . 'mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -846,7 +857,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/lihatPura', [
+        $response = $client->request('GET', $this->url_api . 'lihatPura', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -859,7 +870,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariPiodalan?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+        $response = $client->request('GET', $this->url_api . 'cariPiodalan?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -987,7 +998,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariOtonan?tanggal_lahir=' . $tanggal_lahir . '&tahun_dicari=' . $tahun_dicari, [
+        $response = $client->request('GET', $this->url_api . 'cariOtonan?tanggal_lahir=' . $tanggal_lahir . '&tahun_dicari=' . $tahun_dicari, [
             'headers' => $headers
         ]);
         $data = json_decode($response->getBody()->getContents(), true);
@@ -1031,7 +1042,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/ramalanSifat?tanggal_lahir=' . $tanggal_lahir, [
+        $response = $client->request('GET', $this->url_api . 'ramalanSifat?tanggal_lahir=' . $tanggal_lahir, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -1177,7 +1188,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', 'http://localhost:8000/api/cariWarigaPersonal?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&tanggal_lahir=' . $tanggal_lahir, [
+        $response = $client->request('GET', $this->url_api . 'cariWarigaPersonal?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&tanggal_lahir=' . $tanggal_lahir, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);

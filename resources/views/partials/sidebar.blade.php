@@ -18,9 +18,9 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('calendar') }}" class=" waves-effect">
+                    <a href="{{ route('calendar') }}" class="waves-effect">
                         <i class="mdi mdi-calendar-check"></i>
-                        <span>Calendar</span>
+                        <span>Kalender Bali</span>
                     </a>
                 </li>
 
@@ -41,13 +41,20 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('keterangan_pancawara_page') }}" class="has-arrow waves-effect">
+                        <i class="mdi mdi-information"></i>
+                        <span>Keterangan</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-account-box"></i>
                         <span> Authentication </span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('pages-login') }}">Login</a></li>
-                        <li><a href="{{ route('pages-register') }}">Register</a></li>
+                        <li><a href="{{ route('pages-login') }}">Masuk</a></li>
+                        <li><a href="{{ route('pages-register') }}">Daftar</a></li>
                     </ul>
                 </li>
 

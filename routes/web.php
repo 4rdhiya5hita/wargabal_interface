@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ComponentsLexaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtrasLexaController;
+use App\Http\Controllers\KeteranganController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MainLexaController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +34,8 @@ Route::get('/fetchKeterangan', [CalendarController::class, 'fetchKeterangan'])->
 Route::get('/fetchPiodalan', [CalendarController::class, 'fetchPiodalan'])->name('fetchPiodalan');
 Route::get('/fetchZodiak', [CalendarController::class, 'fetchZodiak'])->name('fetchZodiak');
 
+Route::get('/login', [AuthenticationController::class, 'login'])->name('login');
+
 Route::get('/kalender_bali_page', [DashboardController::class, 'kalender_bali_page'])->name('kalender_bali_page');
 Route::get('/hari_raya_page', [LayananController::class, 'hari_raya_page'])->name('hari_raya_page');
 Route::get('/ala_ayuning_dewasa_page', [LayananController::class, 'ala_ayuning_dewasa_page'])->name('ala_ayuning_dewasa_page');
@@ -51,10 +55,10 @@ Route::post('/cari_kriteria_dewasa', [LayananController::class, 'cari_kriteria_d
 Route::post('/cari_wariga_personal', [LayananController::class, 'cari_wariga_personal'])->name('cari_wariga_personal');
 Route::post('/cari_ramalan_sifat', [LayananController::class, 'cari_ramalan_sifat'])->name('cari_ramalan_sifat');
 
-
 Route::get('/fetchKeys', [LayananController::class, 'fetchKeys'])->name('fetchKeys');
 Route::get('/fetchItems', [LayananController::class, 'fetchItems'])->name('fetchItems');
 
+Route::get('/keterangan_pancawara_page', [KeteranganController::class, 'keterangan_pancawara_page'])->name('keterangan_pancawara_page');
 
 
 // LEXA TEMPLATE
