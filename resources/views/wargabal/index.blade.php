@@ -48,7 +48,7 @@
                                                     </div>
                                                     <div class="text-white">
                                                         <h6 class="text-uppercase mb-3 text-white">{{ $item['tanggal'] }}</h6>
-                                                        <h2 class="mb-4 text-white">{{ $hari_raya['nama'] }}</h2>
+                                                        <h2 class="mb-4 text-white" style="height:60px">{{ $hari_raya['nama'] }}</h2>
                                                         <span class="badge bg-warning">
                                                             @php
                                                             $selisih_hari = date_diff(date_create($tanggal_sekarang), date_create($item['tanggal']));
