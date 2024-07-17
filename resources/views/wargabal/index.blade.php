@@ -52,7 +52,12 @@
                                                         <span class="badge bg-warning">
                                                             @php
                                                             $selisih_hari = date_diff(date_create($tanggal_sekarang), date_create($item['tanggal']));
+                                                            if ($selisih_hari->format('%a') == 0) {
+                                                            echo 'Hari ini';
+                                                            } else {
                                                             echo $selisih_hari->format('%a hari lagi');
+                                                            }
+
                                                             @endphp
                                                         </span> <span class="ms-2">Hari Raya Agama Hindu Bali</span>
                                                     </div>
@@ -63,7 +68,7 @@
                                         @endif
                                         @endforeach
                                         @endif
-                                        
+
                                         @endforeach
                                         <div class="d-flex align-items-center" style="height: 150px;">
                                             <a href="{{ route('hari_raya_page') }}">
@@ -76,6 +81,94 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mb-4">
+                    <div class="col-xl-7">
+                        <div class="card pb-4">
+                            <div class="card-body">
+
+                                <h4 class="card-title">Info Kita</h4>
+                                <p class="card-title-desc">Informasi terkini terkait Bali dan adat istiadatnya yang dihimpun oleh staf website Kalender Bali</p>
+
+                                <div class="carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
+                                    <div class="carousel-inner" role="listbox">
+                                        @for ($i = 0; $i < count($info_kita); $i++)
+                                        @if ($info_kita[$i]['image'] != '' && $info_kita[$i]['image'] != null)
+                                        <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
+                                            <div class="position-relative">
+                                                <a href="{{ route('info_kita_detail_page', ['id' => $info_kita[$i]['id']] ) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Klik untuk melihat informasi lengkap">>
+
+                                                    <img class="d-block w-100 img-fluid" src="https://api.kalenderbali.web.id/storage/{{ $info_kita[$i]['image'] }}" alt="First slide">
+                                                    <div class="card position-absolute start-50 w-100 translate-middle" style="height:350px;">
+                                                        <div class="card-body bottom-0" style="border: 2px solid #fff;">
+                                                            <h4 class="card-title">{{ $info_kita[$i]['title'] }}</h4>
+                                                            @php
+                                                            $formattedContent = substr(nl2br(e($info_kita[$i]['content'])), 0, 250);
+                                                            @endphp
+                                                            <p class="card-title-desc">{!! $formattedContent !!}..</p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @endfor
+
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+
+                    <div class="col-xl-5">
+                        <div class="card pb-4">
+                            <div class="card-header bg-transparent border-bottom d-flex align-items-start mb-3">
+                                <div class="flex-grow-1">
+                                    <h4 class="card-title mb-0">Kumpulan Berita <span class="font-size-14 text-muted"></span></h4>
+                                    <p class="text-muted mb-0">Temukan berita-berita terkini disini</p>
+                                </div>
+                            </div><!-- end card-header -->
+
+                            <div data-simplebar class="tasklist-content p-3" style="max-height: calc(100vh - 170px);">
+                                <div id="todo-task" class="tasks">
+                                    @foreach ($info_kita as $key => $item)
+                                    @if ($item['title'] != '' && $item['title'] != null)
+                                    <div class="card task-box">
+                                        <div class="card-body mini-stat-img">
+                                            @if ($item['image'] != '' && $item['image'] != null)
+                                            <div class="mini-stat-icon">
+                                                <img src="https://api.kalenderbali.web.id/storage/{{ $item['image'] }}" class="float-start rounded" style="margin-right: 16px;" width="100" height="70">
+                                            </div>
+                                            @endif  
+                                            <h5 class="font-size-16 mb-2 mt-2 pt-1">{{ $item['title'] }}</h5>
+                                            
+                                            @php
+                                            $formattedContent = substr(nl2br(e($item['content'])), 0, 250);
+                                            @endphp
+                                            <p class="card-title-desc">{!! $formattedContent !!}..</p>
+                                            <a href="{{ route('info_kita_detail_page', ['id' => $item['id']]) }}" class="text-primary">>> Baca selengkapnya</a>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- end col -->                                
+                </div>
+                <!-- end row -->
 
                 <div class="row">
                     <div class="col-xl-12">
@@ -96,7 +189,7 @@
 
                             <div>
                                 <div class="text-center p-3">
-                                    <a href="{{ route('ala_ayuning_dewasa_page') }}" class="btn btn-warning btn-soft w-100"><i class="mdi mdi-magnify mr-1"></i> Klik untuk mencari lainnya ...</a>
+                                <a href="{{ route('ala_ayuning_dewasa_page') }}" class="btn btn-warning btn-soft w-100"><i class="mdi mdi-magnify mr-1"></i> Klik untuk mencari lainnya ...</a>
                                 </div>
 
                                 <div data-simplebar class="tasklist-content p-3" style="max-height: calc(100vh - 180px);">
@@ -313,13 +406,40 @@
 
 @include("partials/vendor-scripts")
 
+<!-- Validation -->
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
+
+<script>
+    $(function() {
+        // jika with success controller is called
+        if ("{{ $toast }}" == true) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "bottom-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "{{ $message }}"
+            });
+        }
+    });
+
+</script>
 
 </body>
 

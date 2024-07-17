@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Cache;
 
 class LayananController extends Controller
 {
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    protected $url_api_local = 'http://localhost:8000/api/';
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = 'http://localhost:8000/api/';
 
     public function hari_raya_page()
     {
@@ -74,12 +74,11 @@ class LayananController extends Controller
             return $elemen_kalender_bali;
         });
 
-        $keterangan = $this->callKeteranganElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
-        // dd($keterangan);
+        $keterangan = $this->callKeteranganElemenKalenderBali();
+
     // foreach($keterangan as $k => $ket){
-    //     if ($k == 'pancasudha') {
+    //     if ($k == 'ingkel' && $ket != null) {
     //         foreach($ket as $value) {
-    //             dd($value);
     //             if($value['nama'] == 'sumur sinaba') {
     //                 dd('done');
     //             }
@@ -155,74 +154,184 @@ class LayananController extends Controller
 
     public function callKeteranganElemenKalenderBali()
     {
-        $info_eka_jala_sri = Cache::remember('info_eka_jala_sri', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $eka_jala_sri = $layanan->keteranganEkaJalaSri();
-            return $eka_jala_sri;
-        });
+        $layanan = new LayananController();
 
-        $info_panca_sudha = Cache::remember('info_panca_sudha', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $panca_sudha = $layanan->keteranganPancaSudha();
-            return $panca_sudha;
-        });
+        $info_ingkel_api = $layanan->keteranganIngkel();
+        $info_jejepan_api = $layanan->keteranganJejepan();
+        $info_lintang_api = $layanan->keteranganLintang();        
+        $info_rakam_api = $layanan->keteranganRakam();
+        $info_watek_madya_api = $layanan->keteranganWatekMadya();
+        $info_watek_alit_api = $layanan->keteranganWatekAlit();
+        $info_neptu_api = $layanan->keteranganNeptu();        
+        $info_eka_jala_rsi_api = $layanan->keteranganEkaJalaRsi();
+        $info_panca_sudha_api = $layanan->keteranganPancaSudha();
+        $info_pangarasan_api = $layanan->keteranganPangarasan();
+        $info_pratiti_api = $layanan->keteranganPratiti();
+        $info_zodiak_api = $layanan->keteranganZodiak();
+        $info_ekawara_api = $layanan->keteranganEkawara();
+        $info_dwiwara_api = $layanan->keteranganDwiwara();
+        $info_triwara_api = $layanan->keteranganTriwara();
+        $info_caturwara_api = $layanan->keteranganCaturwara();
+        $info_pancawara_api = $layanan->keteranganPancawara();
+        $info_sadwara_api = $layanan->keteranganSadwara();
+        $info_saptawara_api = $layanan->keteranganSaptawara();
+        $info_astawara_api = $layanan->keteranganAstawara();
+        $info_sangawara_api = $layanan->keteranganSangawara();
+        $info_dasawara_api = $layanan->keteranganDasawara();
+        $info_wuku_api = $layanan->keteranganWuku();
 
-        $info_pangarasan = Cache::remember('info_pangarasan', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $pangarasan = $layanan->keteranganPangarasan();
-            return $pangarasan;
-        });
-
-        $info_pratiti = Cache::remember('info_pratiti', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $pratiti = $layanan->keteranganPratiti();
-            return $pratiti;
-        });
-
-        $info_zodiak = Cache::remember('info_zodiak', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $zodiak = $layanan->keteranganZodiak();
-            return $zodiak;
-        });
-
-        $info_pancawara = Cache::remember('info_pancawara', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $pancawara = $layanan->keteranganPancawara();
-            return $pancawara;
-        });
-
-        $info_saptawara = Cache::remember('info_saptawara', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $saptawara = $layanan->keteranganSaptawara();
-            return $saptawara;
-        });
-
-        $info_wuku = Cache::remember('info_wuku', now()->addDays(365), function() {
-            $layanan = new LayananController();
-            $wuku = $layanan->keteranganWuku();
-            return $wuku;
-        });
+        // cek apakah pada info_ingkel seluruh keterangan null atau tidak, jika null maka info_ingkel = null
+        $info_ingkel = collect($info_ingkel_api)->where('keterangan', '!=', null)->all();
+        $info_jejepan = collect($info_jejepan_api)->where('keterangan', '!=', null)->all();
+        $info_lintang = collect($info_lintang_api)->where('keterangan', '!=', null)->all();
+        $info_rakam = collect($info_rakam_api)->where('keterangan', '!=', null)->all();
+        $info_watek_madya = collect($info_watek_madya_api)->where('keterangan', '!=', null)->all();
+        $info_watek_alit = collect($info_watek_alit_api)->where('keterangan', '!=', null)->all();
+        $info_neptu = collect($info_neptu_api)->where('keterangan', '!=', null)->all();
+        $info_eka_jala_rsi = collect($info_eka_jala_rsi_api)->where('keterangan', '!=', null)->all();
+        $info_panca_sudha = collect($info_panca_sudha_api)->where('keterangan', '!=', null)->all();
+        $info_pangarasan = collect($info_pangarasan_api)->where('keterangan', '!=', null)->all();
+        $info_pratiti = collect($info_pratiti_api)->where('keterangan', '!=', null)->all();
+        $info_zodiak = collect($info_zodiak_api)->where('keterangan', '!=', null)->all();
+        $info_ekawara = collect($info_ekawara_api)->where('keterangan', '!=', null)->all();
+        $info_dwiwara = collect($info_dwiwara_api)->where('keterangan', '!=', null)->all();
+        $info_triwara = collect($info_triwara_api)->where('keterangan', '!=', null)->all();
+        $info_caturwara = collect($info_caturwara_api)->where('keterangan', '!=', null)->all();
+        $info_pancawara = collect($info_pancawara_api)->where('keterangan', '!=', null)->all();
+        $info_sadwara = collect($info_sadwara_api)->where('keterangan', '!=', null)->all();
+        $info_saptawara = collect($info_saptawara_api)->where('keterangan', '!=', null)->all();
+        $info_astawara = collect($info_astawara_api)->where('keterangan', '!=', null)->all();
+        $info_sangawara = collect($info_sangawara_api)->where('keterangan', '!=', null)->all();
+        $info_dasawara = collect($info_dasawara_api)->where('keterangan', '!=', null)->all();
+        $info_wuku = collect($info_wuku_api)->where('keterangan', '!=', null)->all();
 
         $keterangan = 
         [
-            'ekajalasri' => $info_eka_jala_sri,
-            'pancasudha' => $info_panca_sudha,
+            'ingkel' => $info_ingkel,
+            'jejepan' => $info_jejepan,
+            'lintang' => $info_lintang,
+            'rakam' => $info_rakam,
+            'watek_madya' => $info_watek_madya,
+            'watek_alit' => $info_watek_alit,
+            'neptu' => $info_neptu,
+            'ekajalarsi' => $info_eka_jala_rsi,
+            'panca_sudha' => $info_panca_sudha,
             'pangarasan' => $info_pangarasan,
             'pratiti' => $info_pratiti,
             'zodiak' => $info_zodiak,
+            'wuku' => $info_wuku,
+
+            'ekawara' => $info_ekawara,
+            'dwiwara' => $info_dwiwara,
+            'triwara' => $info_triwara,
+            'caturwara' => $info_caturwara,
             'pancawara' => $info_pancawara,
+            'sadwara' => $info_sadwara,
             'saptawara' => $info_saptawara,
-            'wuku' => $info_wuku
+            'astawara' => $info_astawara,
+            'sangawara' => $info_sangawara,
+            'dasawara' => $info_dasawara
         ];
 
         return $keterangan;
     }
 
-    public function keteranganEkaJalaSri()
+    public function keteranganIngkel()
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', $this->url_api . 'keteranganEkaJalaSri', [
+        $response = $client->request('GET', $this->url_api . 'keteranganIngkel', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganJejepan()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganJejepan', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganLintang()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganLintang', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganRakam()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganRakam', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganWatekMadya()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganWatekMadya', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganWatekAlit()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganWatekAlit', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganNeptu()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganNeptu', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganEkaJalaRsi()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganEkaJalaRsi', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -283,6 +392,58 @@ class LayananController extends Controller
         return $data;
     }
 
+    public function keteranganEkawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganEkawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganDwiwara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganDwiwara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganTriwara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganTriwara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganCaturwara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganCaturwara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
     public function keteranganPancawara()
     {
         $client = new Client();
@@ -296,11 +457,63 @@ class LayananController extends Controller
         return $data;
     }
 
+    public function keteranganSadwara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganSadwara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
     public function keteranganSaptawara()
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         $response = $client->request('GET', $this->url_api . 'keteranganSaptawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganAstawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganAstawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganSangawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganSangawara', [
+            'headers' => $headers
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function keteranganDasawara()
+    {
+        $client = new Client();
+        $headers = ['x-api-key' => env('X_API_KEY')];
+        $response = $client->request('GET', $this->url_api . 'keteranganDasawara', [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -406,6 +619,7 @@ class LayananController extends Controller
 
                 // $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
                 // cache
+                
                 $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
                     $layanan = new LayananController();
                     $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
@@ -455,9 +669,10 @@ class LayananController extends Controller
     public function mengatur_kriteria_awal_page()
     {
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Semua Bulan'];
-        $option_dewasa = ['a', 'b', 'c'];
+        $template_dewasa = ['Purnama Kadasa', 'Purnama Kajeng Kliwon', 'Purnama Anggara Kasih', 'Purnama Ketemu Guru', 'Potong Gigi', 'Bhuta Yadnya', 'Dewa Yadnya', 'Cukur Rambut', 'Membuat Rapat', 'Berhubungan/Bersenggama Suami Istri', 'Nikah/Kawin', 'Menempati Rumah', 'Memulai Upacara/Karya yang Besar'];
+        // $template_dewasa = ['Purnama Kadasa', 'Purnama Kajeng Kliwon', 'Purnama Anggara Kasih', 'Purnama Ketemu Guru', 'Potong Gigi', 'Bhuta Yadnya', 'Dewa Yadnya', 'Cukur Rambut', 'Membuat Rapat', 'Berhubungan/Bersenggama Suami Istri', 'Nikah/Kawin', 'Menempati Rumah', 'Memulai Upacara/Karya yang Besar', 'Manusa Yadnya', 'Pitra Yadnya', 'Ngaben/Penguburan/Pembakaran Mayat', 'Berbelanja'];
 
-        return view('wargabal.layanan.mengatur_kriteria_awal_page', compact('bulan', 'option_dewasa'));
+        return view('wargabal.layanan.mengatur_kriteria_awal_page', compact('bulan', 'template_dewasa'));
     }
 
     public function mengatur_kriteria_parameter_page(Request $request)
@@ -467,13 +682,849 @@ class LayananController extends Controller
         $bulan_dicari = $request->bulan_dicari;
         $tahun_dicari = $request->tahun_dicari;
 
+        if ($cari_dengan == "template") {
+            if ($dewasa_ayu == "Purnama Kadasa") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'sasih', 'item' => 10]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Purnama Kajeng Kliwon") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'triwara', 'item' => 3],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Purnama Anggara Kasih") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Purnama Ketemu Guru") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'astawara', 'item' => 3]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Potong Gigi") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 12],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 10],
+                        ['key' => 'pancawara', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 10],
+                        ['key' => 'pancawara', 'item' => 4]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Bhuta Yadnya") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'triwara', 'item' => 3],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Dewa Yadnya") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'saptawara', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'saptawara', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'Penanggal', 'item' => 15],
+                        ['key' => 'saptawara', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'triwara', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'triwara', 'item' => 3],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'Penanggal', 'item' => 6]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'Pangelong', 'item' => 6]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Pangelong', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'Penanggal', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'Pangelong', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Pangelong', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Penanggal', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Pangelong', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Pangelong', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Pangelong', 'item' => 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'pancawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'Penanggal', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 13]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'Penanggal', 'item' => 10]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'Penanggal', 'item' => 6]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 8]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Penanggal', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 10]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'pancawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 10]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Cukur Rambut") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 25]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 29]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 11]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 17]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 13]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 21]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 23]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 19]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 27]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [
+                    [
+                        ['key' => 'sadwara', 'item' => 3],
+                        ['key' => 'astawara', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 20]
+                    ], 
+                    [
+                        ['key' => 'wuku', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 6]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 10]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 11]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 16]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 19]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 20]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 24]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 25]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 27]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item' => 30]
+                    ]
+                ];
+            } else if ($dewasa_ayu == "Membuat Rapat") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 17]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 11]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 16]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 19]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 30]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 13]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 29]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 17]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 16]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 19]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 27]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 11]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Pangelong', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'Penanggal', 'item' => 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'Penanggal', 'item' => 13]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'Penanggal', 'item' => 11]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Penanggal', 'item' => 8]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'Penanggal', 'item' => 11]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'Penanggal', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'Penanggal', 'item' => 10]
+                    ]
+                ];
+            } else if ($dewasa_ayu == "Berhubungan/Bersenggama Suami Istri") {
+                $kriteriaDicari = [];
+    
+                $kriteriaDihindari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'pancawara', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'pancawara', 'item' => 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'pancawara', 'item' => 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'pancawara', 'item' => 2]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'pancawara', 'item' => 5]
+                    ],
+                    [
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item' => 15]
+                    ],
+                    [
+                        ['key' => 'ekawara', 'item' => 1]
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item' => 15],
+                        ['key' => 'saptawara', 'item' => 6]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 29],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 23],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 10],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 10],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 20],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 27],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 1],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 5],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 15],
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 14],
+                    ]
+                ];
+            } else if ($dewasa_ayu == "Nikah/Kawin") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'Penanggal', 'item'=> 5],
+                        ['key' => 'saptawara', 'item'=> 4],
+                        ['key' => 'pancawara', 'item'=> 2]
+                    ], 
+                    [
+                        ['key' => 'saptawara', 'item'=> 2],
+                    ], 
+                    [
+                        ['key' => 'saptawara', 'item'=> 4],
+                    ], 
+                    [
+                        ['key' => 'saptawara', 'item'=> 5],
+                    ], 
+                    [
+                        ['key' => 'saptawara', 'item'=> 6],
+                    ]                
+                ];
+    
+                $kriteriaDihindari = [
+                    [
+                        ['key' => 'saptawara', 'item'=> 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 7]
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 1],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 2],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 3],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 4],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 5],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 6],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 7],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 8],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 9],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 10],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 11],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 12],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 13],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 14],
+                    ],
+                    [
+                        ['key' => 'Pangelong', 'item'=> 15]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 7]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 8]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 15]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 16]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 23]
+                    ],
+                    [
+                        ['key' => 'wuku', 'item'=> 24]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 1],
+                        ['key' => 'wuku', 'item'=> 5]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 1],
+                        ['key' => 'wuku', 'item'=> 13]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 1],
+                        ['key' => 'wuku', 'item'=> 21]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 1],
+                        ['key' => 'wuku', 'item'=> 29]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 2],
+                        ['key' => 'wuku', 'item'=> 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 2],
+                        ['key' => 'wuku', 'item'=> 11]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 2],
+                        ['key' => 'wuku', 'item'=> 19]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 2],
+                        ['key' => 'wuku', 'item'=> 27]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 3],
+                        ['key' => 'wuku', 'item'=> 8]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 3],
+                        ['key' => 'wuku', 'item'=> 16]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 3],
+                        ['key' => 'wuku', 'item'=> 24]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 4],
+                        ['key' => 'wuku', 'item'=> 1]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 4],
+                        ['key' => 'wuku', 'item'=> 9]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 4],
+                        ['key' => 'wuku', 'item'=> 17]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 4],
+                        ['key' => 'wuku', 'item'=> 25]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 5],
+                        ['key' => 'wuku', 'item'=> 14]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 5],
+                        ['key' => 'wuku', 'item'=> 22]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 5],
+                        ['key' => 'wuku', 'item'=> 30]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 6],
+                        ['key' => 'wuku', 'item'=> 4]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 6],
+                        ['key' => 'wuku', 'item'=> 12]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 6],
+                        ['key' => 'wuku', 'item'=> 20]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 6],
+                        ['key' => 'wuku', 'item'=> 28]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 7],
+                        ['key' => 'wuku', 'item'=> 7]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 7],
+                        ['key' => 'wuku', 'item'=> 15]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item'=> 7],
+                        ['key' => 'wuku', 'item'=> 23]
+                    ]               
+                ];
+            } else if ($dewasa_ayu == "Menempati Rumah") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'pancawara', 'item' => 5],
+                        ['key' => 'astawara', 'item' => 3]
+                    ],
+                    [
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'pancawara', 'item' => 5],
+                        ['key' => 'astawara', 'item' => 8]
+                    ]
+                ];
+    
+                $kriteriaDihindari = [];
+            } else if ($dewasa_ayu == "Memulai Upacara/Karya yang Besar") {
+                $kriteriaDicari = [
+                    [
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'pancawara', 'item' => 1],
+                        ['key' => 'Penanggal', 'item' => 15]
+                    ],
+                ];
+                
+                $kriteriaDihindari = [];
+            }            
 
-        return view('wargabal.layanan.mengatur_kriteria_parameter_page', compact(
-            'cari_dengan',
-            'dewasa_ayu',
-            'bulan_dicari',
-            'tahun_dicari',
-        ));
+            $keys = [];
+            foreach ($kriteriaDicari as $kriteria) {
+                foreach ($kriteria as $item) {
+                    $keys[] = $item['key'];
+                }
+            }
+
+            foreach ($kriteriaDihindari as $kriteria) {
+                foreach ($kriteria as $item) {
+                    $keys[] = $item['key'];
+                }
+            }
+
+            // ambil keys yang unik
+            $keys = array_unique($keys);
+            $items = [];
+
+            foreach ($keys as $key) {
+                $response = $this->fetchItems($request, $key);
+                $data = $response->getContent();
+                $dataArray = json_decode($data, true);
+                $items[$key] = $dataArray;
+            }
+
+            return view('wargabal.layanan.mengatur_kriteria_parameter_page', compact(
+                'cari_dengan',
+                'dewasa_ayu',
+                'keys',
+                'items',
+                'kriteriaDicari',
+                'kriteriaDihindari',
+                'bulan_dicari',
+                'tahun_dicari',
+            ));
+        } 
+        
+        else {
+            $keys = [];
+            $items = [];
+            $kriteriaDicari = [];
+            $kriteriaDihindari = [];
+
+            return view('wargabal.layanan.mengatur_kriteria_parameter_page', compact(
+                'keys',
+                'items',
+                'kriteriaDicari',
+                'kriteriaDihindari',
+                'cari_dengan',
+                'bulan_dicari',
+                'tahun_dicari',
+            ));
+        }        
     }
 
     public function cari_kriteria_dewasa(Request $request)
@@ -501,6 +1552,7 @@ class LayananController extends Controller
         $finalLogicAND = [];
 
         // Konversi kriteria yang dicari menjadi logika AND
+        $addedPengalantaka = false;
         foreach ($kriteriaDicari as $kriteria) {
             $tempANDdicari = [];
             $tempORdicari = [];
@@ -512,63 +1564,91 @@ class LayananController extends Controller
                     $tempANDdicari[] = "$" . "{$item['key']}=={$item['item']}";
                 }
             }
+            // tambahkan "()" pada tempANDdicari jika lebih dari satu elemen
             $logicANDdicari[] = implode('%26%26', $tempANDdicari);
         }
 
+        $logicANDdicari = array_filter($logicANDdicari, function($value) {
+            return !empty($value);
+        });
         $logicORdicari[] = implode('||', $logicANDdicari);
         // dd($logicORdicari[0]);
         // dd($logicORdicari[0] != null);
 
         // Konversi kriteria yang dihindari menjadi logika AND
+        $addedPengalantaka = false;
         foreach ($kriteriaDihindari as $kriteria) {
             $tempANDdihindari = [];
             $tempORdihindari = [];
-            // dd($kriteria);
+
             foreach ($kriteria as $item) {
                 if ($item['key'] == 'Penanggal' || $item['key'] == 'Pangelong') {
                     $tempANDdihindari[] = "$" . "pengalantaka=='{$item['key']}'";
                     $tempANDdihindari[] = "$" . "sasihDay1=={$item['item']}";
+                    // if ($item['item'] >= 1 && $item['item'] <= 15) {
+                    //     $tempANDdihindari = array_diff($tempANDdihindari, ["$" . "sasihDay1!={$item['item']}"]);
+                    //     $tempANDdihindari = array_diff($tempANDdihindari, ["$" . "pengalantaka!='{$item['key']}'"]);
+                    //     if (!$addedPengalantaka) {
+                    //         $tempANDdihindari[] = "$" . "pengalantaka!='{$item['key']}'";  // Tambahkan satu pengalantaka
+                    //         $addedPengalantaka = true;  // Set flag ke true agar tidak menambahkan lagi
+                    //     }
+                    // }
                 } else {
                     $tempANDdihindari[] = "$" . "{$item['key']}=={$item['item']}";
                 }
             }
+            // tambahkan "()" pada tempANDdihindari jika lebih dari satu elemen
+            // $logicANDdihindari[] = '!(' . implode('%26%26', $tempANDdihindari) . ')';
             $logicANDdihindari[] = implode('%26%26', $tempANDdihindari);
         }
-
+        
+        $logicANDdihindari = array_filter($logicANDdihindari, function($value) {
+            return !empty($value);
+        });
+                
         // dd($logicORdihindari);
         $logicORdihindari[] = implode('||', $logicANDdihindari);
+        // dd($logicORdihindari[0]);
 
         if ($logicORdicari[0] != null && $logicORdihindari[0] != null) {
-            $finalLogicAND[] = '(' . $logicORdicari[0] . ')' . '%26%26' . '(' . $logicORdihindari[0] . ')';
+            $finalLogicAND[] = '(' . $logicORdicari[0] . ')' . '%26%26' . '!(' . $logicORdihindari[0] . ')';
         } elseif ($logicORdicari[0] != null && $logicORdihindari[0] == null) {
             if ($logicANDdihindari != null) {
-                $finalLogicAND[] = '(' . $logicORdicari[0] . ')' . '%26%26' . '(' . $logicANDdihindari[0] . ')';
+                $finalLogicAND[] = '(' . $logicORdicari[0] . ')' . '%26%26' . '!(' . $logicANDdihindari[0] . ')';
             } else {
                 $finalLogicAND[] = $logicORdicari[0];
             }
         } elseif ($logicORdicari[0] == null && $logicORdihindari[0] != null) {
             if ($logicANDdicari != null) {
-                $finalLogicAND[] = '(' . $logicANDdicari[0] . ')' . '%26%26' . '(' . $logicORdihindari[0] . ')';
+                $finalLogicAND[] = '(' . $logicANDdicari[0] . ')' . '%26%26' . '!(' . $logicORdihindari[0] . ')';
             } else {
-                $finalLogicAND[] = $logicORdihindari[0];
+                $finalLogicAND[] = '!' . $logicORdihindari[0];
             }
         } elseif ($logicORdicari[0] == null && $logicORdihindari[0] == null) {
             if ($logicANDdicari != null && $logicANDdihindari != null) {
-                $finalLogicAND[] = '(' . $logicANDdicari[0] . ')' . '%26%26' . '(' . $logicANDdihindari[0] . ')';
+                $finalLogicAND[] = '(' . $logicANDdicari[0] . ')' . '%26%26' . '!(' . $logicANDdihindari[0] . ')';
             } elseif ($logicANDdicari != null && $logicANDdihindari == null) {
                 $finalLogicAND[] = $logicANDdicari;
             } elseif ($logicANDdicari == null && $logicANDdihindari != null) {
-                $finalLogicAND[] = $logicANDdihindari;
+                $finalLogicAND[] = '!' . $logicANDdihindari;
             }
         }
 
         // dd($finalLogicAND[0]);
+        // $encodeFinalLogicAND = $finalLogicAND[0];
+        if (strlen($finalLogicAND[0]) > 500) {
+            $encodeFinalLogicAND = urldecode($finalLogicAND[0]);
+        } else {
+            $encodeFinalLogicAND = $finalLogicAND[0];
+        }
+
+        // dd($encodeFinalLogicAND);
         if ($bulan_dicari == "Semua Bulan") {
-            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $finalLogicAND[0]);
+            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $encodeFinalLogicAND);
             // cache
-            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31_'. $finalLogicAND[0], now()->addDays(365), function() use ($tahun_dicari, $finalLogicAND) {
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31_'. $encodeFinalLogicAND, now()->addDays(365), function() use ($tahun_dicari, $encodeFinalLogicAND) {
                 $layanan = new LayananController();
-                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $finalLogicAND[0]);
+                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $encodeFinalLogicAND);
                 return $mengatur_dewasa;
             });
 
@@ -580,11 +1660,11 @@ class LayananController extends Controller
                 return $elemen_kalender_bali;
             });
         } else {
-            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . $bulan_dicari . '-01', $tahun_dicari . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
+            // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $encodeFinalLogicAND);
             // cache
-            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari .'_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')) . '_'. $finalLogicAND[0], now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari, $finalLogicAND) {
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari .'_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')) . '_'. $encodeFinalLogicAND, now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari, $encodeFinalLogicAND) {
                 $layanan = new LayananController();
-                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $finalLogicAND[0]);
+                $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $encodeFinalLogicAND);
                 return $mengatur_dewasa;
             });
 
@@ -612,11 +1692,22 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', $this->url_api . 'mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
-            'headers' => $headers
-        ]);
+        // jika panjang karakter kriteria lebih dari 500 maka gunakan POST
+        if (strlen($kriteria) > 500) {
+            $response = $client->request('POST', $this->url_api . 'mengaturDewasaPOST', [
+                'headers' => $headers,
+                'form_params' => [
+                    'tanggal_mulai' => $tanggal_mulai,
+                    'tanggal_selesai' => $tanggal_selesai,
+                    'kriteria' => $kriteria
+                ]
+            ]);
+        } else {
+            $response = $client->request('GET', $this->url_api . 'mengaturDewasa?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai . '&kriteria=' . $kriteria, [
+                'headers' => $headers
+            ]);
+        }
         $result = json_decode($response->getBody()->getContents(), true);
-        // dd($result);
         $data = $result['data'];
 
         return $data;
@@ -628,9 +1719,15 @@ class LayananController extends Controller
         return response()->json($keys);
     }
 
-    public function fetchItems(Request $request)
+    public function fetchItems(Request $request, $kriteria = null)
     {
-        $key = $request->query('key');
+        // dd($kriteria);
+        if ($kriteria == null || $kriteria == '') {
+            $key = $request->query('key');
+        } else {
+            $key = $kriteria;
+        }
+
         // Fetch items based on the key from your array
         // Example:
         $items = [];
@@ -666,10 +1763,10 @@ class LayananController extends Controller
                 $items = ['Pandita' => 1, 'Pati' => 2, 'Suka' => 3, 'Duka' => 4, 'Sri' => 5, 'Manu' => 6, 'Manusa' => 7, 'Raja' => 8, 'Dewa' => 9, 'Raksasa' => 10];
                 break;
             case 'Penanggal':
-                $items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+                $items = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15];
                 break;
             case 'Pangelong':
-                $items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+                $items = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15];
                 break;
             case 'wuku':
                 $items = ['Sinta' => 1, 'Landep' => 2, 'Ukir' => 3, 'Kulantir' => 4, 'Tolu' => 5, 'Gumbreg' => 6, 'Wariga' => 7, 'Warigadean' => 8, 'Julungwangi' => 9, 'Sungsang' => 10, 'Dungulan' => 11, 'Kuningan' => 12, 'Langkir' => 13, 'Medangsia' => 14, 'Pujut' => 15, 'Pahang' => 16, 'Krulut' => 17, 'Merakih' => 18, 'Tambir' => 19, 'Medangkungan' => 20, 'Matal' => 21, 'Uye' => 22, 'Menail' => 23, 'Prangbakat' => 24, 'Bala' => 25, 'Ugu' => 26, 'Wayang' => 27, 'Klawu' => 28, 'Dukut' => 29, 'Watugunung' => 30];
@@ -689,7 +1786,7 @@ class LayananController extends Controller
                 // case 'lintang':
                 //     $items = ['Begong', 'Gajah', 'Kiriman', 'Perahu Sarat', 'Tiwa-tiwa', 'Sangkatikel', 'Bubu Bolong', 'Sungenge', 'Uluku', 'Pedati', 'Kuda', 'Gajah Mina', 'Bade', 'Magelut', 'Rarung Pegelangan', 'Kala Sungsang', 'Dupa', 'Asu', 'Kartika', 'Naga', 'Angsa Angrem', 'Panah', 'Patrem', 'Lembu', 'Depat', 'Tangis', 'Salah Ukur', 'Prahu Pegat', 'Puwuh Atarung', 'Lawean', 'Kelapa', 'Yuyu', 'Lumbung', 'Kumba', 'Udang'];
                 //     break;
-                // case 'pancasudha':
+                // case 'panca_sudha':
                 //     $items = ['Wisesa Segara', 'Tunggak Semi', 'Satria Wibawa', 'Sumur Sinaba', 'Bumi Kepetak', 'Satria Wirang', 'Lebu Katiub Angin'];
                 //     break;
                 // case 'pangarasan':
@@ -704,7 +1801,7 @@ class LayananController extends Controller
                 // case 'watek_madya':
                 //     $items = ['Wong', 'Gajah', 'Watu', 'Buta', 'Suku'];
                 //     break;
-                // case 'ekajalasri':
+                // case 'ekajalarsi':
                 //     $items = ['SUKA PINANGGIH', 'BUAT SUKA', 'MANGGIH SUKA', 'BUAT SUKA', 'SUKA PINANGGIH', 'SUKA PINANGGIH', 'MANGGIH SUKA', 'KAMARANAN', 'BUAT SUKA', 'KINASIHANIN JANA', 'WERDHI PUTRA', 'SUKA RAHAYU', 'SUKA PINANGGIH', 'SIDHA KASOBAGIAN', 'KINASIHANIN JANA', 'BUAT SUKA', 'KINASIHANIN JANA', 'TININGGALING SUKA', 'RAHAYU', 'BUAT SEBET', 'BUAT ASTAWA', 'LANGGENG KAYOHANAN', 'WERDHI PUTRA', 'MANGGIH SUKA', 'SIDHA KASOBAGIAN', 'TININGGALING SUKA', 'SUKA PINANGGIH', 'BAGNA MAPASAH', 'KAMERTAAN', 'BUAT SEBET', 'LEWIH BAGIA', 'SUKA PINANGGIH', 'BUAT SUKA', 'BUAT SUKA', 'SUKA PINANGGIH', 'MANGGIH SUKA', 'TININGGALING SUKA', 'BUAT MERANG', 'SUKA PINANGGIH', 'BUAT ASTAWA', 'BUAT ASTAWA', 'BUAT ASTAWA', 'KINASIHANIN AMERTA', 'KINASIHANIN AMERTA', 'BUAT MERANG', 'LANGGENG KAYOHANAN', 'KINASIHANIN AMERTA', 'WERDHI PUTRA', 'WERDHI PUTRA', 'BAHU PUTRA', 'SUKA PINANGGIH', 'SUKA PINANGGIH', 'LEWIH BAGIA', 'TININGGALING SUKA', 'LEWIH BAGIA', 'BUAT SEBET', 'KAMARANAN', 'TININGGALING SUKA', 'PATINING AMERTA', 'TININGGALING SUKA', 'KASOBAGIAN', 'LEWIH BAGIA', 'SUBAGIA', 'TININGGALING SUKA', 'TININGGALING SUKA', 'KINASIHANIN JANA', 'BAGNA MAPASAH', 'MANGGIH SUKA', 'KINASIHANIN JANA', 'BAGNA MAPASAH', 'LEWIH BAGIA', 'SUKA PINANGGIH', 'KINASIHANIN AMERTA', 'BUAT SUKA', 'MANGGIH BAGIA', 'TININGGALING SUKA', 'PATINING AMERTA', 'SUKA RAHAYU', 'KINASIHANIN AMERTA', 'KINASIHANIN AMERTA', 'BUAT SEBET', 'BUAT SUKA', 'BUAT SEBET', 'WERDHI PUTRA', 'BUAT SUKA', 'BUAT SEBET', 'KINASIHANIN AMERTA', 'BUAT SUKA', 'TININGGALING SUKA', 'BUAT ASTAWA', 'DAHAT KINGKING', 'TININGGALING SUKA', 'TININGGALING SUKA', 'LANGGENG KAYOHANAN', 'LEWIH BAGIA', 'WERDHI PUTRA', 'BUAT SUKA', 'KINASIHANIN AMERTA', 'SIDHA KASOBAGIAN', 'BUAT SUKA', 'BUAT SEBET', 'TININGGALING SUKA', 'TININGGALING SUKA', 'BUAT SEBET', 'KINASIHANIN JANA', 'TININGGALING SUKA', 'MANGGIH SUKA', 'KINASIHANIN JANA', 'SUKA PINANGGIH', 'BUAT SEBET', 'WERDHI PUTRA', 'SIDHA KASOBAGIAN', 'TININGGALING SUKA', 'TININGGALING SUKA', 'SUKA PINANGGIH', 'BUAT SUKA', 'PATINING AMERTA', 'PATINING AMERTA', 'MANGGIH SUKA', 'BUAT SUKA', 'MANGGIH SUKA', 'BUAT SUKA', 'BUAT MERANG', 'WERDHI PUTRA', 'MANGGIH SUKA', 'BUAT SUKA', 'KAMARANAN', 'KINASIHANIN AMERTA', 'KINASIHANIN AMERTA', 'KINASIHANIN JANA', 'TININGGALING SUKA', 'PATINING AMERTA', 'PATINING AMERTA', 'BUAT SEBET', 'BUAT ASTAWA', 'TININGGALING SUKA', 'TININGGALING SUKA', 'BUAT ASTAWA', 'TININGGALING SUKA', 'MANGGIH SUKA', 'SIDHA KASOBAGIAN', 'LANGGENG KAYOHANAN', 'WERDHI SARWA MULE', 'SUKA PINANGGIH', 'MANGGIH SUKA', 'DAHAT KINGKING', 'TININGGALING SUKA', 'MANGGIH SUKA', 'BUAT SEBET', 'MANGGIH SUKA', 'BUAT SUKA', 'BUAT KINGKING', 'LEWIH BAGIA', 'PATINING AMERTA', 'TININGGALING SUKA', 'BUAT ASTAWA', 'BUAT SUKA', 'KINASIHANIN JANA', 'TININGGALING SUKA', 'SIDHA KASOBAGIAN', 'BUAT SUKA', 'LEWIH BAGIA', 'LEWIH BAGIA', 'SUKA PINANGGIH', 'BUAT SUKA', 'DAHAT KINGKING', 'SUKA RAHAYU', 'BUAT ASTAWA', 'KINASIHANIN AMERTA', 'KAMARANAN', 'SUKA RAHAYU', 'SUKA RAHAYU', 'MANGGIH SUKA', 'SUKA RAHAYU', 'SIDHA KASOBAGIAN', 'BUAT SUKA', 'KINASIHANIN AMERTA', 'KINASIHANIN AMERTA', 'LANGGENG KAYOHANAN', 'PATINING AMERTA', 'TININGGALING SUKA', 'SIDHA KASOBAGIAN', 'BUAT MERANG', 'PATINING AMERTA', 'BUAT MERANG', 'SIDHA KASOBAGIAN', 'WERDHI PUTRA', 'KINASIHANIN AMERTA', 'SUKA PINANGGIH', 'PATINING AMERTA', 'MANGGIH SUKA', 'MANGGIH SUKA', 'TININGGALING SUKA', 'LEWIH BAGIA', 'BUAT ASTAWA', 'SUKA RAHAYU', 'BUAT LARA', 'BUAT ASTAWA', 'SUKA PINANGGIH', 'TININGGALING SUKA', 'PATINING AMERTA', 'TININGGALING SUKA', 'SIDHA KASOBAGIAN', 'LANGGENG KAYOHANAN', 'BUAT SEBET', 'BUAT ASTAWA', 'TININGGALING SUKA', 'BUAT SUKA', 'TININGGALING SUKA', 'MANGGIH SUKA'];
                 //     break;
                 // case 'pratiti':
@@ -890,9 +1987,9 @@ class LayananController extends Controller
 
     public function cari_otonan(Request $request)
     {
-        // dd($request->all());
         $cari_dengan = $request->cari_dengan;
         $keterangan = $this->callKeteranganElemenKalenderBali();
+        // dd($keterangan);
 
         if ($cari_dengan == 'tanggal_lahir') {
             $validatedData = $request->validate([
@@ -1099,12 +2196,11 @@ class LayananController extends Controller
 
     public function cari_wariga_personal(Request $request)
     {
-        // dd($request->all());
-        $keterangan = Cache::remember('keterangan_elemen_kalender_bali', now()->addDays(365), function () {
-            $layanan = new LayananController();
-            $keterangan = $layanan->callKeteranganElemenKalenderBali();
-            return $keterangan;
-        });
+        $layanan = new LayananController();
+        $keterangan = $layanan->callKeteranganElemenKalenderBali();
+        // dd($keterangan);
+
+        $auth_con = new AuthenticationController();
         
         $validatedData = $request->validate([
             'tanggal_lahir_dicari' => 'required|date',
@@ -1117,11 +2213,15 @@ class LayananController extends Controller
 
             $bulan = $request->bulan_dicari;
             $bulan_dicari = $this->ubahAngkaBulan($bulan);
-
             $tahun_dicari = $request->tahun_dicari;
 
-            $tanggal_mulai = date('Y-m-01', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
-            $tanggal_selesai = date('Y-m-t', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
+            if ($auth_con->hasPermission("Admin") || $auth_con->hasPermission("Member")) {
+                $tanggal_mulai = date('Y-m-01', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
+                $tanggal_selesai = date('Y-m-t', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
+            } else {
+                $tanggal_mulai = date('Y-m-01', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
+                $tanggal_selesai = date('Y-m-07', strtotime($tahun_dicari . '-' . $bulan_dicari . '-01'));
+            }
 
             $events = array();
 
@@ -1178,7 +2278,7 @@ class LayananController extends Controller
             // dd($bulan_dicari);
             // dd($events);
 
-            return view('wargabal.layanan.wariga_calendar', compact('events', 'info_wariga_personal', 'info_elemen_tanggal_lahir', 'info_dewasa_tanggal_lahir', 'tanggal_lahir_dicari', 'bulan_dicari', 'tahun_dicari', 'keterangan'));
+            return view('wargabal.layanan.wariga_calendar', compact('events', 'info_wariga_personal', 'info_elemen_tanggal_lahir', 'info_dewasa_tanggal_lahir', 'tanggal_lahir_dicari', 'bulan_dicari', 'tahun_dicari', 'keterangan', 'tanggal_mulai', 'tanggal_selesai'));
         } else {
             return redirect()->back()->withInput()->withErrors($validatedData);
         }

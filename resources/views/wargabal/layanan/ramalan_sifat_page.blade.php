@@ -90,15 +90,15 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     $(document).ready(function() {

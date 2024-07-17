@@ -135,8 +135,12 @@
                                                                             <div class="col d-flex align-items-center justify-content-end">
                                                                                 <a href="#" class="text-primary" data-loop-iteration="{{ $elemen['tanggal'] }}_{{ $key }}">
                                                                                     @foreach($keterangan as $k => $ket)
-                                                                                    @if($k == $key)
-                                                                                    <i class="mdi mdi-arrow-right"></i>
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
+                                                                                        <i class="mdi mdi-arrow-right"></i>
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                     @endif
                                                                                     @endforeach
                                                                                 </a>
@@ -165,7 +169,7 @@
                                                                                     <div class="table-responsive">
                                                                                         <h5>Penjelasan:</h5>
                                                                                     @foreach($keterangan as $k => $ket)
-                                                                                    @if($k == $key)
+                                                                                    @if($k == $key && $ket != null)
                                                                                     @foreach($ket as $value)
                                                                                     @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                         <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
@@ -259,14 +263,16 @@
 @include("partials/vendor-scripts")
 
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
+    $info_mengatur_dewasa = @json($info_mengatur_dewasa);
+    console.log($info_mengatur_dewasa);
     // tampilkan detail modal saat btnDewasa diklik
     const btnDewasa = document.querySelectorAll('.btnDewasa');
 

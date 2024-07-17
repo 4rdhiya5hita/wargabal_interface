@@ -30,8 +30,8 @@
                             <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-1.png); background-size: cover;">
                                     <div class="text-white">
-                                        <h4 class="text-white ps-3">Halaman Keterangan</h4>
-                                        <p class="text-white text-xs px-3">Halaman ini berisikan seluruh keterangan dari setiap Elemen Kalender Bali.</p>
+                                        <h4 class="text-white ps-3">Keterangan {{ $keterangan['nama'] }}</h4>
+                                        <p class="text-white text-xs px-3">Halaman ini berisikan seluruh keterangan {{ $keterangan['nama'] }} pada website ini.</p>
                                     </div>
                                 </div>
                             </div>
@@ -44,9 +44,8 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <h4 class="card-title">Default Datatable</h4>
-                                <p class="card-title-desc">DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>.
-                                </p>
+                                <h4 class="card-title">{{ $keterangan['nama'] }}</h4>
+                                <p class="card-title-desc">{{ $keterangan['keterangan'] }}</p>
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
@@ -54,19 +53,120 @@
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>Keterangan</th>
-                                            <th></th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-
+                                        @foreach($info_keterangan as $key => $value)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $value['nama'] }}</td>
+                                            <td>{{ $value['keterangan'] }}</td>
+                                            <td>
+                                                <!-- edit button to open modals -->
+                                                @if(session('user')['permission'] == "Admin" || session('user')['contribution_status'] == 1)
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editModal{{ $value['id'] }}">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                    Edit
+                                                </button>
+                                                @elseif(session('user')['contribution_status'] == null && session('user')['permission'] == "Member" || session('user')['permission'] == "Guest")
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ajukanKontribusiModal">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                    Ajukan Pengeditan
+                                                </button>
+                                                @else
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" id="joinMember">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                    Ajukan Pengeditan
+                                                </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+
+                                @foreach($info_keterangan as $key => $value)
+                                <!-- Modal -->
+                                <div class="modal fade" id="editModal{{ $value['id'] }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Edit Keterangan {{ $keterangan['nama'] }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                <form action="{{ route('edit_pancawara', $value['id']) }}" method="POST" class="needs-validation" novalidate>
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="nama" class="form-label">Nama</label>
+                                                        <input type="text" class="form-control" id="nama" value="{{ $value['nama'] }}" style="background-color: #f0f0f0;" disabled>
+                                                        <input type="hidden" name="nama" value="{{ $value['nama'] }}">
+                                                        <div class="valid-feedback">
+                                                            Ok!
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Nama harus diisi!
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="keterangan" class="form-label">Keterangan</label>
+                                                        <textarea class="form-control" id="keterangan" name="keterangan" rows="8" placeholder="tulis keterangan disini." required>{{ $value['keterangan'] }}</textarea>
+                                                        <div class="valid-feedback">
+                                                            Ok!
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Keterangan harus diisi!
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+
+                                <!-- Ajukan Modal -->
+                                <div class="modal fade ajukanKontribusiModal" id="ajukanKontribusiModal" tabindex="-1" aria-labelledby="ajukanKontribusiModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="ajukanKontribusiModalLabel">Permohonan Kontributor</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-header">
+                                                <p class="modal-title"><b>Catatan:</b> Untuk dapat mengedit keterangan yang ada, Anda perlu mengajukan form untuk menjadi kontributor keterangan Kalender Bali terlebih dahulu.</p>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                <form action="{{ route('ajukan_kontribusi') }}" method="POST" class="needs-validation" novalidate>
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="kontribusi" class="form-label">Deskripsi Kontribusi</label>
+                                                        <input type="text" class="form-control" id="kontribusi" name="kontribusi" placeholder="Coba: ahli padewasan">
+                                                        <div class="valid-feedback">
+                                                            Ok!
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            kontribusi harus diisi!
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
                     </div>
                     <!-- end col -->
+
+                    <div class="d-flex justify-content-start mt-3">
+                        <a href="{{ route('keterangan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,49 +181,72 @@
 
 @include("partials/vendor-scripts")
 
-<script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+<!-- Validation js -->
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
 
 <!-- Required datatable js -->
-<script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
 <!-- Buttons examples -->
-<script src="assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-<script src="assets/libs/jszip/jszip.min.js"></script>
-<script src="assets/libs/pdfmake/build/pdfmake.min.js"></script>
-<script src="assets/libs/pdfmake/build/vfs_fonts.js"></script>
-<script src="assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+<script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/libs/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
 <!-- Responsive examples -->
-<script src="assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
 <!-- Datatable init js -->
-<script src="assets/js/pages/datatables.init.js"></script>
+<script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
 
 <!-- App js -->
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
-    // $(function() {
-    //     $(document).on('click', '#btn-submit', function(e) {
-    //         e.preventDefault(); // cancel submission
-    //         // console.log('submit');
-    //         var tahun = $('#tahun_dicari').val();
+    @if(session('success') == 'Kontribusi berhasil diajukan!')
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'Close'
+        });
+    @elseif(session('success') == 'Sukses')
+        Swal.fire({
+            title: 'Success!',
+            text: 'Data berhasil diedit',
+            icon: 'success',
+            confirmButtonText: 'Close'
+        });
+    @elseif(session('error') == 'Gagal mengajukan kontribusi!')
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'Close'
+        });
+    @elseif(session('error') == 'Gagal')
+        Swal.fire({
+            title: 'Error!',
+            text: 'Data gagal diedit',
+            icon: 'error',
+            confirmButtonText: 'Close'
+        });
+    @endif
 
-    //         if (tahun == '') {
-    //             Swal.fire({
-    //                 title: 'Error!',
-    //                 html: '<b>Tahun</b> harus diisi',
-    //                 icon: 'error',
-    //                 confirmButtonText: 'Cancel'
-    //             })
-    //         } else {
-    //             $(this).closest('form').submit();
-    //         }
-    //     });
-    // });
+    $(document).on('click', '#joinMember', function(e) {
+        Swal.fire({
+            title: 'Error!',
+            // html: 'Anda belum menjadi <b>Member Premium</b>',
+            html: 'Anda belum login',
+            icon: 'error',
+            confirmButtonText: 'Cancel'
+        });
+    });
 </script>
 
 </body>

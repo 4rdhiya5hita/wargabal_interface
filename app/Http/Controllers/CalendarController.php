@@ -15,23 +15,14 @@ class CalendarController extends Controller
         $tanggal_mulai = date('Y-m-01');
         $tanggal_selesai = date('Y-m-t');
 
-        $keterangan = Cache::remember('keterangan_elemen_kalender_bali', now()->addDays(365), function () {
-            $layanan = new LayananController();
-            $keterangan = $layanan->callKeteranganElemenKalenderBali();
-            return $keterangan;
-        });
+        $layanan = new LayananController();
+        $keterangan = $layanan->callKeteranganElemenKalenderBali();
 
-        $keterangan_hari_raya = Cache::remember('keterangan_hari_raya', now()->addDays(365), function () {
-            $layanan = new LayananController();
-            $keterangan_hari_raya = $layanan->keteranganHariRaya();
-            return $keterangan_hari_raya;
-        });
+        $layanan = new LayananController();
+        $keterangan_hari_raya = $layanan->keteranganHariRaya();
 
-        $keterangan_ala_ayuning_dewasa = Cache::remember('keterangan_ala_ayuning_dewasa', now()->addDays(365), function () {
-            $layanan = new LayananController();
-            $keterangan_ala_ayuning_dewasa = $layanan->keteranganAlaAyuningDewasa();
-            return $keterangan_ala_ayuning_dewasa;
-        });
+        $layanan = new LayananController();
+        $keterangan_ala_ayuning_dewasa = $layanan->keteranganAlaAyuningDewasa();
 
         return view('wargabal.calendar', compact('keterangan', 'keterangan_hari_raya', 'keterangan_ala_ayuning_dewasa', 'bulan_sekarang', 'tanggal_sekarang'));
     }
@@ -122,7 +113,7 @@ class CalendarController extends Controller
         $tanggal_selesai = $request->input('end');
 
         $layanan = new LayananController();
-        $keterangan = $layanan->callKeteranganElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        $keterangan = $layanan->callKeteranganElemenKalenderBali();
 
         return $keterangan;
     }

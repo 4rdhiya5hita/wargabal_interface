@@ -205,8 +205,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $elemen['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                <i class="mdi mdi-arrow-right"></i>
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
+                                                                                    <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -215,7 +219,7 @@
                                                                 </td>
                                                             </tr>
 
-                                                            <div class="modal fade" id="detail-{{ $elemen['tanggal'] }}_{{ $key }}" tabindex="-1" style="width: 25%;left: 70%;">
+                                                            <div class="modal fade" id="detail-{{ $elemen['tanggal'] }}_{{ $key }}" tabindex="-1">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
                                                                         <div class="modal-body directory-card">
@@ -235,7 +239,7 @@
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
                                                                                 @foreach($ket as $value)
                                                                                 @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
@@ -287,12 +291,12 @@
 @include("partials/vendor-scripts")
 
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     var openKalendar = ''; // array untuk menyimpan id kalender yang sedang terbuka

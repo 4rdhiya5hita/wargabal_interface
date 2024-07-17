@@ -106,17 +106,20 @@
 
 @include("partials/vendor-scripts")
 
+<!-- Validation -->
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
 <!-- plugin js -->
-<script src="assets/libs/moment/min/moment.min.js"></script>
-<script src="assets/libs/jquery-ui-dist/jquery-ui.min.js"></script>
-<script src="assets/libs/@fullcalendar/core/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/bootstrap/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/daygrid/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/timegrid/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/interaction/main.min.js"></script>
+<script src="{{ asset('assets/libs/moment/min/moment.min.js') }}"></script>
+<script src="{{ asset('assets/libs/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/core/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/bootstrap/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/daygrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/timegrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/interaction/main.min.js') }}"></script>
 
 <!-- Calendar init -->
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -358,8 +361,12 @@
                                                         <a href="#" class="text-primary" data-loop-iteration="${elemen['tanggal']}_${key}">
                                                         `;
                                                             for (let k in keterangan) {
-                                                                if (k == key) {
-                                                                    elemenKalenderInnerHTML += '<i class="mdi mdi-arrow-right"></i>';
+                                                                if (k == key && keterangan[k] != null) {
+                                                                    for (let value in keterangan[k]) {
+                                                                        if (keterangan[k][value]['nama'] == elemen['kalender'][key] && keterangan[k][value]['keterangan'] != null) {
+                                                                            elemenKalenderInnerHTML += `<i class="mdi mdi-arrow-right"></i>`;
+                                                                        }   
+                                                                    }
                                                                 }
                                                             }
 
@@ -374,7 +381,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-body directory-card">
                                                         <div class="directory-bg text-center">
-                                                            <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                            <div class="p-2" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                                                 <h4 class="mt-2">
                                                                     <span class="text-white font-weight-bold">${elemen['kalender'][key]}</span>
                                                                     <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
@@ -391,11 +398,11 @@
                                                                 `;
 
                                                                 for (let k in keterangan) {
-                                                                    if (k == key) {
-                                                                        for (let value of keterangan[k]) {
-                                                                            if (value['nama'].toLowerCase() == elemen['kalender'][key].toLowerCase()) {
-                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${value['keterangan']}</span>`;
-                                                                            }
+                                                                    if (k == key && keterangan[k] != null) {
+                                                                        for (let value in keterangan[k]) {
+                                                                            if (keterangan[k][value]['nama'] == elemen['kalender'][key]) {
+                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${keterangan[k][value]['keterangan']}</span>`;
+                                                                            }   
                                                                         }
                                                                     }
                                                                 }
@@ -575,25 +582,46 @@
                 });
         }
 
-        const keterangan = @json($keterangan);            
+        const keterangan = @json($keterangan);
+        const user = @json(session('user'));
         document.getElementById('elemenKalenderBalibtn').addEventListener('click', function() {
-            var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
-            var startDate = new Date(startISOString); // Mengonversi ke objek Date
-            startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
-
-            var strDate = startDate.toISOString().split('T')[0];
-            fetchElemenKalenderBali(strDate, strDate, keterangan);
+            if (user && user.permission == 'Member') {
+                var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
+                var startDate = new Date(startISOString); // Mengonversi ke objek Date
+                startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
+    
+                var strDate = startDate.toISOString().split('T')[0];
+                fetchElemenKalenderBali(strDate, strDate, keterangan);
+            } else {
+                // sweet alert untuk member premium
+                Swal.fire({
+                    title: 'Error!',
+                    html: 'Anda belum menjadi <b>Member Premium</b>',
+                    icon: 'error',
+                    confirmButtonText: 'Cancel'
+                });
+            }
         });
 
         document.getElementById('alaAyuningDewasabtn').addEventListener('click', function() {
-            var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
-            var startDate = new Date(startISOString); // Mengonversi ke objek Date
-            startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
+            if (user && user.permission == 'Member') {
+                var startISOString = newEventData.date.toISOString();
+                var startDate = new Date(startISOString); 
+                startDate.setDate(startDate.getDate() + 1); 
 
-            var strDate = startDate.toISOString().split('T')[0];
-            fetchAlaAyuningDewasa(strDate, strDate, false);
+                var strDate = startDate.toISOString().split('T')[0];
+                fetchAlaAyuningDewasa(strDate, strDate, false);
+            } else {
+                // sweet alert untuk member premium
+                Swal.fire({
+                    title: 'Error!',
+                    html: 'Anda belum menjadi <b>Member Premium</b>',
+                    icon: 'error',
+                    confirmButtonText: 'Cancel'
+                });
+            }
         });
-       
+
         var calendar = new FullCalendar.Calendar(calendarEl, {
             plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid'],
             editable: true,

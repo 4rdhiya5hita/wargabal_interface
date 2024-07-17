@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
+    protected $url_web = "https://api.kalenderbali.web.id/api/";
+
     public function index()
     {
+        // dd(session()->all());
         $layananController = new LayananController();
         $tanggal_mulai = date('Y-m-01');
         $tanggal_selesai = date('Y-m-t');
@@ -38,18 +42,51 @@ class DashboardController extends Controller
         // dd($info_piodalan);
         // dd($info_hari_raya);
 
-
         $info_hari_raya = Cache::get('info_hari_raya_dashboard_' . $tanggal_mulai . '_' . $tanggal_selesai);
         $info_ala_ayuning_dewasa = Cache::get('info_ala_ayuning_dewasa_' . $tanggal_mulai . '_' . $tanggal_selesai);
         $info_piodalan = Cache::get('info_piodalan_' . $tanggal_mulai . '_' . $tanggal_selesai);
+        
+        // $client = new Client();
+        // $result = $client->request('GET', $this->url_web . 'infos');
+        // $get_info_kita = json_decode($result->getBody()->getContents(), true);
+
+        $adminController = new AdminController();
+        $get_info_kita = $adminController->fetch_info_kita();
+        $info_kita = json_decode($get_info_kita->getContent(), true);
 
         foreach ($info_hari_raya as $key => $item) {
             if ($item['tanggal'] == $tanggal_sekarang) {
                 $hari_raya_sekarang = $item['hari_raya'];
             } else {
-                $hari_raya_sekarang = '-';   
+                $hari_raya_sekarang = '-';
             }
         }
-        return view('wargabal.index', compact('tanggal_sekarang',  'hari_raya_sekarang', 'info_hari_raya', 'info_ala_ayuning_dewasa', 'info_piodalan'));
+        // dd(session()->all());
+        // dd(session('user')['email_verified_at']);
+        // dd(session('user')['token']);
+
+
+        // ambil data session success atau failed
+        if (session('success') == 'login') {
+            // dd('login');
+            $message = 'Berhasil login!';
+            $toast = true;
+            return view('wargabal.index', compact('tanggal_sekarang',  'hari_raya_sekarang', 'info_hari_raya', 'info_ala_ayuning_dewasa', 'info_piodalan', 'info_kita', 'message', 'toast'));
+        } elseif (session('success') == 'logout') {
+            // dd('logout');
+            $message = 'Berhasil logout!';
+            $toast = true;
+            return view('wargabal.index', compact('tanggal_sekarang',  'hari_raya_sekarang', 'info_hari_raya', 'info_ala_ayuning_dewasa', 'info_piodalan', 'info_kita', 'message', 'toast'));
+        } elseif (session('success') == 'register') {
+            // dd('register');
+            $message = 'Berhasil register!';
+            $toast = true;
+            return view('wargabal.index', compact('tanggal_sekarang',  'hari_raya_sekarang', 'info_hari_raya', 'info_ala_ayuning_dewasa', 'info_piodalan', 'info_kita', 'message', 'toast'));
+        } else {
+            // dd('dashboard');
+            $message = 'Selamat datang!';
+            $toast = false;
+            return view('wargabal.index', compact('tanggal_sekarang',  'hari_raya_sekarang', 'info_hari_raya', 'info_ala_ayuning_dewasa', 'info_piodalan', 'info_kita', 'message', 'toast'));
+        }
     }
 }

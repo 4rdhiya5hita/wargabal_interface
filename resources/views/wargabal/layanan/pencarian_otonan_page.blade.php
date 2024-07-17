@@ -141,8 +141,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $elemen['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                 <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -170,15 +174,15 @@
                                                                             <div class="shadow p-4">
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
-                                                                                @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                @foreach($ket as $value)
-                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                    @foreach($keterangan as $k => $ket)
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-                                                                                @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -315,8 +319,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $item['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                 <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -344,15 +352,15 @@
                                                                             <div class="shadow p-4">
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
-                                                                                @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                @foreach($ket as $value)
-                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                    @foreach($keterangan as $k => $ket)
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-                                                                                @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -430,8 +438,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $item['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                 <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -459,15 +471,15 @@
                                                                             <div class="shadow p-4">
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
-                                                                                @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                @foreach($ket as $value)
-                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                    @foreach($keterangan as $k => $ket)
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-                                                                                @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -516,7 +528,7 @@
                                                     <div class="text-white">
                                                         <div class="row">
                                                             <div class="col">
-                                                            @if ($tanggal_otonan[0] != '-')
+                                                                @if ($tanggal_otonan[0] != '-')
                                                                 @php
                                                                 $hari_indonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                                                 $bulan_indonesia = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -564,7 +576,7 @@
                                         </div>
                                     </div>
 
-                                @if ($tanggal_otonan[0] != '-')
+                                    @if ($tanggal_otonan[0] != '-')
                                     @if (count($tanggal_otonan) >= 1)
                                     <div class="col-md-12 m-0">
                                         <div class="card bg-transparent shadow-none mb-0">
@@ -618,7 +630,7 @@
                                     </div>
                                     @endif
                                 </div>
-                                
+
 
                                 <div class="modal fade" id="elemen_{{ $tanggal_otonan[0] }}" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -676,8 +688,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $item['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                 <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -705,15 +721,15 @@
                                                                             <div class="shadow p-4">
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
-                                                                                @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                @foreach($ket as $value)
-                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                    @foreach($keterangan as $k => $ket)
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-                                                                                @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -790,8 +806,12 @@
                                                                         <div class="col d-flex align-items-center justify-content-end">
                                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $item['tanggal'] }}_{{ $key }}">
                                                                                 @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
+                                                                                @if($k == $key && $ket != null)
+                                                                                @foreach($ket as $value)
+                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                 <i class="mdi mdi-arrow-right"></i>
+                                                                                @endif
+                                                                                @endforeach
                                                                                 @endif
                                                                                 @endforeach
                                                                             </a>
@@ -819,15 +839,15 @@
                                                                             <div class="shadow p-4">
                                                                                 <div class="table-responsive">
                                                                                     <h5>Penjelasan:</h5>
-                                                                                @foreach($keterangan as $k => $ket)
-                                                                                @if($k == $key)
-                                                                                @foreach($ket as $value)
-                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                    @foreach($keterangan as $k => $ket)
+                                                                                    @if($k == $key && $ket != null)
+                                                                                    @foreach($ket as $value)
+                                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                     <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-                                                                                @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
+                                                                                    @endif
+                                                                                    @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -848,7 +868,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                                @endif
                             </div>
                         </div>
                         <div class="d-flex justify-content-start mt-3">
@@ -872,12 +892,12 @@
 @include("partials/vendor-scripts")
 
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     function showElement(tanggal) {
@@ -905,27 +925,27 @@
     var openKalendar = ''; // array untuk menyimpan id kalender yang sedang terbuka
     $(document).ready(function() {
         if ("{{ $cari_dengan }}" == 'wewaran') {
-            $('#detail-{{ $tanggal_otonan[0] }}').click(function() {
-                $('#elemen_{{ $tanggal_otonan[0] }}').modal('show');
-                openKalendar = 'elemen_{{ $tanggal_otonan[0] }}';
+            $('#detail-{{$tanggal_otonan[0] }}').click(function() {
+                $('#elemen_{{$tanggal_otonan[0] }}').modal('show');
+                openKalendar = 'elemen_{{$tanggal_otonan[0] }}';
             });
 
-            $('#detail-{{ $tanggal_otonan[1] }}').click(function() {
-                $('#elemen_{{ $tanggal_otonan[1] }}').modal('show');
-                openKalendar = 'elemen_{{ $tanggal_otonan[1] }}';
+            $('#detail-{{$tanggal_otonan[1] }}').click(function() {
+                $('#elemen_{{$tanggal_otonan[1] }}').modal('show');
+                openKalendar = 'elemen_{{$tanggal_otonan[1] }}';
             });
         } else {
-            $('#detail-{{ $tanggal_lahir_dicari }}').click(function() {
-                $('#elemen_{{ $tanggal_lahir_dicari }}').modal('show');
-                openKalendar = 'elemen_{{ $tanggal_lahir_dicari }}';
+            $('#detail-{{$tanggal_lahir_dicari}}').click(function() {
+                $('#elemen_{{$tanggal_lahir_dicari}}').modal('show');
+                openKalendar = 'elemen_{{$tanggal_lahir_dicari}}';
             });
             $('#detail-{{ $info_otonan['otonan_terdekat_pertama'] }}').click(function() {
-                $('#elemen_{{ $info_otonan['otonan_terdekat_pertama'] }}').modal('show');
-                openKalendar = 'elemen_{{ $info_otonan['otonan_terdekat_pertama'] }}';
+                $('#elemen_{{$info_otonan['otonan_terdekat_pertama'] }}').modal('show');
+                openKalendar = 'elemen_{{$info_otonan['otonan_terdekat_pertama'] }}';
             });
-            $('#detail-{{ $info_otonan['otonan_terdekat_kedua'] }}').click(function() {
-                $('#elemen_{{ $info_otonan['otonan_terdekat_kedua'] }}').modal('show');
-                openKalendar = 'elemen_{{ $info_otonan['otonan_terdekat_kedua'] }}';
+            $('#detail-{{$info_otonan['otonan_terdekat_kedua'] }}').click(function() {
+                $('#elemen_{{$info_otonan['otonan_terdekat_kedua'] }}').modal('show');
+                openKalendar = 'elemen_{{$info_otonan['otonan_terdekat_kedua'] }}';
             });
         }
     });
@@ -944,7 +964,7 @@
                 openModal.shift(); // hapus openModal pertama dari array
             }
             $('#' + modalId).modal('show');
-            
+
             // modal pada openKalendar dibuat agar mengecil dengan mengubah style heightnya
             $('#' + openKalendar).css('height', 0);
 

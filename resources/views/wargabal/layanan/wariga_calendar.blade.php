@@ -152,8 +152,12 @@
                                                         <div class="col d-flex align-items-center justify-content-end">
                                                             <a href="#" class="text-primary" data-loop-iteration="{{ $elemen['tanggal'] }}_{{ $key }}">
                                                                 @foreach($keterangan as $k => $ket)
-                                                                @if($k == $key)
-                                                                <i class="mdi mdi-arrow-right"></i>
+                                                                @if($k == $key && $ket != null)
+                                                                @foreach($ket as $value)
+                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
+                                                                    <i class="mdi mdi-arrow-right"></i>
+                                                                @endif
+                                                                @endforeach
                                                                 @endif
                                                                 @endforeach
                                                             </a>
@@ -181,15 +185,15 @@
                                                             <div class="shadow p-4">
                                                                 <div class="table-responsive">
                                                                     <h5>Penjelasan:</h5>
-                                                                @foreach($keterangan as $k => $ket)
-                                                                @if($k == $key)
-                                                                @foreach($ket as $value)
-                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
-                                                                    <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                @endif
-                                                                @endforeach
-                                                                @endif
-                                                                @endforeach
+                                                                    @foreach($keterangan as $k => $ket)
+                                                                    @if($k == $key && $ket != null)
+                                                                    @foreach($ket as $value)
+                                                                    @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                        <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
+                                                                    @endif
+                                                                    @endforeach
+                                                                    @endif
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -300,16 +304,16 @@
 @include("partials/vendor-scripts")
 
 <!-- plugin js -->
-<script src="assets/libs/moment/min/moment.min.js"></script>
-<script src="assets/libs/jquery-ui-dist/jquery-ui.min.js"></script>
-<script src="assets/libs/@fullcalendar/core/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/bootstrap/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/daygrid/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/timegrid/main.min.js"></script>
-<script src="assets/libs/@fullcalendar/interaction/main.min.js"></script>
+<script src="{{ asset('assets/libs/moment/min/moment.min.js') }}"></script>
+<script src="{{ asset('assets/libs/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/core/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/bootstrap/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/daygrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/timegrid/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/@fullcalendar/interaction/main.min.js') }}"></script>
 
 <!-- Calendar init -->
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -337,7 +341,6 @@
 
         var openKalendar = [];
         var keterangan = @json($keterangan);
-        const keteranganArray = Object.entries(keterangan);
 
         var addEvent = $("#event-modal");
         var modalTitle = $("#modal-title");
@@ -445,7 +448,6 @@
         }
 
         function fetchElemenKalenderBali(start, end, keterangan) {
-            console.log(keterangan);
             fetch('/fetchElemenKalenderBali?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
@@ -521,11 +523,13 @@
                                                     <div class="col d-flex align-items-center justify-content-end">
                                                         <a href="#" class="text-primary" data-loop-iteration="${elemen['tanggal']}_${key}">
                                                         `;
-                                                        console.log(keterangan);
                                                             for (let k in keterangan) {
-                                                                console.log(k);
-                                                                if (k == key) {
-                                                                    elemenKalenderInnerHTML += '<i class="mdi mdi-arrow-right"></i>';
+                                                                if (k == key && keterangan[k] != null) {
+                                                                    for (let value in keterangan[k]) {
+                                                                        if (keterangan[k][value]['nama'] == elemen['kalender'][key] && keterangan[k][value]['keterangan'] != null) {
+                                                                            elemenKalenderInnerHTML += `<i class="mdi mdi-arrow-right"></i>`;
+                                                                        }   
+                                                                    }
                                                                 }
                                                             }
 
@@ -540,7 +544,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-body directory-card">
                                                         <div class="directory-bg text-center">
-                                                            <div class="p-2" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
+                                                            <div class="p-2" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                                                 <h4 class="mt-2">
                                                                     <span class="text-white font-weight-bold">${elemen['kalender'][key]}</span>
                                                                     <a href="#" class="text-white close float-end icon-close-detail" data-bs-dismiss="modal" aria-hidden="true">
@@ -557,11 +561,11 @@
                                                                 `;
 
                                                                 for (let k in keterangan) {
-                                                                    if (k == key) {
-                                                                        for (let value of keterangan[k]) {
-                                                                            if (value['nama'].toLowerCase() == elemen['kalender'][key].toLowerCase()) {
-                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${value['keterangan']}</span>`;
-                                                                            }
+                                                                    if (k == key && keterangan[k] != null) {
+                                                                        for (let value in keterangan[k]) {
+                                                                            if (keterangan[k][value]['nama'] == elemen['kalender'][key]) {
+                                                                                elemenKalenderInnerHTML += `<span class="text-secondary font-size-14 mt-1 mb-0">${keterangan[k][value]['keterangan']}</span>`;
+                                                                            }   
                                                                         }
                                                                     }
                                                                 }
@@ -685,14 +689,26 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
 
+        const user = @json(session('user'));
+        // const tanggal_mulai = @json($tanggal_mulai);
+        // const tanggal_selesai = @json($tanggal_selesai);
+
         document.getElementById('elemenKalenderBalibtn').addEventListener('click', function() {
-            strDate = newEventData.date.toISOString().split('T')[0];
-            fetchElemenKalenderBali(strDate, strDate);
+            var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
+            var startDate = new Date(startISOString); // Mengonversi ke objek Date
+            startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
+
+            var strDate = startDate.toISOString().split('T')[0];
+            fetchElemenKalenderBali(strDate, strDate, keterangan);
         });
 
         document.getElementById('alaAyuningDewasabtn').addEventListener('click', function() {
-            strDate = newEventData.date.toISOString().split('T')[0];
-            fetchAlaAyuningDewasa(strDate, strDate);
+            var startISOString = newEventData.date.toISOString();
+            var startDate = new Date(startISOString); 
+            startDate.setDate(startDate.getDate() + 1); 
+
+            var strDate = startDate.toISOString().split('T')[0];
+            fetchAlaAyuningDewasa(strDate, strDate, false);
         });
 
         var events = @json($events);
@@ -724,7 +740,14 @@
             },
             dateClick: function(info) {
                 newEventData = info;
-                chooseEvent.modal('show');
+                var startISOString = newEventData.date.toISOString();
+                var startDate = new Date(startISOString);
+                startDate.setDate(startDate.getDate() + 1);
+    
+                var strDate = startDate.toISOString().split('T')[0];
+                if (strDate >= '{{ $tanggal_mulai }}' && strDate <= '{{ $tanggal_selesai }}') {
+                    chooseEvent.modal('show');
+                }
             },
             events: events
         });

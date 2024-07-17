@@ -123,8 +123,12 @@
                                                                                     <div class="col d-flex align-items-center justify-content-end">
                                                                                         <a href="#" class="text-primary" data-loop-iteration="{{ $kalender[0]['tanggal'] }}_{{ $key }}">
                                                                                             @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
+                                                                                            @if($k == $key && $ket != null)
+                                                                                            @foreach($ket as $value)
+                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                             <i class="mdi mdi-arrow-right"></i>
+                                                                                            @endif
+                                                                                            @endforeach
                                                                                             @endif
                                                                                             @endforeach
                                                                                         </a>
@@ -152,15 +156,15 @@
                                                                                         <div class="shadow p-4">
                                                                                             <div class="table-responsive">
                                                                                                 <h5>Penjelasan:</h5>
-                                                                                            @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
-                                                                                            @foreach($ket as $value)
-                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                                @foreach($keterangan as $k => $ket)
+                                                                                                @if($k == $key && $ket != null)
+                                                                                                @foreach($ket as $value)
+                                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                                 <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                            @endif
-                                                                                            @endforeach
-                                                                                            @endif
-                                                                                            @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -312,8 +316,12 @@
                                                                                     <div class="col d-flex align-items-center justify-content-end">
                                                                                         <a href="#" class="text-primary" data-loop-iteration="{{ $kalender[0]['tanggal'] }}_{{ $key }}">
                                                                                             @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
+                                                                                            @if($k == $key && $ket != null)
+                                                                                            @foreach($ket as $value)
+                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                             <i class="mdi mdi-arrow-right"></i>
+                                                                                            @endif
+                                                                                            @endforeach
                                                                                             @endif
                                                                                             @endforeach
                                                                                         </a>
@@ -341,15 +349,15 @@
                                                                                         <div class="shadow p-4">
                                                                                             <div class="table-responsive">
                                                                                                 <h5>Penjelasan:</h5>
-                                                                                            @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
-                                                                                            @foreach($ket as $value)
-                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                                @foreach($keterangan as $k => $ket)
+                                                                                                @if($k == $key && $ket != null)
+                                                                                                @foreach($ket as $value)
+                                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                                 <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                            @endif
-                                                                                            @endforeach
-                                                                                            @endif
-                                                                                            @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -501,8 +509,12 @@
                                                                                     <div class="col d-flex align-items-center justify-content-end">
                                                                                         <a href="#" class="text-primary" data-loop-iteration="{{ $kalender[0]['tanggal'] }}_{{ $key }}">
                                                                                             @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
+                                                                                            @if($k == $key && $ket != null)
+                                                                                            @foreach($ket as $value)
+                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali) && $value['keterangan'] != null)
                                                                                             <i class="mdi mdi-arrow-right"></i>
+                                                                                            @endif
+                                                                                            @endforeach
                                                                                             @endif
                                                                                             @endforeach
                                                                                         </a>
@@ -530,15 +542,15 @@
                                                                                         <div class="shadow p-4">
                                                                                             <div class="table-responsive">
                                                                                                 <h5>Penjelasan:</h5>
-                                                                                            @foreach($keterangan as $k => $ket)
-                                                                                            @if($k == $key)
-                                                                                            @foreach($ket as $value)
-                                                                                            @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
+                                                                                                @foreach($keterangan as $k => $ket)
+                                                                                                @if($k == $key && $ket != null)
+                                                                                                @foreach($ket as $value)
+                                                                                                @if(strtolower($value['nama']) == strtolower($elemen_kalender_bali))
                                                                                                 <span class="text-secondary font-size-14 mt-1 mb-0">{{ $value['keterangan'] }}</span>
-                                                                                            @endif
-                                                                                            @endforeach
-                                                                                            @endif
-                                                                                            @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
+                                                                                                @endif
+                                                                                                @endforeach
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -607,12 +619,12 @@
 @include("partials/vendor-scripts")
 
 <!--Morris Chart-->
-<script src="assets/libs/morris.js/morris.min.js"></script>
-<script src="assets/libs/raphael/raphael.min.js"></script>
+<script src="{{ asset('assets/libs/morris.js/morris.min.js') }}"></script>
+<script src="{{ asset('assets/libs/raphael/raphael.min.js') }}"></script>
 
-<script src="assets/js/pages/dashboard.init.js"></script>
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
-<script src="assets/js/app.js"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
     function showElement(tanggal) {
@@ -666,7 +678,7 @@
                 openModal.shift(); // hapus openModal pertama dari array
             }
             $('#' + modalId).modal('show');
-            
+
             // modal pada openKalendar dibuat agar mengecil dengan mengubah style heightnya
             $('#' + openKalendar).css('height', 0);
 

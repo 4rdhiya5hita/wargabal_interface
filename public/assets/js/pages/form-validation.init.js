@@ -27,7 +27,7 @@ File: Form validation
 })();
 
 
-// parsley validation
-$(document).ready(function() {
-	$('.custom-validation').parsley();
-});
+// // parsley validation
+// $(document).ready(function() {
+// 	$('.custom-validation').parsley();
+// });
