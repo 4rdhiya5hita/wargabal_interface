@@ -66,7 +66,7 @@
                             <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                     <div class="mini-stat-icon">
-                                        <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="110" height="110">
+                                        <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="110" height="110">
                                     </div>
                                 </div>
                             </div>

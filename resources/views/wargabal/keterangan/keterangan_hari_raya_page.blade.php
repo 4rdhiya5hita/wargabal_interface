@@ -65,20 +65,25 @@
                                             <td>{{ $value['description'] }}</td>
                                             <td>
                                                 <!-- edit button to open modals -->
-                                                @if(session('user')['permission'] == "Admin" || session('user')['contribution_status'] == 1)
+                                                @if(session('user')['permission'] == "Admin")
                                                 <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editModal{{ $value['id'] }}">
                                                     <i class="mdi mdi-pencil"></i>
                                                     Edit
                                                 </button>
+                                                @elseif(session('user')['contribution_status'] == 1)
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ajukanEditModal{{ $value['id'] }}">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                    Ajukan Edit
+                                                </button>
                                                 @elseif(session('user')['contribution_status'] == null && session('user')['permission'] == "Member" || session('user')['permission'] == "Guest")
                                                 <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ajukanKontribusiModal">
                                                     <i class="mdi mdi-pencil"></i>
-                                                    Ajukan Pengeditan
+                                                    Pengajuan sebagai Kontributor
                                                 </button>
                                                 @else
                                                 <button type="button" class="btn btn-primary waves-effect waves-light" id="joinMember">
                                                     <i class="mdi mdi-pencil"></i>
-                                                    Ajukan Pengeditan
+                                                    Pengajuan sebagai Kontributor
                                                 </button>
                                                 @endif
                                             </td>
@@ -120,6 +125,52 @@
                                                             Keterangan harus diisi!
                                                         </div>
                                                     </div>
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ajukan Edit Modal -->
+                                <div class="modal fade ajukanEditModal" id="ajukanEditModal{{ $value['id'] }}" tabindex="-1" aria-labelledby="ajukanEditModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="ajukanEditModalLabel">Permohonan Edit Keterangan</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-header">
+                                                <p class="modal-title"><b>Catatan:</b> Setiap keterangan yang diajukan Ahli Dewasa akan dikirimkan ke Admin untuk disetujui.</p>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                <form action="{{ route('ajukan_edit', $value['id']) }}" method="POST" class="needs-validation" novalidate>
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="nama" class="form-label">Nama</label>
+                                                        <input type="text" class="form-control" id="nama" value="{{ $value['hari_raya'] }}" style="background-color: #f0f0f0;" disabled>
+                                                        <input type="hidden" name="nama" value="{{ $value['hari_raya'] }}">
+                                                        <div class="valid-feedback">
+                                                            Ok!
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Nama harus diisi!
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="keterangan" class="form-label">Keterangan</label>
+                                                        <textarea class="form-control" id="keterangan" name="keterangan" rows="8" placeholder="tulis keterangan disini." required>{{ $value['description'] }}</textarea>
+                                                        <div class="valid-feedback">
+                                                            Ok!
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Keterangan harus diisi!
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="key_id" value="{{ $keterangan['id'] }}">
+                                                    <input type="hidden" name="key_name" value="{{ $keterangan['nama'] }}">
+                                                    <input type="hidden" name="item_id" value="{{ $value['id'] }}">
+                                                    <input type="hidden" name="item_name" value="{{ $value['hari_raya'] }}">
                                                     <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
                                                 </form>
                                             </div>
@@ -208,7 +259,7 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
-    @if(session('success') == 'Kontribusi berhasil diajukan!')
+    @if(session('success') == 'Kontribusi berhasil diajukan! Silahkan lihat status kontribusi pada halaman Profile.')
         Swal.fire({
             title: 'Success!',
             text: '{{ session('success') }}',
@@ -233,6 +284,20 @@
         Swal.fire({
             title: 'Error!',
             text: 'Data gagal diedit',
+            icon: 'error',
+            confirmButtonText: 'Close'
+        });
+    @elseif(session('success') == 'Data keterangan berhasil diajukan! Silahkan lihat status pengajuan edit pada halaman Profile.')
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'Close'
+        });
+    @elseif(session('error') == 'Gagal mengajukan data keterangan!')
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
             icon: 'error',
             confirmButtonText: 'Close'
         });

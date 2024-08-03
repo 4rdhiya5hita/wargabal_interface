@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class LayananController extends Controller
 {
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    // protected $url_api = 'http://localhost:8000/api/';
+    protected $url_web = "https://api.kalenderbali.web.id/api/";
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = 'http://localhost:8000/api/';
 
     public function hari_raya_page()
     {
-        $data = Cache::remember('data_hari_raya', now()->addDays(365), function() {
+        $data = Cache::remember('data_hari_raya', now()->addDays(365), function () {
             return $this->keteranganHariRaya();
         });
         $hari_raya = collect($data)->where('type', 'hari raya')->sortBy('nama');
@@ -23,7 +26,7 @@ class LayananController extends Controller
         $tanggal_sekarang = date('Y-m-d');
         $tanggal_mulai = date('Y-m-01');
         $tanggal_selesai = date('Y-m-t');
-        $info_hari_raya = Cache::get('info_hari_raya_'. $tanggal_mulai . '_' . $tanggal_selesai);
+        $info_hari_raya = Cache::get('info_hari_raya_' . $tanggal_mulai . '_' . $tanggal_selesai);
 
         foreach ($info_hari_raya as $key => $item) {
             if ($item['tanggal'] == $tanggal_sekarang) {
@@ -60,7 +63,7 @@ class LayananController extends Controller
 
         // $info_hari_raya = $this->callHariRaya($tanggal_mulai, $tanggal_selesai);
         // cache 
-        $info_hari_raya = Cache::remember('info_hari_raya_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+        $info_hari_raya = Cache::remember('info_hari_raya_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
             $layanan = new LayananController();
             $hari_raya = $layanan->callHariRaya($tanggal_mulai, $tanggal_selesai);
             return $hari_raya;
@@ -68,7 +71,7 @@ class LayananController extends Controller
 
         // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
         // cache
-        $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+        $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
             $layanan = new LayananController();
             $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
             return $elemen_kalender_bali;
@@ -76,16 +79,16 @@ class LayananController extends Controller
 
         $keterangan = $this->callKeteranganElemenKalenderBali();
 
-    // foreach($keterangan as $k => $ket){
-    //     if ($k == 'ingkel' && $ket != null) {
-    //         foreach($ket as $value) {
-    //             if($value['nama'] == 'sumur sinaba') {
-    //                 dd('done');
-    //             }
-    //         }
-    //     }
-    // }
-        
+        // foreach($keterangan as $k => $ket){
+        //     if ($k == 'ingkel' && $ket != null) {
+        //         foreach($ket as $value) {
+        //             if($value['nama'] == 'sumur sinaba') {
+        //                 dd('done');
+        //             }
+        //         }
+        //     }
+        // }
+
 
         // foreach ($data as $key => $item) {
         //     foreach ($item['hari_raya'] as $key => $hari_raya) {
@@ -140,7 +143,8 @@ class LayananController extends Controller
         return $data;
     }
 
-    public function callZodiak(){
+    public function callZodiak()
+    {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         $response = $client->request('GET', $this->url_api . 'keteranganZodiak', [
@@ -158,11 +162,11 @@ class LayananController extends Controller
 
         $info_ingkel_api = $layanan->keteranganIngkel();
         $info_jejepan_api = $layanan->keteranganJejepan();
-        $info_lintang_api = $layanan->keteranganLintang();        
+        $info_lintang_api = $layanan->keteranganLintang();
         $info_rakam_api = $layanan->keteranganRakam();
         $info_watek_madya_api = $layanan->keteranganWatekMadya();
         $info_watek_alit_api = $layanan->keteranganWatekAlit();
-        $info_neptu_api = $layanan->keteranganNeptu();        
+        $info_neptu_api = $layanan->keteranganNeptu();
         $info_eka_jala_rsi_api = $layanan->keteranganEkaJalaRsi();
         $info_panca_sudha_api = $layanan->keteranganPancaSudha();
         $info_pangarasan_api = $layanan->keteranganPangarasan();
@@ -205,33 +209,33 @@ class LayananController extends Controller
         $info_dasawara = collect($info_dasawara_api)->where('keterangan', '!=', null)->all();
         $info_wuku = collect($info_wuku_api)->where('keterangan', '!=', null)->all();
 
-        $keterangan = 
-        [
-            'ingkel' => $info_ingkel,
-            'jejepan' => $info_jejepan,
-            'lintang' => $info_lintang,
-            'rakam' => $info_rakam,
-            'watek_madya' => $info_watek_madya,
-            'watek_alit' => $info_watek_alit,
-            'neptu' => $info_neptu,
-            'ekajalarsi' => $info_eka_jala_rsi,
-            'panca_sudha' => $info_panca_sudha,
-            'pangarasan' => $info_pangarasan,
-            'pratiti' => $info_pratiti,
-            'zodiak' => $info_zodiak,
-            'wuku' => $info_wuku,
+        $keterangan =
+            [
+                'ingkel' => $info_ingkel,
+                'jejepan' => $info_jejepan,
+                'lintang' => $info_lintang,
+                'rakam' => $info_rakam,
+                'watek_madya' => $info_watek_madya,
+                'watek_alit' => $info_watek_alit,
+                'neptu' => $info_neptu,
+                'ekajalarsi' => $info_eka_jala_rsi,
+                'panca_sudha' => $info_panca_sudha,
+                'pangarasan' => $info_pangarasan,
+                'pratiti' => $info_pratiti,
+                'zodiak' => $info_zodiak,
+                'wuku' => $info_wuku,
 
-            'ekawara' => $info_ekawara,
-            'dwiwara' => $info_dwiwara,
-            'triwara' => $info_triwara,
-            'caturwara' => $info_caturwara,
-            'pancawara' => $info_pancawara,
-            'sadwara' => $info_sadwara,
-            'saptawara' => $info_saptawara,
-            'astawara' => $info_astawara,
-            'sangawara' => $info_sangawara,
-            'dasawara' => $info_dasawara
-        ];
+                'ekawara' => $info_ekawara,
+                'dwiwara' => $info_dwiwara,
+                'triwara' => $info_triwara,
+                'caturwara' => $info_caturwara,
+                'pancawara' => $info_pancawara,
+                'sadwara' => $info_sadwara,
+                'saptawara' => $info_saptawara,
+                'astawara' => $info_astawara,
+                'sangawara' => $info_sangawara,
+                'dasawara' => $info_dasawara
+            ];
 
         return $keterangan;
     }
@@ -339,7 +343,7 @@ class LayananController extends Controller
 
         return $data;
     }
-    
+
     public function keteranganPancaSudha()
     {
         $client = new Client();
@@ -549,7 +553,7 @@ class LayananController extends Controller
 
         // $info_ala_ayuning_dewasa = Cache::get('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai);
         // cache
-        $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+        $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
             $layanan = new LayananController();
             $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
             return $ala_ayuning_dewasa;
@@ -563,7 +567,7 @@ class LayananController extends Controller
     {
         $cari_dengan = $request->cari_dengan;
         $keterangan = $this->callKeteranganElemenKalenderBali();
-        
+
         if ($cari_dengan == 'nama') {
             $validatedData = $request->validate([
                 'nama_ala_ayuning_dewasa_dicari' => 'required',
@@ -581,7 +585,7 @@ class LayananController extends Controller
 
                 // $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
                 // cache
-                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
                     $layanan = new LayananController();
                     $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
                     return $ala_ayuning_dewasa;
@@ -598,7 +602,7 @@ class LayananController extends Controller
                 }
                 // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
                 // cache
-                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
                     $layanan = new LayananController();
                     $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
                     return $elemen_kalender_bali;
@@ -619,8 +623,8 @@ class LayananController extends Controller
 
                 // $info_ala_ayuning_dewasa = $this->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
                 // cache
-                
-                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+
+                $info_ala_ayuning_dewasa = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
                     $layanan = new LayananController();
                     $ala_ayuning_dewasa = $layanan->callAlaAyuningDewasa($tanggal_mulai, $tanggal_selesai);
                     return $ala_ayuning_dewasa;
@@ -628,7 +632,7 @@ class LayananController extends Controller
 
                 // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
                 // cache
-                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai) {
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai) {
                     $layanan = new LayananController();
                     $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
                     return $elemen_kalender_bali;
@@ -690,7 +694,7 @@ class LayananController extends Controller
                         ['key' => 'sasih', 'item' => 10]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Purnama Kajeng Kliwon") {
                 $kriteriaDicari = [
@@ -700,7 +704,7 @@ class LayananController extends Controller
                         ['key' => 'pancawara', 'item' => 5]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Purnama Anggara Kasih") {
                 $kriteriaDicari = [
@@ -710,7 +714,7 @@ class LayananController extends Controller
                         ['key' => 'pancawara', 'item' => 5]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Purnama Ketemu Guru") {
                 $kriteriaDicari = [
@@ -719,7 +723,7 @@ class LayananController extends Controller
                         ['key' => 'astawara', 'item' => 3]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Potong Gigi") {
                 $kriteriaDicari = [
@@ -739,7 +743,7 @@ class LayananController extends Controller
                         ['key' => 'pancawara', 'item' => 4]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Bhuta Yadnya") {
                 $kriteriaDicari = [
@@ -748,7 +752,7 @@ class LayananController extends Controller
                         ['key' => 'pancawara', 'item' => 5]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Dewa Yadnya") {
                 $kriteriaDicari = [
@@ -899,7 +903,7 @@ class LayananController extends Controller
                         ['key' => 'Penanggal', 'item' => 10]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Cukur Rambut") {
                 $kriteriaDicari = [
@@ -964,7 +968,7 @@ class LayananController extends Controller
                         ['key' => 'wuku', 'item' => 27]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [
                     [
                         ['key' => 'sadwara', 'item' => 3],
@@ -973,7 +977,7 @@ class LayananController extends Controller
                     [
                         ['key' => 'saptawara', 'item' => 4],
                         ['key' => 'wuku', 'item' => 20]
-                    ], 
+                    ],
                     [
                         ['key' => 'wuku', 'item' => 1]
                     ],
@@ -1110,7 +1114,7 @@ class LayananController extends Controller
                         ['key' => 'wuku', 'item' => 11]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [
                     [
                         ['key' => 'saptawara', 'item' => 3],
@@ -1171,7 +1175,7 @@ class LayananController extends Controller
                 ];
             } else if ($dewasa_ayu == "Berhubungan/Bersenggama Suami Istri") {
                 $kriteriaDicari = [];
-    
+
                 $kriteriaDihindari = [
                     [
                         ['key' => 'saptawara', 'item' => 3],
@@ -1254,197 +1258,197 @@ class LayananController extends Controller
             } else if ($dewasa_ayu == "Nikah/Kawin") {
                 $kriteriaDicari = [
                     [
-                        ['key' => 'Penanggal', 'item'=> 5],
-                        ['key' => 'saptawara', 'item'=> 4],
-                        ['key' => 'pancawara', 'item'=> 2]
-                    ], 
+                        ['key' => 'Penanggal', 'item' => 5],
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'pancawara', 'item' => 2]
+                    ],
                     [
-                        ['key' => 'saptawara', 'item'=> 2],
-                    ], 
+                        ['key' => 'saptawara', 'item' => 2],
+                    ],
                     [
-                        ['key' => 'saptawara', 'item'=> 4],
-                    ], 
+                        ['key' => 'saptawara', 'item' => 4],
+                    ],
                     [
-                        ['key' => 'saptawara', 'item'=> 5],
-                    ], 
+                        ['key' => 'saptawara', 'item' => 5],
+                    ],
                     [
-                        ['key' => 'saptawara', 'item'=> 6],
-                    ]                
+                        ['key' => 'saptawara', 'item' => 6],
+                    ]
                 ];
-    
+
                 $kriteriaDihindari = [
                     [
-                        ['key' => 'saptawara', 'item'=> 1]
+                        ['key' => 'saptawara', 'item' => 1]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 3]
+                        ['key' => 'saptawara', 'item' => 3]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 7]
+                        ['key' => 'saptawara', 'item' => 7]
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 1],
+                        ['key' => 'Pangelong', 'item' => 1],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 2],
+                        ['key' => 'Pangelong', 'item' => 2],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 3],
+                        ['key' => 'Pangelong', 'item' => 3],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 4],
+                        ['key' => 'Pangelong', 'item' => 4],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 5],
+                        ['key' => 'Pangelong', 'item' => 5],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 6],
+                        ['key' => 'Pangelong', 'item' => 6],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 7],
+                        ['key' => 'Pangelong', 'item' => 7],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 8],
+                        ['key' => 'Pangelong', 'item' => 8],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 9],
+                        ['key' => 'Pangelong', 'item' => 9],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 10],
+                        ['key' => 'Pangelong', 'item' => 10],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 11],
+                        ['key' => 'Pangelong', 'item' => 11],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 12],
+                        ['key' => 'Pangelong', 'item' => 12],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 13],
+                        ['key' => 'Pangelong', 'item' => 13],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 14],
+                        ['key' => 'Pangelong', 'item' => 14],
                     ],
                     [
-                        ['key' => 'Pangelong', 'item'=> 15]
+                        ['key' => 'Pangelong', 'item' => 15]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 7]
+                        ['key' => 'wuku', 'item' => 7]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 8]
+                        ['key' => 'wuku', 'item' => 8]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 15]
+                        ['key' => 'wuku', 'item' => 15]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 16]
+                        ['key' => 'wuku', 'item' => 16]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 23]
+                        ['key' => 'wuku', 'item' => 23]
                     ],
                     [
-                        ['key' => 'wuku', 'item'=> 24]
+                        ['key' => 'wuku', 'item' => 24]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 1],
-                        ['key' => 'wuku', 'item'=> 5]
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 5]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 1],
-                        ['key' => 'wuku', 'item'=> 13]
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 13]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 1],
-                        ['key' => 'wuku', 'item'=> 21]
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 21]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 1],
-                        ['key' => 'wuku', 'item'=> 29]
+                        ['key' => 'saptawara', 'item' => 1],
+                        ['key' => 'wuku', 'item' => 29]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 2],
-                        ['key' => 'wuku', 'item'=> 3]
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 3]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 2],
-                        ['key' => 'wuku', 'item'=> 11]
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 11]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 2],
-                        ['key' => 'wuku', 'item'=> 19]
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 19]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 2],
-                        ['key' => 'wuku', 'item'=> 27]
+                        ['key' => 'saptawara', 'item' => 2],
+                        ['key' => 'wuku', 'item' => 27]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 3],
-                        ['key' => 'wuku', 'item'=> 8]
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 8]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 3],
-                        ['key' => 'wuku', 'item'=> 16]
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 16]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 3],
-                        ['key' => 'wuku', 'item'=> 24]
+                        ['key' => 'saptawara', 'item' => 3],
+                        ['key' => 'wuku', 'item' => 24]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 4],
-                        ['key' => 'wuku', 'item'=> 1]
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 1]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 4],
-                        ['key' => 'wuku', 'item'=> 9]
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 9]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 4],
-                        ['key' => 'wuku', 'item'=> 17]
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 17]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 4],
-                        ['key' => 'wuku', 'item'=> 25]
+                        ['key' => 'saptawara', 'item' => 4],
+                        ['key' => 'wuku', 'item' => 25]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 5],
-                        ['key' => 'wuku', 'item'=> 14]
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 14]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 5],
-                        ['key' => 'wuku', 'item'=> 22]
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 22]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 5],
-                        ['key' => 'wuku', 'item'=> 30]
+                        ['key' => 'saptawara', 'item' => 5],
+                        ['key' => 'wuku', 'item' => 30]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 6],
-                        ['key' => 'wuku', 'item'=> 4]
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 4]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 6],
-                        ['key' => 'wuku', 'item'=> 12]
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 12]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 6],
-                        ['key' => 'wuku', 'item'=> 20]
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 20]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 6],
-                        ['key' => 'wuku', 'item'=> 28]
+                        ['key' => 'saptawara', 'item' => 6],
+                        ['key' => 'wuku', 'item' => 28]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 7],
-                        ['key' => 'wuku', 'item'=> 7]
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 7]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 7],
-                        ['key' => 'wuku', 'item'=> 15]
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 15]
                     ],
                     [
-                        ['key' => 'saptawara', 'item'=> 7],
-                        ['key' => 'wuku', 'item'=> 23]
-                    ]               
+                        ['key' => 'saptawara', 'item' => 7],
+                        ['key' => 'wuku', 'item' => 23]
+                    ]
                 ];
             } else if ($dewasa_ayu == "Menempati Rumah") {
                 $kriteriaDicari = [
@@ -1459,7 +1463,7 @@ class LayananController extends Controller
                         ['key' => 'astawara', 'item' => 8]
                     ]
                 ];
-    
+
                 $kriteriaDihindari = [];
             } else if ($dewasa_ayu == "Memulai Upacara/Karya yang Besar") {
                 $kriteriaDicari = [
@@ -1469,9 +1473,9 @@ class LayananController extends Controller
                         ['key' => 'Penanggal', 'item' => 15]
                     ],
                 ];
-                
+
                 $kriteriaDihindari = [];
-            }            
+            }
 
             $keys = [];
             foreach ($kriteriaDicari as $kriteria) {
@@ -1507,9 +1511,7 @@ class LayananController extends Controller
                 'bulan_dicari',
                 'tahun_dicari',
             ));
-        } 
-        
-        else {
+        } else {
             $keys = [];
             $items = [];
             $kriteriaDicari = [];
@@ -1524,7 +1526,7 @@ class LayananController extends Controller
                 'bulan_dicari',
                 'tahun_dicari',
             ));
-        }        
+        }
     }
 
     public function cari_kriteria_dewasa(Request $request)
@@ -1568,7 +1570,7 @@ class LayananController extends Controller
             $logicANDdicari[] = implode('%26%26', $tempANDdicari);
         }
 
-        $logicANDdicari = array_filter($logicANDdicari, function($value) {
+        $logicANDdicari = array_filter($logicANDdicari, function ($value) {
             return !empty($value);
         });
         $logicORdicari[] = implode('||', $logicANDdicari);
@@ -1601,11 +1603,11 @@ class LayananController extends Controller
             // $logicANDdihindari[] = '!(' . implode('%26%26', $tempANDdihindari) . ')';
             $logicANDdihindari[] = implode('%26%26', $tempANDdihindari);
         }
-        
-        $logicANDdihindari = array_filter($logicANDdihindari, function($value) {
+
+        $logicANDdihindari = array_filter($logicANDdihindari, function ($value) {
             return !empty($value);
         });
-                
+
         // dd($logicORdihindari);
         $logicORdihindari[] = implode('||', $logicANDdihindari);
         // dd($logicORdihindari[0]);
@@ -1646,7 +1648,7 @@ class LayananController extends Controller
         if ($bulan_dicari == "Semua Bulan") {
             // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $encodeFinalLogicAND);
             // cache
-            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31_'. $encodeFinalLogicAND, now()->addDays(365), function() use ($tahun_dicari, $encodeFinalLogicAND) {
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31_' . $encodeFinalLogicAND, now()->addDays(365), function () use ($tahun_dicari, $encodeFinalLogicAND) {
                 $layanan = new LayananController();
                 $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-01-01', $tahun_dicari . '-12-31', $encodeFinalLogicAND);
                 return $mengatur_dewasa;
@@ -1654,7 +1656,7 @@ class LayananController extends Controller
 
             // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
             // cache
-            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tahun_dicari . '_01_01_'. $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function () use ($tahun_dicari) {
                 $layanan = new LayananController();
                 $elemen_kalender_bali = $layanan->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
                 return $elemen_kalender_bali;
@@ -1662,7 +1664,7 @@ class LayananController extends Controller
         } else {
             // $info_mengatur_dewasa = $this->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $encodeFinalLogicAND);
             // cache
-            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari .'_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')) . '_'. $encodeFinalLogicAND, now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari, $encodeFinalLogicAND) {
+            $info_mengatur_dewasa = Cache::remember('info_mengatur_dewasa_' . $tahun_dicari . '_' . $bulan_dicari . '_01_' . $tahun_dicari . '_' . $bulan_dicari . '_' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')) . '_' . $encodeFinalLogicAND, now()->addDays(365), function () use ($tahun_dicari, $bulan_dicari, $encodeFinalLogicAND) {
                 $layanan = new LayananController();
                 $mengatur_dewasa = $layanan->callMengaturDewasa($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), $encodeFinalLogicAND);
                 return $mengatur_dewasa;
@@ -1678,7 +1680,7 @@ class LayananController extends Controller
 
             // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
             // cache
-            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_'. $tahun_dicari . '_' . $bulan_dicari . '_01_'. $tahun_dicari . '_'. $bulan_dicari . '_'. date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari) {
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tahun_dicari . '_' . $bulan_dicari . '_01_' . $tahun_dicari . '_' . $bulan_dicari . '_' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function () use ($tahun_dicari, $bulan_dicari) {
                 $layanan = new LayananController();
                 $elemen_kalender_bali = $layanan->callElemenKalenderBali($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
                 return $elemen_kalender_bali;
@@ -1816,7 +1818,7 @@ class LayananController extends Controller
     public function piodalan_page()
     {
         $info_pura = Cache::remember('info_pura', now()->addDays(365), function () {
-            return $this->callPura(); 
+            return $this->callPura();
         });
 
         $saptawara = ['Redite', 'Soma', 'Anggara', 'Buda', 'Wraspati', 'Sukra', 'Saniscara'];
@@ -1846,7 +1848,7 @@ class LayananController extends Controller
 
                 // $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
                 // cache info_piodalan
-                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function () use ($tahun_dicari) {
                     return $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
                 });
 
@@ -1861,6 +1863,7 @@ class LayananController extends Controller
                     if ($item['pura'] != "-") {
                         foreach ($item['pura'] as $pura) {
                             if ($pura['nama_pura'] == $pura_dicari) {
+                                $pura_id_dicari = $pura['id_pura'];
                                 $item_piodalan[] = $item;
                                 $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
                             }
@@ -1868,7 +1871,8 @@ class LayananController extends Controller
                     }
                 }
                 // dd($item_kalender);
-                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
+                // dd($item_piodalan);
+                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'pura_id_dicari' , 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -1889,7 +1893,7 @@ class LayananController extends Controller
 
                 // $info_piodalan = $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
                 // cache info_piodalan
-                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_01_01_' . $tahun_dicari . '_12_31', now()->addDays(365), function () use ($tahun_dicari) {
                     return $this->callPiodalan($tahun_dicari . '-01-01', $tahun_dicari . '-12-31');
                 });
                 // dd($info_piodalan);
@@ -1901,7 +1905,7 @@ class LayananController extends Controller
                         $item_piodalan[] = $item;
                         // $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
                         // cache 
-                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function() use ($item) {
+                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function () use ($item) {
                             return $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
                         });
                     }
@@ -1926,7 +1930,7 @@ class LayananController extends Controller
 
                 // $info_piodalan = $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
                 // cache info_piodalan
-                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_' . $bulan_dicari . '_01_' . $tahun_dicari . '_' . $bulan_dicari . '_' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function() use ($tahun_dicari, $bulan_dicari) {
+                $info_piodalan = Cache::remember('info_piodalan_' . $tahun_dicari . '_' . $bulan_dicari . '_01_' . $tahun_dicari . '_' . $bulan_dicari . '_' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')), now()->addDays(365), function () use ($tahun_dicari, $bulan_dicari) {
                     return $this->callPiodalan($tahun_dicari . '-' . $bulan_dicari . '-01', $tahun_dicari . '-' . $bulan_dicari . '-' . date('t', strtotime($tahun_dicari . $bulan_dicari . '-01')));
                 });
 
@@ -1937,7 +1941,7 @@ class LayananController extends Controller
                         $item_piodalan[] = $item;
                         // $item_kalender[] = $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
                         // cache
-                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function() use ($item) {
+                        $item_kalender[] = Cache::remember('info_elemen_kalender_bali_' . $item['tanggal'] . '_' . $item['tanggal'], now()->addDays(365), function () use ($item) {
                             return $this->callElemenKalenderBali($item['tanggal'], $item['tanggal']);
                         });
                     }
@@ -1950,13 +1954,346 @@ class LayananController extends Controller
         }
     }
 
+    public function kelola_pura_page()
+    {
+        Cache::forget('info_pura');
+        $info_pura = Cache::remember('info_pura', now()->addDays(1), function () {
+            return $this->callPura();
+        });
+
+        return view('wargabal.kelola_pura.kelola_pura_page', compact('info_pura'));
+    }
+
+    public function piodalan_pura_page($id)
+    {
+        $info_pura = $this->callPuraById($id);
+        $data_piodalan_pura = $this->callPiodalanPura();
+        $info_piodalan_pura = [];
+        $bulan_ada_piodalan = [];
+        $tahun_ada_piodalan = [];
+
+        $adminController = new AdminController();
+        $daftar_pura_user = $adminController->callListPuraUser();       
+        $user = session('user');
+        $cek_pura_user = false;
+        // $daftar_user = [];
+        if ($user['permission'] == 'Admin') {
+            $cek_pura_user = true;
+        } else {
+            foreach ($daftar_pura_user as $item) {
+                // $daftar_user[] = $item['user_id'];
+                if ($item['pura_id'] == $id) {
+                    if ($item['user_id'] == $user['id']) {
+                        $cek_pura_user = true;
+                    }
+                }
+            }
+        }
+
+        foreach ($data_piodalan_pura as $item) {
+            if ($item['pura_id'] == $id) {
+                $info_piodalan_pura[] = $item;
+                $bulan_ada_piodalan[] = date('m', strtotime($item['date']));
+                $tahun_ada_piodalan[] = date('Y', strtotime($item['date']));
+            }
+        }
+
+        $info_piodalan_pura = array_reverse($info_piodalan_pura);
+        $bulan = array_reverse(array_unique($bulan_ada_piodalan));
+        $tahun = array_reverse(array_unique($tahun_ada_piodalan));
+
+        return view('wargabal.kelola_pura.piodalan_pura_page', compact('info_piodalan_pura', 'info_pura', 'bulan', 'tahun', 'daftar_pura_user', 'cek_pura_user'));
+    }
+
+    public function create_piodalan_pura(Request $request, $pura_id)
+    {
+        $validatedData = $request->validate([
+            'tanggal_piodalan' => 'required',
+            'deskripsi_piodalan' => 'required',
+            'level_piodalan' => 'required',
+        ]);
+
+        if ($validatedData) {
+            $client = new Client();
+            // $user = session('user');
+            // $token = $user['token'];
+            
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+            $token = $login_token['data']['token'];
+
+            $response = $client->request('POST', $this->url_web . 'piodalans', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'date' => $request->tanggal_piodalan,
+                    'description' => $request->deskripsi_piodalan,
+                    'level' => $request->level_piodalan,
+                    'pura_id' => $pura_id
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data piodalan berhasil ditambahkan!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal menambahkan data piodalan!')->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors($validatedData);
+        }
+    }
+
+    public function edit_piodalan_pura(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'tanggal_piodalan' => 'required',
+            'deskripsi_piodalan' => 'required',
+            'level_piodalan' => 'required',
+            'pura_id' => 'required'
+        ]);
+
+        if ($validatedData) {
+            $client = new Client();
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+            $response = $client->request('POST', $this->url_web . 'piodalans/' . $id . '?_method=PUT', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'date' => $request->tanggal_piodalan,
+                    'description' => $request->deskripsi_piodalan,
+                    'level' => $request->level_piodalan,
+                    'pura_id' => $request->pura_id
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data piodalan berhasil diubah!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal mengubah data piodalan!')->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors($validatedData);
+        }
+    }
+
+    public function hapus_piodalan_pura($id)
+    {
+        $data_acara_piodalan_pura = $this->callAcaraPiodalanPura($id);
+        if (count($data_acara_piodalan_pura) > 0) {
+            return redirect()->back()->with('error', 'Gagal menghapus data piodalan! Susunan acara piodalan masih ada!');
+        } else {
+            $client = new Client();
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+            $response = $client->request('DELETE', $this->url_web . 'piodalans/' . $id, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                    'Accept' => 'application/json',
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data piodalan berhasil dihapus!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal menghapus data piodalan!');
+            }
+        }
+
+    }
+
+    public function acara_piodalan_pura($piodalan_id, $pura_id)
+    {
+        $info_pura = $this->callPuraById($pura_id);
+        $info_piodalan_pura = $this->callPiodalanPuraById($piodalan_id);
+
+        $data_acara_piodalan_pura = $this->callAcaraPiodalanPura($piodalan_id);
+        $info_acara_piodalan_pura = array_reverse($data_acara_piodalan_pura);
+
+        
+        $adminController = new AdminController();
+        $daftar_pura_user = $adminController->callListPuraUser();
+        $user = session('user');
+        $cek_pura_user = false;
+        // $daftar_user = [];
+        if ($user['permission'] == 'Admin') {
+            $cek_pura_user = true;
+        } else {
+            foreach ($daftar_pura_user as $item) {
+                // $daftar_user[] = $item['user_id'];
+                if ($item['pura_id'] == $pura_id) {
+                    if ($item['user_id'] == $user['id']) {
+                        $cek_pura_user = true;
+                    }
+                }
+            }
+        }
+
+        return view('wargabal.kelola_pura.acara_piodalan_pura_page', compact('info_acara_piodalan_pura', 'info_piodalan_pura', 'info_pura', 'daftar_pura_user', 'cek_pura_user'));
+    }
+
+    public function create_acara_piodalan_pura(Request $request, $piodalan_id)
+    {
+        $validatedData = $request->validate([
+            'acara' => 'required',
+            'level' => 'required',
+            'pic_name' => 'required',
+            'pic_phone' => 'required',
+            'date' => 'required',
+        ]);
+
+        if ($validatedData) {
+            $client = new Client();
+            // $user = session('user');
+            // $token = $user['token'];
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+            $token = $login_token['data']['token'];
+
+            $response = $client->request('POST', $this->url_web . 'acaras', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'acara' => $request->acara,
+                    'level' => $request->level,
+                    'pic_name' => $request->pic_name,
+                    'pic_phone' => $request->pic_phone,
+                    'date' => $request->date,
+                    'piodalan_id' => $piodalan_id
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data acara piodalan berhasil ditambahkan!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal menambahkan data acara piodalan!')->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors($validatedData);
+        }
+    }
+
+    public function edit_acara_piodalan_pura(Request $request, $id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+        $response = $client->request('POST', $this->url_web . 'acaras/' . $id . '?_method=PUT', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+            'form_params' => [
+                'acara' => $request->acara,
+                'level' => $request->level,
+                'pic_name' => $request->pic_name,
+                'pic_phone' => $request->pic_phone,
+                'date' => $request->date,
+                'piodalan_id' => $request->piodalan_id
+            ]
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        if ($result['success'] == true) {
+            return redirect()->back()->with('success', 'Data acara piodalan berhasil diubah!');
+        } else {
+            return redirect()->back()->with('error', 'Gagal mengubah data acara piodalan!')->withInput();
+        }
+    }
+
+    public function hapus_acara_piodalan_pura($id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+        $response = $client->request('DELETE', $this->url_web . 'acaras/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ]
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        if ($result['success'] == true) {
+            return redirect()->back()->with('success', 'Data acara piodalan berhasil dihapus!');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menghapus data acara piodalan!');
+        }
+    }
+
+    public function callPiodalanPura()
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+        $response = $client->request('GET', $this->url_web . 'piodalans', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callPiodalanPuraById($id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+        $response = $client->request('GET', $this->url_web . 'piodalans/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callAcaraPiodalanPura($id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+        $response = $client->request('GET', $this->url_web . 'acaras/by-piodalan/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
     public function callPura()
     {
         $client = new Client();
-        $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', $this->url_api . 'lihatPura', [
-            'headers' => $headers
-        ]);
+        $response = $client->request('GET', $this->url_api . 'lihatPura');
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callPuraById($id)
+    {
+        $client = new Client();
+        $response = $client->request('GET', $this->url_api . 'lihatPura/' . $id);
         $result = json_decode($response->getBody()->getContents(), true);
         $data = $result['data'];
 
@@ -2002,23 +2339,23 @@ class LayananController extends Controller
                 $tahun_dicari = $request->tahun_dicari;
                 // $info_otonan = $this->callOtonan($tanggal_lahir_dicari, $tahun_dicari);
                 // cache info_otonan
-                $info_otonan = Cache::remember('info_otonan_' . $tanggal_lahir_dicari . '_' . $tahun_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari, $tahun_dicari) {
+                $info_otonan = Cache::remember('info_otonan_' . $tanggal_lahir_dicari . '_' . $tahun_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari, $tahun_dicari) {
                     return $this->callOtonan($tanggal_lahir_dicari, $tahun_dicari);
                 });
                 // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
                 // cache info_elemen_kalender_bali
-                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari) {
                     return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
                 });
 
                 // $info_otonan_pertama = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_pertama'], $info_otonan['otonan_terdekat_pertama']);
                 // cache
-                $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_pertama'] . '_' . $info_otonan['otonan_terdekat_pertama'], now()->addDays(365), function() use ($info_otonan) {
+                $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_pertama'] . '_' . $info_otonan['otonan_terdekat_pertama'], now()->addDays(365), function () use ($info_otonan) {
                     return $this->callElemenKalenderBali($info_otonan['otonan_terdekat_pertama'], $info_otonan['otonan_terdekat_pertama']);
                 });
                 // $info_otonan_kedua = $this->callElemenKalenderBali($info_otonan['otonan_terdekat_kedua'], $info_otonan['otonan_terdekat_kedua']);
                 // cache
-                $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_kedua'] . '_' . $info_otonan['otonan_terdekat_kedua'], now()->addDays(365), function() use ($info_otonan) {
+                $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $info_otonan['otonan_terdekat_kedua'] . '_' . $info_otonan['otonan_terdekat_kedua'], now()->addDays(365), function () use ($info_otonan) {
                     return $this->callElemenKalenderBali($info_otonan['otonan_terdekat_kedua'], $info_otonan['otonan_terdekat_kedua']);
                 });
                 // dd($info_otonan_pertama, $info_otonan_kedua);
@@ -2046,7 +2383,7 @@ class LayananController extends Controller
 
                 // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari + 1 . '-12-31');
                 // cache info_elemen_kalender_bali
-                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tahun_dicari . '_01_01_' . $tahun_dicari + 1 . '_12_31', now()->addDays(365), function() use ($tahun_dicari) {
+                $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tahun_dicari . '_01_01_' . $tahun_dicari + 1 . '_12_31', now()->addDays(365), function () use ($tahun_dicari) {
                     return $this->callElemenKalenderBali($tahun_dicari . '-01-01', $tahun_dicari + 1 . '-12-31');
                 });
                 foreach ($info_elemen_kalender_bali as $key => $item) {
@@ -2059,7 +2396,7 @@ class LayananController extends Controller
                     $tanggal_otonan = array_slice($tanggal_otonan, 0, 2);
                 }
 
-                if ( $tanggal_otonan == null) {
+                if ($tanggal_otonan == null) {
                     $tanggal_otonan = ['-', '-'];
 
                     $info_otonan_pertama = '-';
@@ -2067,12 +2404,12 @@ class LayananController extends Controller
                 } else {
                     // $info_otonan_pertama = $this->callElemenKalenderBali($tanggal_otonan[0], $tanggal_otonan[0]);
                     // cache
-                    $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[0] . '_' . $tanggal_otonan[0], now()->addDays(365), function() use ($tanggal_otonan) {
+                    $info_otonan_pertama = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[0] . '_' . $tanggal_otonan[0], now()->addDays(365), function () use ($tanggal_otonan) {
                         return $this->callElemenKalenderBali($tanggal_otonan[0], $tanggal_otonan[0]);
                     });
                     // $info_otonan_kedua = $this->callElemenKalenderBali($tanggal_otonan[1], $tanggal_otonan[1]);
                     // cache
-                    $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[1] . '_' . $tanggal_otonan[1], now()->addDays(365), function() use ($tanggal_otonan) {
+                    $info_otonan_kedua = Cache::remember('info_elemen_kalender_bali_' . $tanggal_otonan[1] . '_' . $tanggal_otonan[1], now()->addDays(365), function () use ($tanggal_otonan) {
                         return $this->callElemenKalenderBali($tanggal_otonan[1], $tanggal_otonan[1]);
                     });
                 }
@@ -2120,12 +2457,12 @@ class LayananController extends Controller
             $tanggal_lahir_dicari = $request->tanggal_lahir_dicari;
             // $info_ramalan_sifat = $this->callRamalanSifat($tanggal_lahir_dicari);
             // cache info_ramalan_sifat
-            $info_ramalan_sifat = Cache::remember('info_ramalan_sifat_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+            $info_ramalan_sifat = Cache::remember('info_ramalan_sifat_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari) {
                 return $this->callRamalanSifat($tanggal_lahir_dicari);
             });
             // $info_elemen_kalender_bali = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             // cache info_elemen_kalender_bali
-            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+            $info_elemen_kalender_bali = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari) {
                 return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             });
 
@@ -2201,7 +2538,7 @@ class LayananController extends Controller
         // dd($keterangan);
 
         $auth_con = new AuthenticationController();
-        
+
         $validatedData = $request->validate([
             'tanggal_lahir_dicari' => 'required|date',
             'bulan_dicari' => 'required',
@@ -2227,17 +2564,17 @@ class LayananController extends Controller
 
             // $info_wariga_personal = $this->callWarigaPersonal($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari);
             // cache info_wariga_personal
-            $info_wariga_personal = Cache::remember('info_wariga_personal_' . $tanggal_mulai . '_' . $tanggal_selesai . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari) {
+            $info_wariga_personal = Cache::remember('info_wariga_personal_' . $tanggal_mulai . '_' . $tanggal_selesai . '_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari) {
                 return $this->callWarigaPersonal($tanggal_mulai, $tanggal_selesai, $tanggal_lahir_dicari);
             });
             // $info_elemen_tanggal_lahir = $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             // cache info_elemen_tanggal_lahir
-            $info_elemen_tanggal_lahir = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+            $info_elemen_tanggal_lahir = Cache::remember('info_elemen_kalender_bali_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari) {
                 return $this->callElemenKalenderBali($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             });
             // $info_dewasa_tanggal_lahir = $this->callAlaAyuningDewasa($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             // cache info_dewasa_tanggal_lahir
-            $info_dewasa_tanggal_lahir = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function() use ($tanggal_lahir_dicari) {
+            $info_dewasa_tanggal_lahir = Cache::remember('info_ala_ayuning_dewasa_' . $tanggal_lahir_dicari . '_' . $tanggal_lahir_dicari, now()->addDays(365), function () use ($tanggal_lahir_dicari) {
                 return $this->callAlaAyuningDewasa($tanggal_lahir_dicari, $tanggal_lahir_dicari);
             });
             foreach ($info_wariga_personal['wariga_personal'] as $key => $wariga_personal) {

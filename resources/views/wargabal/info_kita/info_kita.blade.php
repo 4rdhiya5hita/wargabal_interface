@@ -164,10 +164,10 @@
                                             <a href="{{ route('piodalan_page') }}" class="card mini-stat bg-primary">
                                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                     <div class="mini-stat-icon">
-                                                        <img src="../assets/images/services/servis-vector-white-01.svg" width="45" height="45" class="float-end">
+                                                        <img src="../assets/images/services/servis-vector-white-03.svg" width="45" height="45" class="float-end">
                                                     </div>
                                                     <div class="text-white">
-                                                        <h5 class="text-white">Fitur Kelola Pura</h5>
+                                                        <h5 class="text-white">Fitur Piodalan</h5>
                                                         <p>Tangkil ke pura mana hari ini? Cek disini yuk!</p>
                                                     </div>
                                                 </div>
@@ -204,40 +204,6 @@
                         </div>
 
                         <div class="card pb-4">
-                            <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
-                                <h5 class="d-flex justify-content-center">Ramalan Sifat Hari Ini</h5>
-                                <p class="d-flex justify-content-center">{{ $hari_ini }}</p>
-                                <hr class="horizontal light my-3">
-
-                                <div class="mb-4">
-                                    <h5 class="mb-2">+ Pancawara: {{ $info_ramalan_sifat['pancawara'] }}</h5>
-                                    <p class="mb-0" id="Pancawara">{{ substr($info_ramalan_sifat['sifat_pancawara'], 0, 200) }}...</p>
-                                    <a href="{{ route('ramalan_sifat_page') }}">selengkapnya >></a>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5 class="mb-2">+ Saptawara: {{ $info_ramalan_sifat['saptawara'] }}</h5>
-                                    <p class="mb-0" id="Saptawara">{{ substr($info_ramalan_sifat['sifat_saptawara'], 0, 200) }}...</p>
-                                    <a href="{{ route('ramalan_sifat_page') }}">selengkapnya >></a>
-                                </div>
-
-                                <div class="mb-4">
-                                    <h5 class="mb-2">+ Wuku: {{ $info_ramalan_sifat['wuku'] }}</h5>
-                                    <p class="mb-0" id="Wuku">{{ substr($info_ramalan_sifat['sifat_wuku'], 0, 200) }}...</p>
-                                    <a href="{{ route('ramalan_sifat_page') }}">selengkapnya >></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end col -->
-
-                </div>
-                <!-- end row -->
-
-
-                <div class="row">
-                    <div class="col-xl-12 p-0">
-                        <div class="card pb-4">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start mb-3">
                                 <div class="flex-grow-1">
                                     <h4 class="card-title mb-0">Kumpulan Berita <span class="font-size-14 text-muted"></span></h4>
@@ -259,7 +225,7 @@
                                             <h5 class="font-size-16 mb-2 mt-2 pt-1">{{ $item['title'] }}</h5>
 
                                             @php
-                                            $formattedContent = substr(nl2br(e($item['content'])), 0, 400);
+                                            $formattedContent = substr(nl2br(e($item['content'])), 0, 300);
                                             @endphp
                                             <p class="text-muted mb-0">{!! $formattedContent !!}..</p>
                                             <a href="{{ route('info_kita_detail_page', ['id' => $item['id']]) }}" class="text-primary">>> Baca selengkapnya</a>
@@ -267,6 +233,40 @@
                                     </div>
                                     @endif
                                     @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xl-12 p-0">
+                        <div class="card pb-4">
+                            <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                <h5 class="d-flex justify-content-center">Ramalan Sifat Hari Ini</h5>
+                                <p class="d-flex justify-content-center">{{ $hari_ini }}</p>
+                                <hr class="horizontal light my-3">
+
+                                <div class="mb-4">
+                                    <h5 class="mb-2">+ Pancawara: {{ $info_ramalan_sifat['pancawara'] }}</h5>
+                                    <p class="mb-0" id="Pancawara">{{ substr($info_ramalan_sifat['sifat_pancawara'], 0, 400) }}...</p>
+                                    <a href="{{ route('ramalan_sifat_page') }}">cari selengkapnya >></a>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5 class="mb-2">+ Saptawara: {{ $info_ramalan_sifat['saptawara'] }}</h5>
+                                    <p class="mb-0" id="Saptawara">{{ substr($info_ramalan_sifat['sifat_saptawara'], 0, 400) }}...</p>
+                                    <a href="{{ route('ramalan_sifat_page') }}">cari selengkapnya >></a>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5 class="mb-2">+ Wuku: {{ $info_ramalan_sifat['wuku'] }}</h5>
+                                    <p class="mb-0" id="Wuku">{{ substr($info_ramalan_sifat['sifat_wuku'], 0, 400) }}...</p>
+                                    <a href="{{ route('ramalan_sifat_page') }}">cari selengkapnya >></a>
                                 </div>
                             </div>
 

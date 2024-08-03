@@ -49,20 +49,52 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
                                                         <div class="text-white">
-                                                            <div class="pt-4 pb-3">
+                                                            <div>
                                                                 <h5 class="mt-1 mb-0">{{ $hari }}, {{ $tanggal }}</h5>
                                                                 <p class="mb-3 font-weight-bold">{{ $item['hari'] }}</p>
-                                                                @foreach ($item['pura'] as $pura)
+                                                                
+                                                                <!-- @foreach ($item['pura'] as $pura)
                                                                 <span class="badge bg-light"> </span><span class="mx-2 font-size-16">{{ $pura['nama_pura'] }}</span>
-                                                                @endforeach
+                                                                @endforeach -->
                                                             </div>
                                                         </div>
-                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn text-white d-flex justify-content-end">
-                                                            <p class="text-xs mt-1 mb-0">klik detail</p>
+                                                        <div id="list-pura-{{ $item['tanggal'] }}" class="btn btn-light">
+                                                            <p class="m-0">List Pura</p>
                                                         </div>
+                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn btn-light">
+                                                            <p class="m-0">Detail Tanggal</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="list-pura-item-{{ $item['tanggal'] }}" class="card bg-transparent shadow-none mb-0" style="display: none;">
+                                                <div class="card mini-stat">
+                                                    <div class="table-responsive">
+                                                        <table class="table align-items-center justify-content-center mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">No</th>
+                                                                    <th scope="col">Nama Pura</th>
+                                                                    <th scope="col">Link Halaman Piodalan Pura</th>
+                                                                </tr>
+                                                            </thead>
+                                                            @foreach ($item['pura'] as $pura)
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ $pura['nama_pura'] }}</td>
+                                                                    @if (isset(session('user')['permission']))
+                                                                    <td><a href="{{ route('piodalan_pura_page', ['id' => $pura['id_pura']]) }}" class="btn btn-primary">Piodalan Pura oleh User</a></td>
+                                                                    @else
+                                                                    <td><a href="{{ route('login_page') }}" class="btn btn-primary">Piodalan Pura oleh User</a></td>
+                                                                    @endif
+                                                                </tr>
+                                                            </tbody>
+                                                            @endforeach
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,7 +226,7 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
                                                         <div class="text-white">
                                                             <div class="pt-4 pb-3">
@@ -242,20 +274,51 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
                                                         <div class="text-white">
-                                                            <div class="pt-4 pb-3">
+                                                            <div>
                                                                 <h5 class="mt-1 mb-0">{{ $hari }}, {{ $tanggal }}</h5>
                                                                 <p class="mb-3 font-weight-bold">{{ $item['hari'] }}</p>
-                                                                @foreach ($item['pura'] as $pura)
+                                                                <!-- @foreach ($item['pura'] as $pura)
                                                                 <span class="badge bg-light"> </span><span class="mx-2 font-size-16">{{ $pura['nama_pura'] }}</span>
-                                                                @endforeach
+                                                                @endforeach -->
                                                             </div>
                                                         </div>
-                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn text-white d-flex justify-content-end">
-                                                            <p class="text-xs mt-1 mb-0">klik detail</p>
+                                                        <div id="list-pura-{{ $item['tanggal'] }}" class="btn btn-light">
+                                                            <p class="m-0">List Pura</p>
                                                         </div>
+                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn btn-light">
+                                                            <p class="m-0">Detail Tanggal</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="list-pura-item-{{ $item['tanggal'] }}" class="card bg-transparent shadow-none mb-0" style="display: none;">
+                                                <div class="card mini-stat">
+                                                    <div class="table-responsive">
+                                                        <table class="table align-items-center justify-content-center mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">No</th>
+                                                                    <th scope="col">Nama Pura</th>
+                                                                    <th scope="col">Link Halaman Piodalan Pura</th>
+                                                                </tr>
+                                                            </thead>
+                                                            @foreach ($item['pura'] as $pura)
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ $pura['nama_pura'] }}</td>
+                                                                    @if (isset(session('user')['permission']))
+                                                                    <td><a href="{{ route('piodalan_pura_page', ['id' => $pura['id_pura']]) }}" class="btn btn-primary">Piodalan Pura oleh User</a></td>
+                                                                    @else
+                                                                    <td><a href="{{ route('login_page') }}" class="btn btn-primary">Piodalan Pura oleh User</a></td>
+                                                                    @endif
+                                                                </tr>
+                                                            </tbody>
+                                                            @endforeach
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -387,7 +450,7 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
                                                         <div class="text-white">
                                                             <div class="pt-4 pb-3">
@@ -436,17 +499,18 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
-                                                        <div class="text-white">
-                                                            <div class="pt-4 pb-3">
+                                                        <div class="text-white mb-3">
+                                                            <div>
                                                                 <h5 class="mt-1 mb-0">{{ $hari }}, {{ $tanggal }}</h5>
                                                                 <p class="mb-3 font-weight-bold">{{ $item['hari'] }}</p>
                                                                 <h4 class="mb-0">{{ $pura_dicari }}</h4>
                                                             </div>
                                                         </div>
-                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn text-white d-flex justify-content-end">
-                                                            <p class="text-xs mt-1 mb-0">klik detail</p>
+                                                        <a href="{{ route('piodalan_pura_page', ['id' => $pura_id_dicari]) }}" class="btn btn-light">Piodalan Pura oleh User</a>
+                                                        <div id="detail-{{ $item['tanggal'] }}" class="btn btn-light">
+                                                            <p class="m-0">Detail Tanggal</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -580,7 +644,7 @@
                                                 <div class="card mini-stat bg-primary">
                                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                                         <div class="mini-stat-icon">
-                                                            <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="70" height="70">
+                                                            <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="70" height="70">
                                                         </div>
                                                         <div class="text-white">
                                                             <div class="pt-4 pb-3">
@@ -648,6 +712,13 @@
             }
         }
     }
+
+    var info_piodalan = @json($item_piodalan);
+    @foreach($item_piodalan as $key => $item)
+        $('#list-pura-{{$item['tanggal']}}').click(function() {
+            $('#list-pura-item-{{$item['tanggal']}}').toggle();
+        });
+    @endforeach
 
     var openKalendar = ''; // array untuk menyimpan id kalender yang sedang terbuka
     $(document).ready(function() {

@@ -57,11 +57,10 @@
                                             <div class="card-body bottom-0" style="border: 2px solid #fff;">
                                                 <p>Tanggal terbit: {{ $tanggal_terbit_info_kita_detail }}</p>
                                                 <!-- <h4 class="card-title">{{ $info_kita_detail['title'] }}</h4> -->
-                                                
                                                 @php
-                                                $formattedContent = substr(nl2br(e($info_kita_detail['content'])), 0, 250);
+                                                $formattedContent = nl2br(e($info_kita_detail['content']));
                                                 @endphp
-                                                <p class="card-title-desc">{!! $formattedContent !!}..</p>
+                                                <p class="card-title-desc">{!! $formattedContent !!}</p>
                                             </div>
                                         </div>
 

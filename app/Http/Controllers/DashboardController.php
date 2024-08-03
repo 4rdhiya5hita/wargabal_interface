@@ -53,6 +53,7 @@ class DashboardController extends Controller
         $adminController = new AdminController();
         $get_info_kita = $adminController->fetch_info_kita();
         $info_kita = json_decode($get_info_kita->getContent(), true);
+        $info_kita = array_reverse($info_kita);
 
         foreach ($info_hari_raya as $key => $item) {
             if ($item['tanggal'] == $tanggal_sekarang) {

@@ -154,6 +154,7 @@ class AuthenticationController extends Controller
                     // tambahkan $result['data']['token'] ke dalam $user
                     $user['token'] = $login_token['token'];
                     session(['user' => $user]);
+                    session(['my_pending_payment' => false]);
 
                     return redirect()->route('index')->with('success', 'login');
                 } else {
@@ -172,6 +173,20 @@ class AuthenticationController extends Controller
                         // tambahkan $result['data']['token'] ke dalam $user
                         $user['token'] = $login_token['token'];
                         session(['user' => $user]);
+
+                        // pending payment
+                        $purchaseController = new PurchaseController();
+                        $my_purchases = $purchaseController->get_my_purchases($user);
+                        if (count($my_purchases) > 0) {
+                            $my_pending_payment = $purchaseController->get_my_pending_payment($my_purchases);
+                            if (count($my_pending_payment) > 0) {
+                                session(['my_pending_payment' => true]);
+                            } else {
+                                session(['my_pending_payment' => false]);
+                            }
+                        } else {
+                            session(['my_pending_payment' => false]);
+                        }
 
                         return redirect()->route('index')->with('success', 'login');
                     }

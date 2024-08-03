@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class KeteranganController extends Controller
 {
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    // protected $url_api = 'http://localhost:8000/api/';
-
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = 'http://localhost:8000/api/';
 
     public function keterangan_page()
     {
@@ -36,6 +35,94 @@ class KeteranganController extends Controller
         ];
 
         return view('wargabal.keterangan.keterangan_page', compact('keterangan'));
+    }
+
+    public function callListPengajuanKeterangan()
+    {
+        $client = new Client();
+        $headers = env('X_API_KEY');
+        $pengajuan_keterangan = $client->request('GET', $this->url_api . 'listPengajuanKeterangans', [
+            'headers' => [
+                'x-api-key' => $headers
+            ],
+        ]);
+        $result = json_decode($pengajuan_keterangan->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callListPengajuanKeteranganById($id)
+    {
+        $client = new Client();
+        $headers = env('X_API_KEY');
+        $pengajuan_keterangan = $client->request('GET', $this->url_api . 'listPengajuanKeterangans/' . $id, [
+            'headers' => [
+                'x-api-key' => $headers
+            ],
+        ]);
+        $result = json_decode($pengajuan_keterangan->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function editPengajuanKeterangan($request)
+    {
+        $client = new Client();
+        $headers = env('X_API_KEY');
+        $edit_pengajuan_keterangan = $client->request('POST', $this->url_api . 'editPengajuanKeterangans', [
+            'headers' => [
+                'x-api-key' => $headers
+            ],
+            'form_params' => [
+                'id' => $request->id,
+                'status_pengajuan' => $request->status_pengajuan,
+                'status_keterangan' => $request->status_keterangan,
+                'tanggal_validasi' => $request->tanggal_validasi
+            ]
+        ]);
+        
+        $result = json_decode($edit_pengajuan_keterangan->getBody()->getContents(), true);
+        return $result;
+    }
+
+    public function ajukan_edit(Request $request, $id)
+    {
+        $client = new Client();
+        $login_token = session('user');
+        $user_id = $login_token['id'];
+        $ajukan_edit_keterangan = $client->request('POST', $this->url_api . 'pengajuanKeterangans', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['token'],
+                'Accept' => 'application/json',
+            ],
+            'form_params' => [
+                'user_web_id' => $user_id,
+                'key_id' => $request->key_id,
+                'key_name' => $request->key_name,
+                'item_id' => $request->item_id,
+                'item_name' => $request->item_name,
+                'keterangan' => $request->keterangan
+            ]
+        ]);
+        
+        $result = json_decode($ajukan_edit_keterangan->getBody()->getContents(), true);
+        if ($result['pesan'] == 'Sukses') {
+            return redirect()->back()->with('success', 'Data keterangan berhasil diajukan! Silahkan lihat status pengajuan edit pada halaman Profile.');
+        } else {
+            return redirect()->back()->with('error', 'Gagal mengajukan data keterangan!')->withInput();
+        }
+    }
+
+    public function callKeyKeterangan($param)
+    {
+        $list_keterangan = $this->callListKeterangan();
+        foreach ($list_keterangan as $key => $item) {
+            if ($key == $param) {
+                return $item;
+            }
+        }
     }
 
     public function keterangan_ekawara_page()

@@ -103,18 +103,29 @@
                 </div>
             </div> -->
 
+            @if (isset(session('user')['permission']))
+            @if (session('user')['permission'] == "Guest")
+            <div class="dropdown d-none d-lg-inline-block align-content-center mx-3">
+                <a href="{{ route('jadi_member_premium') }}" class="btn btn-primary waves-effect waves-light">
+                    <i class="mdi mdi-star"></i>
+                    Jadi Member Premium
+                </a>
+            </div>
+            @endif
+            @else
+            <div class="dropdown d-none d-lg-inline-block align-content-center mx-3">
+                <a href="{{ route('jadi_member_premium') }}" class="btn btn-primary waves-effect waves-light">
+                    <i class="mdi mdi-star"></i>
+                    Jadi Member Premium
+                </a>
+            </div>
+            @endif
+
             <div class="dropdown d-none d-lg-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
                     <i class="mdi mdi-fullscreen font-size-24"></i>
                 </button>
             </div>
-
-            <!-- <div class="dropdown d-none d-lg-inline-block">
-                <a href="{{ route('pages-login') }}" type="button" class="btn header-item noti-icon waves-effect" style="text-decoration: none;">
-                    <i class="mdi mdi-power font-size-24"></i>
-                Login
-                </a>
-            </div> -->
 
             <!-- <div class="dropdown d-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
@@ -230,10 +241,48 @@
                 </div>
             </div> -->
 
+            <div class="dropdown d-inline-block ms-1">
+                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="ti-bell"></i>
+                    @if (session('my_pending_payment') == true)
+                    <span class="badge text-bg-danger rounded-pill">1</span>
+                    @endif
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                    @if (session('my_pending_payment') == true)
+                    <a href="{{ route('pembelian_anda') }}" class="text-reset notification-item">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="avatar-xs">
+                                    <span class="avatar-title border-primary rounded-circle ">
+                                        <i class="mdi mdi-cart-outline"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Transaksi</h6>
+                                <div class="text-muted">
+                                    <p class="mb-1">Anda memiliki transaksi yang belum selesai!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    @else
+                    <a href="javascript:void(0);" class="text-reset notification-item">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Tidak ada notifikasi</h6>
+                            </div>
+                        </div>
+                    </a>
+                    @endif
+                </div>
+            </div>
+
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @if (session('user')['email_verified_at'] ?? false || session('user') ?? false || session('user')['permission'] == "Admin")
+                    @if (isset(session('user')['permission']) || isset(session('user')['permission']) == "Admin")
                     <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ session('user')['name'] }} [{{ session('user')['permission'] }}]</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
                     @else
@@ -242,8 +291,10 @@
                     @endif
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    @if (session('user')['email_verified_at'] ?? false || session('user') ?? false || session('user')['permission'] == "Admin")
+                    @if (isset(session('user')['permission']))
                     <a class="dropdown-item" href="{{ route('profile') }}"><i class="mdi mdi-account-circle font-size-17 text-muted align-middle me-1"></i> Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('pembelian_anda') }}"><i class="mdi mdi-basket font-size-17 text-muted align-middle me-1"></i> Pembelian Anda</a>
                     <div class="dropdown-divider"></div>
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
@@ -256,11 +307,11 @@
                 </div>
             </div>
 
-            <div class="dropdown d-inline-block">
-                <!-- <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+            <!-- <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
                     <i class="mdi mdi-spin mdi-cog"></i>
-                </button> -->
-            </div>
+                </button>
+            </div> -->
         </div>
     </div>
 </header>

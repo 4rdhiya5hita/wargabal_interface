@@ -963,7 +963,7 @@
                                             <div class="card task-box">
                                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                                     <div class="mini-stat-icon">
-                                                        <img src="../assets/images/services/servis-vector-danger-01.svg" class="float-end" width="70" height="70">
+                                                        <img src="../assets/images/services/servis-vector-danger-03.svg" class="float-end" width="70" height="70">
                                                     </div>
                                                     <h6 class="text-uppercase font-size-16">${dataPiodalan.hari}</h6>
                                                     <p class="mb-3s">${dataPiodalan.tanggal}</p>

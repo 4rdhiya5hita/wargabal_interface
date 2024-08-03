@@ -138,7 +138,7 @@
                                 <div class="card task-box">
                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                         <div class="mini-stat-icon">
-                                            <img src="../assets/images/services/servis-vector-01.svg" class="float-end" width="70" height="70">
+                                            <img src="../assets/images/services/servis-vector-03.svg" class="float-end" width="70" height="70">
                                         </div>
                                         @if (isset($piodalan['nama']))
                                         <h6 class="text-uppercase mb-3 font-size-16">{{ $piodalan['nama'] }}</h6>
@@ -215,10 +215,10 @@
                                     <div class="card mini-stat bg-success">
                                         <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                             <div class="mini-stat-icon">
-                                                <img src="../assets/images/services/servis-vector-white-01.svg" class="float-end" width="45" height="45">
+                                                <img src="../assets/images/services/servis-vector-white-03.svg" class="float-end" width="45" height="45">
                                             </div>
                                             <div class="text-white">
-                                                <h5 class="text-white">Kelola Pura</h5>
+                                                <h5 class="text-white">Piodalan</h5>
                                             </div>
                                         </div>
                                     </div>

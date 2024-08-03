@@ -139,7 +139,7 @@
                                 </div>
                             </div><!-- end card-header -->
 
-                            <div data-simplebar class="tasklist-content p-3" style="max-height: calc(100vh - 170px);">
+                            <div data-simplebar class="tasklist-content p-3" style="max-height: calc(103vh - 170px);">
                                 <div id="todo-task" class="tasks">
                                     @foreach ($info_kita as $key => $item)
                                     @if ($item['title'] != '' && $item['title'] != null)
@@ -237,7 +237,7 @@
                                 <div class="card task-box">
                                     <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                         <div class="mini-stat-icon">
-                                            <img src="../assets/images/services/servis-vector-danger-01.svg" class="float-end" width="70" height="70">
+                                            <img src="../assets/images/services/servis-vector-danger-03.svg" class="float-end" width="70" height="70">
                                         </div>
                                         @if (isset($piodalan['hari']))
                                         <h6 class="text-uppercase mb-3 font-size-16">{{ $piodalan['hari'] }}</h6>
@@ -313,10 +313,10 @@
                                     <a href="{{ route('piodalan_page') }}" class="card mini-stat bg-danger">
                                         <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
                                             <div class="mini-stat-icon">
-                                                <img src="../assets/images/services/servis-vector-white-01.svg" width="45" height="45" class="float-end">
+                                                <img src="../assets/images/services/servis-vector-white-03.svg" width="45" height="45" class="float-end">
                                             </div>
                                             <div class="text-white">
-                                                <h5 class="text-white">Kelola Pura</h5>
+                                                <h5 class="text-white">Piodalan</h5>
                                             </div>
                                         </div>
                                     </a>
