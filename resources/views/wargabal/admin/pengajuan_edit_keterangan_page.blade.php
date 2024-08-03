@@ -318,8 +318,35 @@
         $('#list_keterangan_dicari').select2();
     });
 
+    const dataTablesLanguageSettings = {
+        "decimal": "",
+        "emptyTable": "Tidak ada data yang tersedia di tabel",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+        "infoFiltered": "(difilter dari _MAX_ total entri)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "loadingRecords": "Sedang memuat...",
+        "processing": "Sedang memproses...",
+        "search": "Cari:",
+        "zeroRecords": "Tidak ditemukan catatan yang cocok",
+        "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "next": "Berikutnya",
+            "previous": "Sebelumnya"
+        },
+        "aria": {
+            "sortAscending": ": aktifkan untuk mengurutkan kolom naik",
+            "sortDescending": ": aktifkan untuk mengurutkan kolom turun"
+        }
+    };
+    
     // Initialize DataTable
-    var table = $('#datatable_pengajuan').DataTable();
+    var table = $('#datatable_pengajuan').DataTable({
+            language: dataTablesLanguageSettings
+        });
 
     // Apply the filter
     $('input[type=radio]').change(function() {
@@ -343,7 +370,9 @@
     });
 
     $('#cari_list_keterangan').click(function() {
-        var table_list = $('#datatable_list_keterangan').DataTable();
+        var table_list = $('#datatable_list_keterangan').DataTable({
+            language: dataTablesLanguageSettings
+        });
         var id = $('#list_keterangan_dicari').val();
         var nama = $('#list_keterangan_dicari option:selected').text();       
         var keyFetch = ['fetchKeteranganHariRaya', 'fetchKeteranganAlaAyuningDewasa', 'fetchIngkel', 'fetchJejepan', 'fetchLintang', 'fetchPancaSudha', 'fetchPangarasan', 'fetchRakam', 'fetchWatekMadya', 'fetchWatekAlit', 'fetchNeptu', 'fetchEkajalarsi', 'fetchKeteranganZodiak', 'fetchPratiti', 'fetchEkawara', 'fetchDwiwara', 'fetchTriwara', 'fetchCaturwara', 'fetchPancawara', 'fetchSadwara', 'fetchSaptawara', 'fetchAstawara', 'fetchSangawara', 'fetchDasawara', 'fetchWuku'];
@@ -400,7 +429,9 @@
 
                 table_list.clear().destroy();
                 $('#tabel_list_keterangan').html(html);
-                table_list = $('#datatable_list_keterangan').DataTable();
+                table_list = $('#datatable_list_keterangan').DataTable({
+                    language: dataTablesLanguageSettings
+                });
 
                 $('#tabel_laporan_keterangan').html('<tr><td>' + jumlahTerisi + '</td><td>' + jumlahKosong + '</td><td>' + data.length + '</td></tr>');
             }

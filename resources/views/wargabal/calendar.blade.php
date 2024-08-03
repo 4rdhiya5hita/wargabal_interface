@@ -2,7 +2,7 @@
 
 <head>
 
-    @include("partials/title-meta", ["title" => "Calendar"])
+    @include("partials/title-meta", ["title" => "Kalender"])
 
     <link href="assets/libs/@fullcalendar/core/main.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/libs/@fullcalendar/daygrid/main.min.css" rel="stylesheet" type="text/css" />
@@ -28,7 +28,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" =>"Calendar","title" =>"Calendar"])
+                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" =>"Kalender","title" =>"Kalender"])
 
                 <div class="row mb-4">
                     <div class="col-xl-3">
@@ -623,6 +623,7 @@
         });
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'id',
             plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid'],
             editable: true,
             droppable: true,
@@ -642,7 +643,7 @@
             datesRender: function(info) {
                 var title = info.view.title; // Mengembalikan bulan dan tahun dalam format string
                 var [monthName, year] = title.split(' ');
-                var monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(monthName) + 1;
+                var monthIndex = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'].indexOf(monthName) + 1;
 
                 var start = new Date(info.view.activeStart.getTime() + 86400000).toISOString().split('T')[0]; // Menambahkan satu hari dan mengonversi ke string ISO
                 var end = info.view.activeEnd.toISOString().split('T')[0];

@@ -303,6 +303,7 @@
 <script>
     $(document).ready(function() {
         $('#ajukan_edit').DataTable({
+            language: window.dataTablesLanguageSettings
             // "order": [
             //     [0, "desc"]
             // ]

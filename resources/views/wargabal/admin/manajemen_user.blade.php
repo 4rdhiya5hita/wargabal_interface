@@ -227,9 +227,36 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
+    const dataTablesLanguageSettings = {
+        "decimal": "",
+        "emptyTable": "Tidak ada data yang tersedia di tabel",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+        "infoFiltered": "(difilter dari _MAX_ total entri)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "loadingRecords": "Sedang memuat...",
+        "processing": "Sedang memproses...",
+        "search": "Cari:",
+        "zeroRecords": "Tidak ditemukan catatan yang cocok",
+        "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "next": "Berikutnya",
+            "previous": "Sebelumnya"
+        },
+        "aria": {
+            "sortAscending": ": aktifkan untuk mengurutkan kolom naik",
+            "sortDescending": ": aktifkan untuk mengurutkan kolom turun"
+        }
+    };
+    
     $(document).ready(function() {
         // Initialize DataTable
-        var table = $('#datatable').DataTable();
+        var table = $('#datatable').DataTable({
+            language: dataTablesLanguageSettings
+        });
 
         // Apply the filter
         $('input[type=radio]').change(function() {
