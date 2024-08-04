@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Cache;
 class LayananController extends Controller
 {
     protected $url_web = "https://api.kalenderbali.web.id/api/";
-    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    protected $url_api = 'http://localhost:8000/api/';
+    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    // protected $url_api = 'http://localhost:8000/api/';
 
     public function hari_raya_page()
     {
