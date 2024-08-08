@@ -52,13 +52,13 @@
                             <li><a href="{{ route('pengajuan_edit_keterangan_page') }}">Pengajuan Keterangan</a></li>
                         </ul>
                         @elseif (session('user')['email_verified_at'])
-                        <a href="{{ route('keterangan_page') }}" class="has-arrow waves-effect">
+                        <a href="{{ route('keterangan_page') }}" class="waves-effect">
                             <i class="mdi mdi-information"></i>
                             <span>Keterangan</span>
                         </a>
                         @endif
                     @else
-                        <a href="{{ route('login_page') }}" class="has-arrow waves-effect">
+                        <a href="{{ route('login_page') }}" class="waves-effect">
                             <i class="mdi mdi-information"></i>
                             <span>Keterangan</span>
                         </a>
@@ -78,13 +78,13 @@
                             <li><a href="{{ route('manajemen_pura_user_page') }}">Manajemen Pura User</a></li>
                         </ul>
                         @elseif (session('user')['email_verified_at'])
-                        <a href="{{ route('kelola_pura_page') }}" class="has-arrow waves-effect">
+                        <a href="{{ route('kelola_pura_page') }}" class="waves-effect">
                             <i class="mdi mdi-home"></i>
                             <span>Kelola Pura</span>
                         </a>
                         @endif
                     @else
-                    <a href="{{ route('login_page') }}" class="has-arrow waves-effect">
+                    <a href="{{ route('login_page') }}" class="waves-effect">
                         <i class="mdi mdi-home"></i>
                         <span>Kelola Pura</span>
                     </a>
@@ -108,6 +108,11 @@
                         <span>Info Kita</span>
                     </a>
                     @endif
+                    @else
+                    <a href="{{ route('info_kita_page') }}" class="waves-effect">
+                        <i class="mdi mdi-newspaper"></i>
+                        <span>Info Kita</span>
+                    </a>
                     @endif
                 </li>
 

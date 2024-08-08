@@ -47,7 +47,7 @@
                                 <h4 class="card-title">{{ $keterangan['nama'] }}</h4>
                                 <p class="card-title-desc">{{ $keterangan['keterangan'] }}</p>
 
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <table id="datatable" class="table table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -66,25 +66,29 @@
                                             <td>
                                                 <!-- edit button to open modals -->
                                                 @if(session('user')['permission'] == "Admin")
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editModal{{ $value['id'] }}">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                    Edit
-                                                </button>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $value['id'] }}">
+                                                        <i class="mdi mdi-pencil"></i>
+                                                        <span class="d-none d-xl-inline-block">Edit</span>
+                                                        <!-- Edit -->
+                                                    </button>
                                                 @elseif(session('user')['contribution_status'] == 1)
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ajukanEditModal{{ $value['id'] }}">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                    Ajukan Edit
-                                                </button>
+                                                    <button type="button" class="btn btn-primary waves-effect" data-bs-toggle="modal" data-bs-target="#ajukanEditModal{{ $value['id'] }}">
+                                                        <i class="mdi mdi-pencil"></i>
+                                                        <span class="d-none d-xl-inline-block">Ajukan Edit</span>
+                                                        <!-- Ajukan Edit -->
+                                                    </button>
                                                 @elseif(session('user')['contribution_status'] == null && session('user')['permission'] == "Member" || session('user')['permission'] == "Guest")
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#ajukanKontribusiModal">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                    Pengajuan sebagai Kontributor
-                                                </button>
+                                                    <button type="button" class="btn btn-primary waves-effect" data-bs-toggle="modal" data-bs-target="#ajukanKontribusiModal">
+                                                        <i class="mdi mdi-pencil"></i>
+                                                        <span class="d-none d-xl-inline-block">Pengajuan sebagai Kontributor</span>
+                                                        <!-- Pengajuan sebagai Kontributor -->
+                                                    </button>
                                                 @else
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" id="joinMember">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                    Pengajuan sebagai Kontributor
-                                                </button>
+                                                    <button type="button" class="btn btn-primary waves-effect" id="joinMember">
+                                                        <i class="mdi mdi-pencil"></i>
+                                                        <span class="d-none d-xl-inline-block">Pengajuan sebagai Kontributor</span>
+                                                        <!-- Pengajuan sebagai Kontributor -->
+                                                    </button>
                                                 @endif
                                             </td>
                                         </tr>

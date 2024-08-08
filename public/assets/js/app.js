@@ -177,7 +177,11 @@ function ChartColorChangeSparkLine(series, chartupdate, chartId) {
                     }
                 }
             }
-            window.addEventListener("resize", updateMenu);
+            window.addEventListener("resize", function() {
+                if(window.innerWidth > 992) {
+                    updateMenu();
+                }
+            });
         }
     }
 

@@ -3,7 +3,7 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index.html" class="logo logo-dark">
+                <a href="{{ route('index') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -12,7 +12,7 @@
                     </span>
                 </a>
 
-                <a href="index.html" class="logo logo-light">
+                <a href="{{ route('index') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -105,145 +105,30 @@
 
             @if (isset(session('user')['permission']))
             @if (session('user')['permission'] == "Guest")
-            <div class="dropdown d-none d-lg-inline-block align-content-center mx-3">
-                <a href="{{ route('jadi_member_premium') }}" class="btn btn-primary waves-effect waves-light">
-                    <i class="mdi mdi-star"></i>
-                    Jadi Member Premium
-                </a>
+            <div class="dropdown d-lg-inline-block align-self-center mx-3">
+                <button type="button" class="btn btn-primary waves-effect waves-light">
+                    <span class="d-xl-inline-block">Premium</span>
+                </button>
             </div>
             @endif
             @else
-            <div class="dropdown d-none d-lg-inline-block align-content-center mx-3">
-                <a href="{{ route('jadi_member_premium') }}" class="btn btn-primary waves-effect waves-light">
+            <div class="dropdown d-lg-inline-block align-self-center mx-3">
+                <button type="button" class="btn btn-primary waves-effect waves-light">
                     <i class="mdi mdi-star"></i>
-                    Jadi Member Premium
-                </a>
+                    <span class="d-xl-inline-block">Premium</span>
+                </button>
             </div>
             @endif
 
             <div class="dropdown d-none d-lg-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
-                    <i class="mdi mdi-fullscreen font-size-24"></i>
+                    <i class="fa fa-expand-arrows-alt fa-2x"></i>
                 </button>
             </div>
 
-            <!-- <div class="dropdown d-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="ti-bell"></i>
-                    <span class="badge text-bg-danger rounded-pill">3</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                    aria-labelledby="page-header-notifications-dropdown">
-                    <div class="p-3">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h5 class="m-0"> Notifications (258) </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-simplebar style="max-height: 230px;">
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-xs">
-                                    <span class="avatar-title border-success rounded-circle ">
-                                        <i class="mdi mdi-cart-outline"></i>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Your order is placed</h6>
-                                    <div class="text-muted">
-                                        <p class="mb-1">If several languages coalesce the grammar</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-xs">
-                                    <span class="avatar-title border-warning rounded-circle ">
-                                        <i class="mdi mdi-message"></i>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">New Message received</h6>
-                                    <div class="text-muted">
-                                        <p class="mb-1">You have 87 unread messages</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-xs">
-                                    <span class="avatar-title border-info rounded-circle ">
-                                        <i class="mdi mdi-glass-cocktail"></i>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Your item is shipped</h6>
-                                    <div class="text-muted">
-                                        <p class="mb-1">It is a long established fact that a reader will</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-xs">
-                                    <span class="avatar-title border-primary rounded-circle ">
-                                        <i class="mdi mdi-cart-outline"></i>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Your order is placed</h6>
-                                    <div class="text-muted">
-                                        <p class="mb-1">Dummy text of the printing and typesetting industry.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <div class="avatar-xs">
-                                    <span class="avatar-title border-warning rounded-circle ">
-                                        <i class="mdi mdi-message"></i>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">New Message received</h6>
-                                    <div class="text-muted">
-                                        <p class="mb-1">You have 87 unread messages</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="p-2 border-top">
-                        <a class="btn btn-sm btn-link font-size-14 w-100 text-center" href="javascript:void(0)">
-                            View all
-                        </a>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="dropdown d-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="ti-bell"></i>
+                <button type="button" class="btn header-item waves-effect" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bell font-size-24"></i>
                     @if (session('my_pending_payment') == true)
                     <span class="badge text-bg-danger rounded-pill">1</span>
                     @endif
@@ -281,15 +166,21 @@
 
 
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @if (isset(session('user')['permission']) || isset(session('user')['permission']) == "Admin")
-                    <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ session('user')['name'] }} [{{ session('user')['permission'] }}]</span>
-                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
-                    @else
+                @if (isset(session('user')['permission']) || isset(session('user')['permission']) == "Admin")
+                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle font-size-24"></i>
+                </button>
+                <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ session('user')['name'] }} [{{ session('user')['permission'] }}]</span>
+                <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
+                @else
+                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle font-size-24"></i>
                     <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">User</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
-                    @endif
                 </button>
+                @endif
                 <div class="dropdown-menu dropdown-menu-end">
                     @if (isset(session('user')['permission']))
                     <a class="dropdown-item" href="{{ route('profile') }}"><i class="mdi mdi-account-circle font-size-17 text-muted align-middle me-1"></i> Profile</a>

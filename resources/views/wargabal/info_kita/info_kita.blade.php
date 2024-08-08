@@ -40,7 +40,7 @@
                                                         <a href="{{ route('info_kita_detail_page', ['id' => $info_kita[$i]['id']] ) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Klik untuk melihat informasi lengkap">>
 
                                                             <img class="d-block w-100 img-fluid" src="https://api.kalenderbali.web.id/storage/{{ $info_kita[$i]['image'] }}" alt="First slide">
-                                                            <div class="card position-absolute start-50 w-100 translate-middle" style="height:350px;">
+                                                            <div class="card position-absolute start-50 w-100 translate-middle" style="height:150px;">
                                                                 <div class="card-body bottom-0" style="border: 2px solid #fff;">
                                                                     <h4 class="card-title">{{ $info_kita[$i]['title'] }}</h4>
                                                                     @php
