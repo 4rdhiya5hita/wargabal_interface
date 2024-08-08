@@ -418,7 +418,7 @@
     }
 
     document.getElementById('emailButton').addEventListener('click', function() {
-        var email = 'super@gmail.com';
+        var email = 'bali.integrated.solution@gmail.com';
         var subject = 'Ajukan Edit Piodalan Pura';
         var body = 'Halo, saya ingin mengajukan diri sebagai penanggungjawab pura untuk mengedit susunan acara piodalan pura. \n\n --Silahkan isi detail dari data diri Anda, dan informasi lengkap Pura yang ingin diklaim sebagai pura dibawah tanggungjawab Anda-- \n\nTerima kasih.';
         var mailtoLink = createMailtoLink(email, subject, body);
