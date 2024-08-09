@@ -20,7 +20,7 @@
         <!-- ============================================================== -->
 
         <div class="main-content">
-            <div class="page-content px-5" style="padding-top: 130px;">
+            <div class="page-content px-5" style="padding-top: 100px;">
                 <div class="w-100">
 
                     <div class="row">
@@ -39,8 +39,8 @@
                                                     <div class="position-relative">
                                                         <a href="{{ route('info_kita_detail_page', ['id' => $info_kita[$i]['id']] ) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Klik untuk melihat informasi lengkap">>
 
-                                                            <img class="d-block w-100 img-fluid" src="https://api.kalenderbali.web.id/storage/{{ $info_kita[$i]['image'] }}" alt="First slide">
-                                                            <div class="card position-absolute start-50 w-100 translate-middle" style="height:150px;">
+                                                            <img id="myImage_{{$i}}" class="d-block w-100 img-fluid" src="https://api.kalenderbali.web.id/storage/{{ $info_kita[$i]['image'] }}" alt="First slide">
+                                                            <div id="myCard_{{$i}}" class="card position-absolute start-50 w-100 translate-middle">
                                                                 <div class="card-body bottom-0" style="border: 2px solid #fff;">
                                                                     <h4 class="card-title">{{ $info_kita[$i]['title'] }}</h4>
                                                                     @php
@@ -290,6 +290,35 @@
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
+
+    <script>
+        var card = document.getElementById('myCard');
+        var image = document.getElementById('myImage');
+        var countInfoKita = {{ count($info_kita) }};
+        
+        for (var i = 0; i < countInfoKita; i++) {
+            var card = document.getElementById('myCard_' + i);
+            var image = document.getElementById('myImage_' + i);
+            if (window.innerWidth < 500) {
+                card.style.height = '185px';
+                image.style.maxWidth = '100%';
+                image.style.maxHeight = '225px';
+                image.style.objectFit = 'cover';
+            } else {
+                card.style.height = '350px';
+                image.style.maxWidth = '100%';
+                image.style.maxHeight = '500px';
+                image.style.objectFit = 'cover';
+            }
+        }
+
+
+        if (window.innerWidth < 992) {
+            $('#dropdown-menu-layanan').on('click', function() {
+                $('#layanan').toggleClass('show');
+            });
+        }
+    </script>
 
 </body>
 

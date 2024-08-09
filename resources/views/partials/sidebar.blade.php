@@ -135,7 +135,7 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-account-box"></i>
-                        <span> Authentication </span>
+                        <span> Autentikasi </span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('login_page') }}">Masuk</a></li>

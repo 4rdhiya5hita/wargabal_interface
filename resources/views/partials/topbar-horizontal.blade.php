@@ -41,7 +41,7 @@
                         <i class="mdi mdi-chevron-down d-xl-inline-block font-size-15"></i>
                         @endif
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    <div class="dropdown-menu dropdown-menu-left">
                         @if (isset(session('user')['permission']) || isset(session('user')['permission']) == "Admin")
                         <a class="dropdown-item" href="{{ route('profile') }}"><i class="mdi mdi-account-circle font-size-17 text-muted align-middle me-1"></i> Profile</a>
                         <div class="dropdown-divider"></div>
@@ -76,7 +76,7 @@
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('index') }}">
-                                    <i class="mdi mdi-view-dashboard">
+                                    <i class="mdi mdi-view-dashboard font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Dashboard</span>
                                     </i>
                                 </a>
@@ -84,7 +84,7 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('calendar') }}">
-                                    <i class="mdi mdi-calendar-check">
+                                    <i class="mdi mdi-calendar-check font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Kalender Bali</span>
                                     </i>
                                 </a>
@@ -92,33 +92,31 @@
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-email" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-feature-search">
+                                    <i class="mdi mdi-feature-search font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Layanan</span>
                                     </i>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-email">
-                                    <div class="dropdown-menu-sm">
-                                        <a href="{{ route('hari_raya_page') }}" class="dropdown-item">Hari Raya</a>
-                                        <a href="{{ route('ala_ayuning_dewasa_page') }}" class="dropdown-item">Ala Ayuning Dewasa</a>
-                                        <a href="{{ route('piodalan_page') }}" class="dropdown-item">Piodalan</a>
-                                        <a href="{{ route('otonan_page') }}" class="dropdown-item">Otonan</a>
-                                        <a href="{{ route('mengatur_kriteria_awal_page') }}" class="dropdown-item">Mengatur Dewasa</a>
-                                        <a href="{{ route('wariga_personal_page') }}" class="dropdown-item">Wariga Personal</a>
-                                        <a href="{{ route('ramalan_sifat_page') }}" class="dropdown-item">Ramalan Sifat</a>
-                                    </div>
+                                <div class="dropdown-menu" id="dropdown-menu-layanan" aria-labelledby="topnav-email">
+                                    <a href="{{ route('hari_raya_page') }}" class="dropdown-item" id="layanan">Hari Raya</a>
+                                    <a href="{{ route('ala_ayuning_dewasa_page') }}" class="dropdown-item" id="layanan">Ala Ayuning Dewasa</a>
+                                    <a href="{{ route('piodalan_page') }}" class="dropdown-item" id="layanan">Piodalan</a>
+                                    <a href="{{ route('otonan_page') }}" class="dropdown-item" id="layanan">Otonan</a>
+                                    <a href="{{ route('mengatur_kriteria_awal_page') }}" class="dropdown-item" id="layanan">Mengatur Dewasa</a>
+                                    <a href="{{ route('wariga_personal_page') }}" class="dropdown-item" id="layanan">Wariga Personal</a>
+                                    <a href="{{ route('ramalan_sifat_page') }}" class="dropdown-item" id="layanan">Ramalan Sifat</a>
                                 </div>
                             </li>
 
                             <li class="nav-item">
                                 @if (isset(session('user')['permission']) || isset(session('user')['permission']) == "Admin")
                                 <a class="nav-link" href="{{ route('keterangan_page') }}">
-                                    <i class="mdi mdi-information">
+                                    <i class="mdi mdi-information font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Keterangan</span>
                                     </i>
                                 </a>
                                 @else
                                 <a class="nav-link" href="{{ route('login_page') }}">
-                                    <i class="mdi mdi-information">
+                                    <i class="mdi mdi-information font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Keterangan</span>
                                     </i>
                                 </a>
@@ -129,7 +127,7 @@
                             @if (session('user')['permission'] == "Admin")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-email" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-home">
+                                    <i class="mdi mdi-home font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Kelola Pura</span>
                                     </i>
                                 </a>
@@ -141,7 +139,7 @@
                             @elseif (session('user')['email_verified_at'])
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('kelola_pura_page') }}">
-                                    <i class="mdi mdi-home">
+                                    <i class="mdi mdi-home font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block">Kelola Pura</span>
                                     </i>
                                 </a>
@@ -150,7 +148,7 @@
                             @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login_page') }}">
-                                    <i class="mdi mdi-home">
+                                    <i class="mdi mdi-home font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Kelola Pura</span>
                                     </i>
                                 </a>
@@ -161,7 +159,7 @@
                             @if(session('user')['permission'] == "Admin")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-email" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-newspaper">
+                                    <i class="mdi mdi-newspaper font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Info Kita</span>
                                     </i>
                                 </a>
@@ -173,7 +171,7 @@
                             @elseif (session('user')['email_verified_at'])
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('info_kita_page') }}">
-                                    <i class="mdi mdi-newspaper">
+                                    <i class="mdi mdi-newspaper font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Info Kita</span>
                                     </i>
                                 </a>
@@ -182,7 +180,7 @@
                             @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('info_kita_page') }}">
-                                    <i class="mdi mdi-newspaper">
+                                    <i class="mdi mdi-newspaper font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Info Kita</span>
                                     </i>
                                 </a>
@@ -193,7 +191,7 @@
                             @if(session('user')['permission'] == "Admin")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-email" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-account-group">
+                                    <i class="mdi mdi-account-group font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Manajemen User</span>
                                     </i>
                                 </a>
@@ -208,11 +206,11 @@
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-email" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="mdi mdi-account-box">
+                                    <i class="mdi mdi-account-box font-size-14" style="font-style: normal;">
                                         <span class="d-none d-xl-inline-block"> Autentikasi</span>
                                     </i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-left" aria-labelledby="topnav-email">
+                                <div class="dropdown-menu" id="dropdown-menu-autentikasi" aria-labelledby="topnav-email">
                                     <a href="{{ route('login_page') }}" class="dropdown-item">Masuk</a>
                                     <a href="{{ route('register_page') }}" class="dropdown-item">Daftar</a>
                                 </div>
