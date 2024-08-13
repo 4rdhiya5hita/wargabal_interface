@@ -36,8 +36,8 @@
                                         <div class="carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
                                             <div class="carousel-inner" role="listbox">
                                                 @for ($i = 0; $i < count($info_kita); $i++) @if ($info_kita[$i]['image'] !='' && $info_kita[$i]['image'] !=null) <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                                                    <div class="position-relative">
-                                                        <a href="{{ route('info_kita_detail_page', ['id' => $info_kita[$i]['id']] ) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Klik untuk melihat informasi lengkap">>
+                                                    <div id="myPosition_{{$i}}" class="position-relative">
+                                                        <a href="{{ route('info_kita_detail_page', ['id' => $info_kita[$i]['id']] ) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Klik untuk melihat informasi lengkap">
 
                                                             <img id="myImage_{{$i}}" class="d-block w-100 img-fluid" src="https://api.kalenderbali.web.id/storage/{{ $info_kita[$i]['image'] }}" alt="First slide">
                                                             <div id="myCard_{{$i}}" class="card position-absolute start-50 w-100 translate-middle">
@@ -299,19 +299,21 @@
         for (var i = 0; i < countInfoKita; i++) {
             var card = document.getElementById('myCard_' + i);
             var image = document.getElementById('myImage_' + i);
+            var position = document.getElementById('myPosition_' + i);
             if (window.innerWidth < 500) {
                 card.style.height = '185px';
                 image.style.maxWidth = '100%';
                 image.style.maxHeight = '225px';
                 image.style.objectFit = 'cover';
+                position.style.height = '250px';
             } else {
                 card.style.height = '350px';
                 image.style.maxWidth = '100%';
                 image.style.maxHeight = '500px';
                 image.style.objectFit = 'cover';
+                position.style.height = '450px';
             }
         }
-
 
         if (window.innerWidth < 992) {
             $('#dropdown-menu-layanan').on('click', function() {

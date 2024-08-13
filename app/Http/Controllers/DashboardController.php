@@ -53,6 +53,13 @@ class DashboardController extends Controller
         $adminController = new AdminController();
         $get_info_kita = $adminController->fetch_info_kita();
         $info_kita = json_decode($get_info_kita->getContent(), true);
+        $today = date('Y-m-d');
+        foreach ($info_kita as $key => $info) {
+            if ($today < $info['show_at_home_page_from'] || $today > $info['show_at_home_page_until']) {
+                unset($info_kita[$key]); // hapus array yang tidak ditampilkan
+            }
+        }
+        $info_kita = array_values($info_kita);
         $info_kita = array_reverse($info_kita);
 
         foreach ($info_hari_raya as $key => $item) {

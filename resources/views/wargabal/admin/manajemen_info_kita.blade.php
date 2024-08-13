@@ -50,6 +50,7 @@
                                             <th>Judul</th>
                                             <th>Konten</th>
                                             <th>Tanggal Tampil</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -172,6 +173,7 @@
 
     function showInfoKita() {    
         var htmlTabelInfoKita = "";
+        var today = new Date().toISOString().split('T')[0];
         $.ajax({
             url: "{{ route('fetch_info_kita') }}",
             type: "GET",
@@ -193,6 +195,13 @@
                     var tanggal_akhir_tampil = ubahTanggal(value.show_at_home_page_until);
 
                     htmlTabelInfoKita += "<td>" + tanggal_awal_tampil + " - " + tanggal_akhir_tampil + "</td>";
+                    htmlTabelInfoKita += "<td>";
+                    if (today >= value.show_at_home_page_from && today <= value.show_at_home_page_until) {
+                        htmlTabelInfoKita += "<span class='badge bg-success font-size-12'>Aktif</span>";
+                    } else {
+                        htmlTabelInfoKita += "<span class='badge bg-danger font-size-12'>Tidak Aktif</span>";
+                    }
+                    htmlTabelInfoKita += "</td>";
                     htmlTabelInfoKita += "<td>";
                     htmlTabelInfoKita += "<button type='button' class='btn btn-info waves-effect waves-light m-1' value='" + value.id + "' onclick='detailInfoKita(" + value.id + ")'>";
                     htmlTabelInfoKita += "<i class='mdi mdi-information-outline'></i>";
