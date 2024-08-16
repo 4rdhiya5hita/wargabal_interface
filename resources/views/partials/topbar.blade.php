@@ -170,15 +170,19 @@
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle font-size-24"></i>
+                    <div class="waves-effect">
+                        <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ session('user')['name'] }} [{{ session('user')['permission'] }}]</span>
+                        <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
+                    </div>
                 </button>
-                <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ session('user')['name'] }} [{{ session('user')['permission'] }}]</span>
-                <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
                 @else
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle font-size-24"></i>
-                    <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">User</span>
-                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
+                    <div class="waves-effect">
+                        <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">User</span>
+                        <i class="mdi mdi-chevron-down d-none d-xl-inline-block font-size-15"></i>
+                    </div>
                 </button>
                 @endif
                 <div class="dropdown-menu dropdown-menu-end">

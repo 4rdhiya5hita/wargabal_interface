@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Cache;
 class LayananController extends Controller
 {
     protected $url_web = "https://api.kalenderbali.web.id/api/";
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    // protected $url_api = 'http://localhost:8000/api/';
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = 'http://localhost:8000/api/';
 
     public function hari_raya_page()
     {
@@ -1977,9 +1977,9 @@ class LayananController extends Controller
         $user = session('user');
         $cek_pura_user = false;
         // $daftar_user = [];
-        if ($user['permission'] == 'Admin') {
+        if (isset(session('user')['permission']) && session('user')['permission'] == 'Admin') {
             $cek_pura_user = true;
-        } else {
+        } else if (isset(session('user')['permission'])) {
             foreach ($daftar_pura_user as $item) {
                 // $daftar_user[] = $item['user_id'];
                 if ($item['pura_id'] == $id) {

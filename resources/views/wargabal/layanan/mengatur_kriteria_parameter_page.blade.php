@@ -21,7 +21,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Mengatur Dewasa", "title" => "Mengatur Dewasa"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Layanan", "title" => "Mengatur Dewasa"])
 
                 <div class="row">
                     <div class="col-md-10">
@@ -343,14 +343,14 @@
 
     function hapusDropdownDicariTemplate(index) {
         kriteria_item_dicari_all.splice(index, 1);
-        console.log('kriteria_item_dicari_all', kriteria_item_dicari_all);
+        // console.log('kriteria_item_dicari_all', kriteria_item_dicari_all);
         template_kriteria_dicari.splice(index, 1);
         document.getElementById('dicari-container').innerHTML = createDisabledInputsDicari(template_kriteria_dicari);
     }
 
     function hapusDropdownDihindariTemplate(index) {
         kriteria_item_dihindari_all.splice(index, 1);
-        console.log('kriteria_item_dihindari_all', kriteria_item_dihindari_all);
+        // console.log('kriteria_item_dihindari_all', kriteria_item_dihindari_all);
         template_kriteria_dihindari.splice(index, 1);
         document.getElementById('dihindari-container').innerHTML = createDisabledInputsDihindari(template_kriteria_dihindari);
     }
@@ -426,8 +426,8 @@
                 });
             });
 
-        console.log('index', index);
-        console.log('item_sementara_dicari', item_sementara_dicari);
+        // console.log('index', index);
+        // console.log('item_sementara_dicari', item_sementara_dicari);
     }
 
     function hapusDropdownDicari(button, index) {
@@ -440,7 +440,7 @@
         }
 
         item_sementara_dicari.splice(id - 1, 1);
-        console.log('item_sementara_dicari', item_sementara_dicari);
+        // console.log('item_sementara_dicari', item_sementara_dicari);
 
         // Update label kriteria dicari index
         var kriteriaIndexLabels = document.querySelectorAll('.kriteria-index');
@@ -489,7 +489,7 @@
         var id = itemDropdown.id;
 
         item_sementara_dicari[id - 1] = selectedText;
-        console.log('item_sementara_dicari', item_sementara_dicari);
+        // console.log('item_sementara_dicari', item_sementara_dicari);
     }
 
     function tambahDropdownDihindari() {
@@ -544,7 +544,7 @@
         }
 
         item_sementara_dihindari.splice(id - 1, 1);
-        console.log('item_sementara_dihindari', item_sementara_dihindari);
+        // console.log('item_sementara_dihindari', item_sementara_dihindari);
 
         // Update label kriteria dihindari index
         var kriteriaIndexLabels = document.querySelectorAll('.kriteria-index');
@@ -593,7 +593,7 @@
         var id = itemDropdown.id;
 
         item_sementara_dihindari[id - 1] = selectedText;
-        console.log('item_sementara_dihindari', item_sementara_dihindari);
+        // console.log('item_sementara_dihindari', item_sementara_dihindari);
     }
 
     // buat agar button mengatur parameter muncul ketika menekan tombol tambah dropdown
@@ -629,7 +629,7 @@
                 var valid = true;
 
                 document.querySelectorAll('select[name="kriteria_key_dicari[]"]').forEach(function(select) {
-                    console.log('select', select);
+                    // console.log('select', select);
                     if (select.value === "" || select.value === "Select Key" || select.value === "Select Item") {
                         valid = false;
                         item_sementara_dicari = [];
@@ -671,7 +671,7 @@
                         });
                     });
 
-                    console.log('kriteria_item_dicari:', kriteria_item_dicari);
+                    // console.log('kriteria_item_dicari:', kriteria_item_dicari);
         
         
                     // Menambahkan array kriteria dicari baru ke dalam array yang lebih besar
@@ -705,7 +705,7 @@
                             iterasiDicari++;
                         });
                     } else {
-                        console.log('Array dicari kosong');
+                        // console.log('Array dicari kosong');
                     }
                 }
 
@@ -759,8 +759,8 @@
                     document.querySelectorAll('.kriteria_dihindari_key').forEach(input => input.value = '');
                     document.querySelectorAll('.kriteria_dihindari_item').forEach(input => input.value = '');
 
-                    console.log('dicari', kriteria_item_dicari_all);
-                    console.log('dihindari', kriteria_item_dihindari_all);
+                    // console.log('dicari', kriteria_item_dicari_all);
+                    // console.log('dihindari', kriteria_item_dihindari_all);
 
                     // Mengubah setiap array kriteria menjadi satu baris dengan 'atau' di antara setiap array
                     var dihindariOptions = kriteria_item_dihindari_all.map(kriteria => kriteria.map(item => item.key + ': ' + item.item).join(', '));
@@ -787,7 +787,7 @@
                             iterasiDihindari++;
                         });
                     } else {
-                        console.log('Array dihindari kosong');
+                        // console.log('Array dihindari kosong');
                     }
                 }
             }
@@ -822,15 +822,15 @@
                     iterasiDicari++;
                 });
             } else {
-                console.log('Array dicari kosong');
+                // console.log('Array dicari kosong');
             }
 
             // Mengosongkan input kriteria dihindari
             document.querySelectorAll('.kriteria_dihindari_key').forEach(input => input.value = '');
             document.querySelectorAll('.kriteria_dihindari_item').forEach(input => input.value = '');
 
-            console.log('dicari', kriteria_item_dicari_all);
-            console.log('dihindari', kriteria_item_dihindari_all);
+            // console.log('dicari', kriteria_item_dicari_all);
+            // console.log('dihindari', kriteria_item_dihindari_all);
 
             // Mengubah setiap array kriteria menjadi satu baris dengan 'atau' di antara setiap array
             var dihindariOptions = kriteria_item_dihindari_all.map(kriteria => kriteria.map(item => item.key + ': ' + item.item).join(', '));
@@ -857,7 +857,7 @@
                     iterasiDihindari++;
                 });
             } else {
-                console.log('Array dihindari kosong');
+                // console.log('Array dihindari kosong');
             }
 
             // sembunyikan div template pilihan
@@ -909,8 +909,8 @@
 
         // Munculkan tombol ya dan tidak
         document.getElementById('konfirmasi').style.display = 'block';
-        console.log('kriteria_dicari_input', kriteriaDicariInput);
-        console.log('form', document.querySelector('form'));
+        // console.log('kriteria_dicari_input', kriteriaDicariInput);
+        // console.log('form', document.querySelector('form'));
     });
 </script>
 

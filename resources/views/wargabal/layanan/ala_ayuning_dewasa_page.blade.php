@@ -45,7 +45,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Ala Ayuning Dewasa", "title" => "Ala Ayuning Dewasa"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Layanan", "title" => "Ala Ayuning Dewasa"])
 
                 <div class="row">
                     <div class="col-md-10">

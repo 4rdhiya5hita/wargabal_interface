@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Keuangan Pura", "title" => "Keuangan Pura"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Kelola Pura", "title" => "Keuangan Pura"])
 
                 <div class="row">
                     <div class="col-md-10">

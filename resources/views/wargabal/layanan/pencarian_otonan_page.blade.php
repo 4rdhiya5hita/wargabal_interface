@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Otonan", "title" => "Otonan"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Layanan", "title" => "Otonan"])
 
                 @if ($cari_dengan == 'tanggal_lahir')
                 <div class="row">
@@ -503,10 +503,10 @@
 
                             </div>
                         </div>
-                    </div>
-
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ route('otonan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ route('otonan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        </div>
                     </div>
                 </div>
 

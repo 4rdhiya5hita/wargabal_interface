@@ -28,7 +28,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" =>"Calendar","title" =>"Calendar"])
+                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" => "Layanan","title" => "Wariga Personal"])
 
                 <div class="row mb-4">
                     <div class="col-xl-3">

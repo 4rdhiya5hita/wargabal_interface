@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Keterangan", "title" => "Keterangan"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Keterangan", "title" => "Keterangan Ekajalarsi"])
 
                 <div class="row">
                     <div class="col-md-12">
@@ -65,6 +65,7 @@
                                             <td>{{ $value['keterangan'] }}</td>
                                             <td>
                                                 <!-- edit button to open modals -->
+                                                @if(isset(session('user')['permission']))
                                                 @if(session('user')['permission'] == "Admin")
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $value['id'] }}">
                                                         <i class="mdi mdi-pencil"></i>
@@ -89,6 +90,13 @@
                                                         <span class="d-none d-xl-inline-block">Pengajuan sebagai Kontributor</span>
                                                         <!-- Pengajuan sebagai Kontributor -->
                                                     </button>
+                                                @endif
+                                                @else
+                                                <button type="button" class="btn btn-primary waves-effect" id="joinMember">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                    <span class="d-none d-xl-inline-block">Pengajuan sebagai Kontributor</span>
+                                                    <!-- Pengajuan sebagai Kontributor -->
+                                                </button>
                                                 @endif
                                             </td>
                                         </tr>

@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Piodalan", "title" => "Piodalan"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Layanan", "title" => "Piodalan"])
 
                 @if($cari_dengan == 'wewaran')
 
@@ -242,10 +242,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        </div>
 
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
                     </div>
                 </div>
 
@@ -466,10 +466,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        </div>
 
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
                     </div>
                 </div>
 
@@ -660,10 +660,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ route('piodalan_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        </div>
+                        
                     </div>
                 </div>
 

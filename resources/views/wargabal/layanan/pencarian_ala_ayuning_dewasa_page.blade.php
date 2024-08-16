@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Ala Ayuning Dewasa", "title" => "Ala Ayuning Dewasa"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Layanan", "title" => "Ala Ayuning Dewasa"])
 
                 @if ($cari_dengan == 'nama')
                 <div class="row">
@@ -173,6 +173,10 @@
                                 @endforeach
                             </div>
                         </div>
+                        
+                        <div class="d-flex justify-content-start mt-3">
+                            <a href="{{ route('ala_ayuning_dewasa_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
+                        </div>
                     </div>
 
                     <div class="col-lg-6 col-md-6 mt-4 mb-4">
@@ -214,10 +218,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="d-flex justify-content-start mt-3">
-                        <a href="{{ route('ala_ayuning_dewasa_page') }}" type="button" class="btn btn-primary mb-2">Kembali</a>
                     </div>
                 </div>
 
@@ -469,7 +469,7 @@
             $('#' + modalId).modal('show');
             
             // modal pada openKalendar dibuat agar mengecil dengan mengubah style heightnya
-            console.log(openKalendar);
+            // console.log(openKalendar);
             $('#' + openKalendar).css('height', 0);
 
             // $('.icon-close-modal').hide();

@@ -2,11 +2,18 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="page-title-box">
+            <!-- jika variabel title tidak ada maka ganti dengan subtitle -->
+             @if (empty($title))
+            <h4>{{ $subtitle }}</h4>
+            @else
             <h4>{{ $title }}</h4>
+            @endif
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">{{ $pagetitle }}</a></li>
                     <li class="breadcrumb-item"><a href="javascript: void(0);">{{ $subtitle }}</a></li>
+                    @if (!empty($title))
                     <li class="breadcrumb-item active">{{ $title }}</li>
+                    @endif
                 </ol>
         </div>
     </div>

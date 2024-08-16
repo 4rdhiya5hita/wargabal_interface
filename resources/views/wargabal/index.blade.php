@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Dashboard", "title" => "Dashboard"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Dashboard"])
 
                 <div class="row">
                     <div class="col-xl-12">
@@ -134,8 +134,8 @@
                         <div class="card pb-4">
                             <div class="card-header bg-transparent border-bottom d-flex align-items-start mb-3">
                                 <div class="flex-grow-1">
-                                    <h4 class="card-title mb-0">Kumpulan Berita <span class="font-size-14 text-muted"></span></h4>
-                                    <p class="text-muted mb-0">Temukan berita-berita terkini disini</p>
+                                    <h4 class="card-title mb-0">Kumpulan Info Kita <span class="font-size-14 text-muted"></span></h4>
+                                    <p class="text-muted mb-0">Temukan informasi-informasi terkini disini</p>
                                 </div>
                             </div><!-- end card-header -->
 

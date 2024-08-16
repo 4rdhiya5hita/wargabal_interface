@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Piodalan Pura", "title" => "Piodalan Pura"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Kelola Pura", "title" => "Piodalan Pura"])
 
                 <div class="row">
                     <div class="col-md-10">
@@ -116,9 +116,14 @@
                                 <button type="button" class="btn btn-primary waves-effect waves-light mt-3" data-bs-toggle="modal" data-bs-target="#createPiodalanPuraModal">
                                     <i class="mdi mdi-plus"></i> Tambah Acara
                                 </button>
-                                @else
+                                @elseif ($cek_pura_user == false && isset(session('user')['permission']))
                                 <button type="button" class="btn btn-warning waves-effect waves-light mt-3" onclick="isPremium('{{ session('user')['permission'] }}')">
                                     <i class="mdi mdi-pencil"></i> Ajukan Edit Piodalan
+                                </button>
+                                @else
+                                <button type="button" class="btn btn-warning waves-effect waves-light mt-3" onclick="isPremium('User')">
+                                    <i class="mdi mdi-pencil"></i> Ajukan Edit Piodalan
+                                </button>
                                 @endif
                             </div>
                         </div>
@@ -188,11 +193,15 @@
                                 <a type="button" class="btn btn-danger d-flex justify-content-center align-items-center font-size-14" data-bs-toggle="modal" data-bs-target="#hapusPiodalan{{ $value['id'] }}">
                                     <i class="mdi mdi-delete me-1"></i> Hapus Piodalan</a>
                             </div>
-                            @else
+                            @elseif ($cek_pura_user == false && isset(session('user')['permission']))
                             <div class="row mb-2">
                                 <a type="button" class="btn btn-warning d-flex justify-content-center align-items-center font-size-14" onclick="isPremium('{{ session('user')['permission'] }}')">
                                     <i class="mdi mdi-pencil me-1"></i> Ajukan Edit Piodalan</a>
                             </div>
+                            @else
+                            <div class="row mb-2">
+                                <a type="button" class="btn btn-warning d-flex justify-content-center align-items-center font-size-14" onclick="isPremium('User')">
+                                    <i class="mdi mdi-pencil me-1"></i> Ajukan Edit Piodalan</a>
                             @endif
                         </div>
                     </div>
@@ -431,10 +440,17 @@
         if ($permission == 'Member') {
             // open modal
             $('#ajukanPuraUserModal').modal('show');            
-        } else {
+        } else if ($permission == 'Guest') {
             Swal.fire({
                 title: 'Error!',
                 html: 'Anda belum menjadi <b>Member Premium</b>',
+                icon: 'error',
+                confirmButtonText: 'Cancel'
+            });
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                html: 'Anda belum login',
                 icon: 'error',
                 confirmButtonText: 'Cancel'
             });

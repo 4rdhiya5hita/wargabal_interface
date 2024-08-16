@@ -22,7 +22,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Acara Piodalan Pura", "title" => "Acara Piodalan Pura"])
+                @include("partials/page-title", ["pagetitle" => "Wargabal", "subtitle" => "Kelola Pura", "title" => "Acara Piodalan Pura"])
 
                 <div class="row">
                     <div class="col-md-10">
@@ -56,33 +56,40 @@
                     <div class="col-md-12">
                         <div class="card z-index-2 ">
                             <div class="card bg-transparent shadow-none mb-0">
-                                <div class="card mini-stat bg-light">
-                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
-                                        @php
-                                        $hari_indonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
-                                        $bulan_indonesia = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                        $hari = $hari_indonesia[date('N', strtotime($info_piodalan_pura['date'])) - 1];
-                                        $hari_tanggal_indonesia = $hari . ', ' . date('d', strtotime($info_piodalan_pura['date'])) . ' ' . $bulan_indonesia[date('m', strtotime($info_piodalan_pura['date'])) - 1] . ' ' . date('Y', strtotime($info_piodalan_pura['date']));
-                                        @endphp
-                                        <h5 class="mt-1 mb-3">Deskripsi Piodalan</h5>
-                                        <p class="mb-0">Tanggal Piodalan: {{ $hari_tanggal_indonesia }} </p>
-                                        <p class="mb-0">Deskripsi Piodalan: {{ $info_piodalan_pura['description'] }}</p>
-                                        <p class="mb-0">Level Piodalan: {{ $info_piodalan_pura['level'] }}</p>
-                                        <p class="mb-3"></p>
-                                        <hr class="horizontal light my-3">
-
-                                        <h5 class="mt-1 mb-3">Daftar Acara Piodalan Pura</h5>
-                                        <p class="mb-0">Susunan acara dari piodalan pura yang disusun oleh penanggungjawab pura. Penanggungjawab pura telah terverifikasi dan tergabung dalam komunitas Website Kalender Bali. 
-                                        Berikut adalah susunan acara piodalan pura yang telah dijadwalkan tersebut:</p>
-                                        @if ($cek_pura_user == true)
-                                        <button type="button" class="btn btn-primary waves-effect waves-light mt-3" data-bs-toggle="modal" data-bs-target="#createAcaraPiodalanPuraModal">
-                                            <i class="mdi mdi-plus"></i> Tambah Acara
-                                        </button>
-                                        @else
-                                        <button type="button" class="btn btn-primary waves-effect waves-light mt-3" data-bs-toggle="modal" data-bs-target="#ajukanPuraUserModal">
-                                            <i class="mdi mdi-pencil"></i> Ajukan Edit Piodalan
-                                        @endif
-                                    </div>
+                                <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                    @php
+                                    $hari_indonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                                    $bulan_indonesia = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                    $hari = $hari_indonesia[date('N', strtotime($info_piodalan_pura['date'])) - 1];
+                                    $hari_tanggal_indonesia = $hari . ', ' . date('d', strtotime($info_piodalan_pura['date'])) . ' ' . $bulan_indonesia[date('m', strtotime($info_piodalan_pura['date'])) - 1] . ' ' . date('Y', strtotime($info_piodalan_pura['date']));
+                                    @endphp
+                                    <h5 class="mt-1 mb-3">Deskripsi Piodalan</h5>
+                                    <p class="mb-0">Tanggal Piodalan: {{ $hari_tanggal_indonesia }} </p>
+                                    <p class="mb-0">Deskripsi Piodalan: {{ $info_piodalan_pura['description'] }}</p>
+                                    <p class="mb-0">Level Piodalan: {{ $info_piodalan_pura['level'] }}</p>
+                                    <p class="mb-3"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                        
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card z-index-2 ">
+                            <div class="card bg-transparent shadow-none mb-0">
+                                <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                    <h5 class="mt-1 mb-3">Daftar Acara Piodalan Pura</h5>
+                                    <p class="mb-0">Susunan acara dari piodalan pura yang disusun oleh penanggungjawab pura. Penanggungjawab pura telah terverifikasi dan tergabung dalam komunitas Website Kalender Bali. 
+                                    Berikut adalah susunan acara piodalan pura yang telah dijadwalkan tersebut:</p>
+                                    @if ($cek_pura_user == true)
+                                    <button type="button" class="btn btn-primary waves-effect waves-light mt-3" data-bs-toggle="modal" data-bs-target="#createAcaraPiodalanPuraModal">
+                                        <i class="mdi mdi-plus"></i> Tambah Acara
+                                    </button>
+                                    @else
+                                    <button type="button" class="btn btn-primary waves-effect waves-light mt-3" data-bs-toggle="modal" data-bs-target="#ajukanPuraUserModal">
+                                        <i class="mdi mdi-pencil"></i> Ajukan Edit Piodalan
+                                    @endif
                                 </div>
                             </div>
                         </div>

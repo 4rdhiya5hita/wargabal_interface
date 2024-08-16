@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class PurchaseController extends Controller
 {
     protected $url_web = "https://api.kalenderbali.web.id/api/";
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    // protected $url_api = "http://localhost:8000/api/";
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = "http://localhost:8000/api/";
 
     public function jadi_member_premium()
     {

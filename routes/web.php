@@ -83,29 +83,8 @@ Route::get('/kalender_bali_page', [DashboardController::class, 'kalender_bali_pa
 Route::get('/hari_raya_page', [LayananController::class, 'hari_raya_page'])->name('hari_raya_page');
 Route::get('/ala_ayuning_dewasa_page', [LayananController::class, 'ala_ayuning_dewasa_page'])->name('ala_ayuning_dewasa_page');
 Route::get('/piodalan_page', [LayananController::class, 'piodalan_page'])->name('piodalan_page');
-Route::get('/kelola_pura_page', [LayananController::class, 'kelola_pura_page'])->name('kelola_pura_page');
 Route::get('/otonan_page', [LayananController::class, 'otonan_page'])->name('otonan_page');
 Route::get('/ramalan_sifat_page', [LayananController::class, 'ramalan_sifat_page'])->name('ramalan_sifat_page');
-
-Route::get('/manajemen_pura_user_page', [AdminController::class, 'manajemen_pura_user_page'])->name('manajemen_pura_user_page');
-Route::get('/fetch_pura_user', [AdminController::class, 'fetch_pura_user'])->name('fetch_pura_user');
-Route::post('/create_pura_user', [AdminController::class, 'create_pura_user'])->name('create_pura_user');
-Route::post('/edit_pura_user', [AdminController::class, 'edit_pura_user'])->name('edit_pura_user');
-Route::post('/delete_pura_user', [AdminController::class, 'delete_pura_user'])->name('delete_pura_user');
-
-Route::get('piodalan_pura_page/{id}', [LayananController::class, 'piodalan_pura_page'])->name('piodalan_pura_page');
-Route::post('create_piodalan_pura/{id}', [LayananController::class, 'create_piodalan_pura'])->name('create_piodalan_pura');
-Route::post('edit_piodalan_pura/{id}', [LayananController::class, 'edit_piodalan_pura'])->name('edit_piodalan_pura');
-Route::post('hapus_piodalan_pura/{id}', [LayananController::class, 'hapus_piodalan_pura'])->name('hapus_piodalan_pura');
-
-Route::get('acara_piodalan_pura/{piodalan_id}/{pura_id}', [LayananController::class, 'acara_piodalan_pura'])->name('acara_piodalan_pura');
-Route::post('create_acara_piodalan_pura/{id}', [LayananController::class, 'create_acara_piodalan_pura'])->name('create_acara_piodalan_pura');
-Route::post('edit_acara_piodalan_pura/{id}', [LayananController::class, 'edit_acara_piodalan_pura'])->name('edit_acara_piodalan_pura');
-Route::post('hapus_acara_piodalan_pura/{id}', [LayananController::class, 'hapus_acara_piodalan_pura'])->name('hapus_acara_piodalan_pura');
-
-Route::get('keuangan_pura_page/{id}', [LayananController::class, 'keuangan_pura_page'])->name('keuangan_pura_page');
-Route::post('edit_keuangan_pura/{id}', [LayananController::class, 'edit_keuangan_pura'])->name('edit_keuangan_pura');
-Route::post('hapus_keuangan_pura/{id}', [LayananController::class, 'hapus_keuangan_pura'])->name('hapus_keuangan_pura');
 
 Route::get('/mengatur_kriteria_awal_page', [LayananController::class, 'mengatur_kriteria_awal_page'])->name('mengatur_kriteria_awal_page');
 Route::post('/mengatur_kriteria_parameter_page', [LayananController::class, 'mengatur_kriteria_parameter_page'])->name('mengatur_kriteria_parameter_page');
@@ -122,70 +101,94 @@ Route::post('/cari_ramalan_sifat', [LayananController::class, 'cari_ramalan_sifa
 Route::get('/fetchKeys', [LayananController::class, 'fetchKeys'])->name('fetchKeys');
 Route::get('/fetchItems', [LayananController::class, 'fetchItems'])->name('fetchItems');
 
-Route::get('/keterangan_page', [KeteranganController::class, 'keterangan_page'])->name('keterangan_page');
-Route::post('/ajukan_edit/{id}', [KeteranganController::class, 'ajukan_edit'])->name('ajukan_edit');
-Route::get('/pengajuan_edit_keterangan_page', [AdminController::class, 'pengajuan_edit_keterangan_page'])->name('pengajuan_edit_keterangan_page');
-Route::post('/edit_pengajuan_keterangan', [AdminController::class, 'edit_pengajuan_keterangan'])->name('edit_pengajuan_keterangan');
-
 Route::get('/jadi_member_premium', [PurchaseController::class, 'jadi_member_premium'])->name('jadi_member_premium');
 Route::get('/pembelian_anda', [PurchaseController::class, 'pembelian_anda'])->name('pembelian_anda');
 Route::post('/purchase', [PurchaseController::class, 'purchase'])->name('purchase');
 
-Route::get('/keterangan_ekawara_page', [KeteranganController::class, 'keterangan_ekawara_page'])->name('keterangan_ekawara_page');
-Route::get('/keterangan_dwiwara_page', [KeteranganController::class, 'keterangan_dwiwara_page'])->name('keterangan_dwiwara_page');
-Route::get('/keterangan_triwara_page', [KeteranganController::class, 'keterangan_triwara_page'])->name('keterangan_triwara_page');
-Route::get('/keterangan_caturwara_page', [KeteranganController::class, 'keterangan_caturwara_page'])->name('keterangan_caturwara_page');
-Route::get('/keterangan_pancawara_page', [KeteranganController::class, 'keterangan_pancawara_page'])->name('keterangan_pancawara_page');
-Route::get('/keterangan_sadwara_page', [KeteranganController::class, 'keterangan_sadwara_page'])->name('keterangan_sadwara_page');
-Route::get('/keterangan_saptawara_page', [KeteranganController::class, 'keterangan_saptawara_page'])->name('keterangan_saptawara_page');
-Route::get('/keterangan_astawara_page', [KeteranganController::class, 'keterangan_astawara_page'])->name('keterangan_astawara_page');
-Route::get('/keterangan_sangawara_page', [KeteranganController::class, 'keterangan_sangawara_page'])->name('keterangan_sangawara_page');
-Route::get('/keterangan_dasawara_page', [KeteranganController::class, 'keterangan_dasawara_page'])->name('keterangan_dasawara_page');
+Route::middleware(['permission'])->group(function () {
+    Route::get('/kelola_pura_page', [LayananController::class, 'kelola_pura_page'])->name('kelola_pura_page');
 
-Route::get('/keterangan_ingkel_page', [KeteranganController::class, 'keterangan_ingkel_page'])->name('keterangan_ingkel_page');
-Route::get('/keterangan_jejepan_page', [KeteranganController::class, 'keterangan_jejepan_page'])->name('keterangan_jejepan_page');
-Route::get('/keterangan_lintang_page', [KeteranganController::class, 'keterangan_lintang_page'])->name('keterangan_lintang_page');
-Route::get('/keterangan_rakam_page', [KeteranganController::class, 'keterangan_rakam_page'])->name('keterangan_rakam_page');
-Route::get('/keterangan_watek_madya_page', [KeteranganController::class, 'keterangan_watek_madya_page'])->name('keterangan_watek_madya_page');
-Route::get('/keterangan_watek_alit_page', [KeteranganController::class, 'keterangan_watek_alit_page'])->name('keterangan_watek_alit_page');
-Route::get('/keterangan_neptu_page', [KeteranganController::class, 'keterangan_neptu_page'])->name('keterangan_neptu_page');
-Route::get('/keterangan_ekajalarsi_page', [KeteranganController::class, 'keterangan_ekajalarsi_page'])->name('keterangan_ekajalarsi_page');
-Route::get('/keterangan_panca_sudha_page', [KeteranganController::class, 'keterangan_panca_sudha_page'])->name('keterangan_panca_sudha_page');
-Route::get('/keterangan_pangarasan_page', [KeteranganController::class, 'keterangan_pangarasan_page'])->name('keterangan_pangarasan_page');
-Route::get('/keterangan_pratiti_page', [KeteranganController::class, 'keterangan_pratiti_page'])->name('keterangan_pratiti_page');
-Route::get('/keterangan_zodiak_page', [KeteranganController::class, 'keterangan_zodiak_page'])->name('keterangan_zodiak_page');
-Route::get('/keterangan_wuku_page', [KeteranganController::class, 'keterangan_wuku_page'])->name('keterangan_wuku_page');
+    Route::get('/manajemen_pura_user_page', [AdminController::class, 'manajemen_pura_user_page'])->name('manajemen_pura_user_page');
+    Route::get('/fetch_pura_user', [AdminController::class, 'fetch_pura_user'])->name('fetch_pura_user');
+    Route::post('/create_pura_user', [AdminController::class, 'create_pura_user'])->name('create_pura_user');
+    Route::post('/edit_pura_user', [AdminController::class, 'edit_pura_user'])->name('edit_pura_user');
+    Route::post('/delete_pura_user', [AdminController::class, 'delete_pura_user'])->name('delete_pura_user');
 
-Route::get('/keterangan_hari_raya_page', [KeteranganController::class, 'keterangan_hari_raya_page'])->name('keterangan_hari_raya_page');
-Route::get('/keterangan_ala_ayuning_dewasa_page', [KeteranganController::class, 'keterangan_ala_ayuning_dewasa_page'])->name('keterangan_ala_ayuning_dewasa_page');
+    Route::get('piodalan_pura_page/{id}', [LayananController::class, 'piodalan_pura_page'])->name('piodalan_pura_page');
+    Route::post('create_piodalan_pura/{id}', [LayananController::class, 'create_piodalan_pura'])->name('create_piodalan_pura');
+    Route::post('edit_piodalan_pura/{id}', [LayananController::class, 'edit_piodalan_pura'])->name('edit_piodalan_pura');
+    Route::post('hapus_piodalan_pura/{id}', [LayananController::class, 'hapus_piodalan_pura'])->name('hapus_piodalan_pura');
 
-Route::post('/edit_ala_ayuning_dewasa/{id}', [KeteranganController::class, 'edit_ala_ayuning_dewasa'])->name('edit_ala_ayuning_dewasa');
-Route::post('/edit_hari_raya/{id}', [KeteranganController::class, 'edit_hari_raya'])->name('edit_hari_raya');
+    Route::get('acara_piodalan_pura/{piodalan_id}/{pura_id}', [LayananController::class, 'acara_piodalan_pura'])->name('acara_piodalan_pura');
+    Route::post('create_acara_piodalan_pura/{id}', [LayananController::class, 'create_acara_piodalan_pura'])->name('create_acara_piodalan_pura');
+    Route::post('edit_acara_piodalan_pura/{id}', [LayananController::class, 'edit_acara_piodalan_pura'])->name('edit_acara_piodalan_pura');
+    Route::post('hapus_acara_piodalan_pura/{id}', [LayananController::class, 'hapus_acara_piodalan_pura'])->name('hapus_acara_piodalan_pura');
 
-Route::post('/edit_ekawara/{id}', [KeteranganController::class, 'edit_ekawara'])->name('edit_ekawara');
-Route::post('/edit_dwiwara/{id}', [KeteranganController::class, 'edit_dwiwara'])->name('edit_dwiwara');
-Route::post('/edit_triwara/{id}', [KeteranganController::class, 'edit_triwara'])->name('edit_triwara');
-Route::post('/edit_caturwara/{id}', [KeteranganController::class, 'edit_caturwara'])->name('edit_caturwara');
-Route::post('/edit_pancawara/{id}', [KeteranganController::class, 'edit_pancawara'])->name('edit_pancawara');
-Route::post('/edit_sadwara/{id}', [KeteranganController::class, 'edit_sadwara'])->name('edit_sadwara');
-Route::post('/edit_saptawara/{id}', [KeteranganController::class, 'edit_saptawara'])->name('edit_saptawara');
-Route::post('/edit_astawara/{id}', [KeteranganController::class, 'edit_astawara'])->name('edit_astawara');
-Route::post('/edit_sangawara/{id}', [KeteranganController::class, 'edit_sangawara'])->name('edit_sangawara');
-Route::post('/edit_dasawara/{id}', [KeteranganController::class, 'edit_dasawara'])->name('edit_dasawara');
+    Route::get('keuangan_pura_page/{id}', [LayananController::class, 'keuangan_pura_page'])->name('keuangan_pura_page');
+    Route::post('edit_keuangan_pura/{id}', [LayananController::class, 'edit_keuangan_pura'])->name('edit_keuangan_pura');
+    Route::post('hapus_keuangan_pura/{id}', [LayananController::class, 'hapus_keuangan_pura'])->name('hapus_keuangan_pura');
 
-Route::post('/edit_ingkel/{id}', [KeteranganController::class, 'edit_ingkel'])->name('edit_ingkel');
-Route::post('/edit_jejepan/{id}', [KeteranganController::class, 'edit_jejepan'])->name('edit_jejepan');
-Route::post('/edit_lintang/{id}', [KeteranganController::class, 'edit_lintang'])->name('edit_lintang');
-Route::post('/edit_rakam/{id}', [KeteranganController::class, 'edit_rakam'])->name('edit_rakam');
-Route::post('/edit_watek_madya/{id}', [KeteranganController::class, 'edit_watek_madya'])->name('edit_watek_madya');
-Route::post('/edit_watek_alit/{id}', [KeteranganController::class, 'edit_watek_alit'])->name('edit_watek_alit');
-Route::post('/edit_neptu/{id}', [KeteranganController::class, 'edit_neptu'])->name('edit_neptu');
-Route::post('/edit_ekajalarsi/{id}', [KeteranganController::class, 'edit_ekajalarsi'])->name('edit_ekajalarsi');
-Route::post('/edit_panca_sudha/{id}', [KeteranganController::class, 'edit_panca_sudha'])->name('edit_panca_sudha');
-Route::post('/edit_pangarasan/{id}', [KeteranganController::class, 'edit_pangarasan'])->name('edit_pangarasan');
-Route::post('/edit_pratiti/{id}', [KeteranganController::class, 'edit_pratiti'])->name('edit_pratiti');
-Route::post('/edit_zodiak/{id}', [KeteranganController::class, 'edit_zodiak'])->name('edit_zodiak');
-Route::post('/edit_wuku/{id}', [KeteranganController::class, 'edit_wuku'])->name('edit_wuku');
+    Route::get('/keterangan_page', [KeteranganController::class, 'keterangan_page'])->name('keterangan_page');
+    Route::post('/ajukan_edit/{id}', [KeteranganController::class, 'ajukan_edit'])->name('ajukan_edit');
+    Route::get('/pengajuan_edit_keterangan_page', [AdminController::class, 'pengajuan_edit_keterangan_page'])->name('pengajuan_edit_keterangan_page');
+    Route::post('/edit_pengajuan_keterangan', [AdminController::class, 'edit_pengajuan_keterangan'])->name('edit_pengajuan_keterangan');
+    
+    Route::get('/keterangan_ekawara_page', [KeteranganController::class, 'keterangan_ekawara_page'])->name('keterangan_ekawara_page');
+    Route::get('/keterangan_dwiwara_page', [KeteranganController::class, 'keterangan_dwiwara_page'])->name('keterangan_dwiwara_page');
+    Route::get('/keterangan_triwara_page', [KeteranganController::class, 'keterangan_triwara_page'])->name('keterangan_triwara_page');
+    Route::get('/keterangan_caturwara_page', [KeteranganController::class, 'keterangan_caturwara_page'])->name('keterangan_caturwara_page');
+    Route::get('/keterangan_pancawara_page', [KeteranganController::class, 'keterangan_pancawara_page'])->name('keterangan_pancawara_page');
+    Route::get('/keterangan_sadwara_page', [KeteranganController::class, 'keterangan_sadwara_page'])->name('keterangan_sadwara_page');
+    Route::get('/keterangan_saptawara_page', [KeteranganController::class, 'keterangan_saptawara_page'])->name('keterangan_saptawara_page');
+    Route::get('/keterangan_astawara_page', [KeteranganController::class, 'keterangan_astawara_page'])->name('keterangan_astawara_page');
+    Route::get('/keterangan_sangawara_page', [KeteranganController::class, 'keterangan_sangawara_page'])->name('keterangan_sangawara_page');
+    Route::get('/keterangan_dasawara_page', [KeteranganController::class, 'keterangan_dasawara_page'])->name('keterangan_dasawara_page');
+    
+    Route::get('/keterangan_ingkel_page', [KeteranganController::class, 'keterangan_ingkel_page'])->name('keterangan_ingkel_page');
+    Route::get('/keterangan_jejepan_page', [KeteranganController::class, 'keterangan_jejepan_page'])->name('keterangan_jejepan_page');
+    Route::get('/keterangan_lintang_page', [KeteranganController::class, 'keterangan_lintang_page'])->name('keterangan_lintang_page');
+    Route::get('/keterangan_rakam_page', [KeteranganController::class, 'keterangan_rakam_page'])->name('keterangan_rakam_page');
+    Route::get('/keterangan_watek_madya_page', [KeteranganController::class, 'keterangan_watek_madya_page'])->name('keterangan_watek_madya_page');
+    Route::get('/keterangan_watek_alit_page', [KeteranganController::class, 'keterangan_watek_alit_page'])->name('keterangan_watek_alit_page');
+    Route::get('/keterangan_neptu_page', [KeteranganController::class, 'keterangan_neptu_page'])->name('keterangan_neptu_page');
+    Route::get('/keterangan_ekajalarsi_page', [KeteranganController::class, 'keterangan_ekajalarsi_page'])->name('keterangan_ekajalarsi_page');
+    Route::get('/keterangan_panca_sudha_page', [KeteranganController::class, 'keterangan_panca_sudha_page'])->name('keterangan_panca_sudha_page');
+    Route::get('/keterangan_pangarasan_page', [KeteranganController::class, 'keterangan_pangarasan_page'])->name('keterangan_pangarasan_page');
+    Route::get('/keterangan_pratiti_page', [KeteranganController::class, 'keterangan_pratiti_page'])->name('keterangan_pratiti_page');
+    Route::get('/keterangan_zodiak_page', [KeteranganController::class, 'keterangan_zodiak_page'])->name('keterangan_zodiak_page');
+    Route::get('/keterangan_wuku_page', [KeteranganController::class, 'keterangan_wuku_page'])->name('keterangan_wuku_page');
+    
+    Route::get('/keterangan_hari_raya_page', [KeteranganController::class, 'keterangan_hari_raya_page'])->name('keterangan_hari_raya_page');
+    Route::get('/keterangan_ala_ayuning_dewasa_page', [KeteranganController::class, 'keterangan_ala_ayuning_dewasa_page'])->name('keterangan_ala_ayuning_dewasa_page');
+    
+    Route::post('/edit_ala_ayuning_dewasa/{id}', [KeteranganController::class, 'edit_ala_ayuning_dewasa'])->name('edit_ala_ayuning_dewasa');
+    Route::post('/edit_hari_raya/{id}', [KeteranganController::class, 'edit_hari_raya'])->name('edit_hari_raya');
+    
+    Route::post('/edit_ekawara/{id}', [KeteranganController::class, 'edit_ekawara'])->name('edit_ekawara');
+    Route::post('/edit_dwiwara/{id}', [KeteranganController::class, 'edit_dwiwara'])->name('edit_dwiwara');
+    Route::post('/edit_triwara/{id}', [KeteranganController::class, 'edit_triwara'])->name('edit_triwara');
+    Route::post('/edit_caturwara/{id}', [KeteranganController::class, 'edit_caturwara'])->name('edit_caturwara');
+    Route::post('/edit_pancawara/{id}', [KeteranganController::class, 'edit_pancawara'])->name('edit_pancawara');
+    Route::post('/edit_sadwara/{id}', [KeteranganController::class, 'edit_sadwara'])->name('edit_sadwara');
+    Route::post('/edit_saptawara/{id}', [KeteranganController::class, 'edit_saptawara'])->name('edit_saptawara');
+    Route::post('/edit_astawara/{id}', [KeteranganController::class, 'edit_astawara'])->name('edit_astawara');
+    Route::post('/edit_sangawara/{id}', [KeteranganController::class, 'edit_sangawara'])->name('edit_sangawara');
+    Route::post('/edit_dasawara/{id}', [KeteranganController::class, 'edit_dasawara'])->name('edit_dasawara');
+    
+    Route::post('/edit_ingkel/{id}', [KeteranganController::class, 'edit_ingkel'])->name('edit_ingkel');
+    Route::post('/edit_jejepan/{id}', [KeteranganController::class, 'edit_jejepan'])->name('edit_jejepan');
+    Route::post('/edit_lintang/{id}', [KeteranganController::class, 'edit_lintang'])->name('edit_lintang');
+    Route::post('/edit_rakam/{id}', [KeteranganController::class, 'edit_rakam'])->name('edit_rakam');
+    Route::post('/edit_watek_madya/{id}', [KeteranganController::class, 'edit_watek_madya'])->name('edit_watek_madya');
+    Route::post('/edit_watek_alit/{id}', [KeteranganController::class, 'edit_watek_alit'])->name('edit_watek_alit');
+    Route::post('/edit_neptu/{id}', [KeteranganController::class, 'edit_neptu'])->name('edit_neptu');
+    Route::post('/edit_ekajalarsi/{id}', [KeteranganController::class, 'edit_ekajalarsi'])->name('edit_ekajalarsi');
+    Route::post('/edit_panca_sudha/{id}', [KeteranganController::class, 'edit_panca_sudha'])->name('edit_panca_sudha');
+    Route::post('/edit_pangarasan/{id}', [KeteranganController::class, 'edit_pangarasan'])->name('edit_pangarasan');
+    Route::post('/edit_pratiti/{id}', [KeteranganController::class, 'edit_pratiti'])->name('edit_pratiti');
+    Route::post('/edit_zodiak/{id}', [KeteranganController::class, 'edit_zodiak'])->name('edit_zodiak');
+    Route::post('/edit_wuku/{id}', [KeteranganController::class, 'edit_wuku'])->name('edit_wuku');
+});
 
 Route::get('/fetchKeteranganHariRaya', [LayananController::class, 'keteranganHariRaya'])->name('fetchKeteranganHariRaya');
 Route::get('/fetchKeteranganAlaAyuningDewasa', [LayananController::class, 'keteranganAlaAyuningDewasa'])->name('fetchKeteranganAlaAyuningDewasa');

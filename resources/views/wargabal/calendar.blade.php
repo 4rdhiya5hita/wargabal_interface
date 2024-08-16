@@ -28,7 +28,7 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" =>"Kalender","title" =>"Kalender"])
+                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" => "Kalender"])
 
                 <div class="row mb-4">
                     <div class="col-xl-3">
@@ -284,7 +284,7 @@
         }
 
         function fetchElemenKalenderBali(start, end, keterangan) {
-            console.log('fetchElemenKalenderBali', start, end);
+            // console.log('fetchElemenKalenderBali', start, end);
             fetch('/fetchElemenKalenderBali?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
@@ -463,7 +463,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (fungsi == null || fungsi == false) {
-                        console.log('klik');
+                        // console.log('klik');
                         var alaAyuningDewasaInnerHTML = '';
                         var strToday = formatDateIndonesia(start);
     
@@ -531,7 +531,7 @@
                     }
 
                     else {
-                        console.log('render');
+                        // console.log('render');
                         dataAlaAyuningDewasa = [];
                         const groupedData = {};
 
@@ -633,8 +633,97 @@
             header: {
                 left: 'prev,next',
                 center: 'title',
-                right: ''
-                // right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                right: 'customDateDropdown'
+            },
+            customButtons: {
+                customDateDropdown: {
+                    text: '.',
+                    click: function() {
+                        var htmlBulanTahunForm = '';
+                        htmlBulanTahunForm += `
+                            <div class="modal fade" id="bulan-tahun-modal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modal-title">Pilih Bulan dan Tahun</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body p-4">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label for="bulan">Bulan</label>
+                                                        <select class="form-select" id="bulan" required>
+                                                            <option value="1" @if(date('m') == 1) selected @endif>Januari</option>
+                                                            <option value="2" @if(date('m') == 2) selected @endif>Februari</option>
+                                                            <option value="3" @if(date('m') == 3) selected @endif>Maret</option>
+                                                            <option value="4" @if(date('m') == 4) selected @endif>April</option>
+                                                            <option value="5" @if(date('m') == 5) selected @endif>Mei</option>
+                                                            <option value="6" @if(date('m') == 6) selected @endif>Juni</option>
+                                                            <option value="7" @if(date('m') == 7) selected @endif>Juli</option>
+                                                            <option value="8" @if(date('m') == 8) selected @endif>Agustus</option>
+                                                            <option value="9" @if(date('m') == 9) selected @endif>September</option>
+                                                            <option value="10" @if(date('m') == 10) selected @endif>Oktober</option>
+                                                            <option value="11" @if(date('m') == 11) selected @endif>November</option>
+                                                            <option value="12" @if(date('m') == 12) selected @endif>Desember</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Bulan harus diisi!</div>
+                                                        <div class="valid-feedback">Ok!</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label for="tahun">Tahun</label>
+                                                        <input type="number" class="form-control" id="tahun" placeholder="contoh: 2000, 2018, ..." value="{{ date('Y') }}" required>
+                                                        <div class="invalid-feedback">Tahun harus diisi!</div>
+                                                        <div class="valid-feedback">Ok!</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button type="button" id="submitBulanTahun" class="btn btn-primary w-md waves-effect waves-light">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        modalSelengkapnya.innerHTML = htmlBulanTahunForm;
+
+                        var modal = new bootstrap.Modal(document.getElementById('bulan-tahun-modal'), {
+                            keyboard: false
+                        });
+
+                        modal.show();
+
+                        // Tambahkan event listener setelah elemen modal ada di DOM
+                        document.getElementById('submitBulanTahun').addEventListener('click', function() {
+                            var bulan = document.getElementById('bulan').value;
+                            var tahun = document.getElementById('tahun').value;
+
+                            if (bulan && tahun) {
+                                var start = `${tahun}-${bulan}-01`;
+                                var end = `${tahun}-${bulan}-31`;
+
+                                calendar.gotoDate(new Date(start));
+                                fetchZodiak(bulan);
+                                fetchPiodalan(start, end);
+                                fetchHariRaya(start, end);
+                                fetchAlaAyuningDewasa(start, end, 'fungsi');
+                                
+                                document.querySelector('.fc-customDateDropdown-button').innerHTML = '<i class="fa fa-calendar"></i>';
+                                modal.hide();
+                            } else if (!bulan) {
+                                document.getElementById('bulan').classList.add('is-invalid');
+                            } else if (!tahun) {
+                                document.getElementById('tahun').classList.add('is-invalid');
+                            }
+
+                        });
+                    }
+                }
             },
             eventClick: function(info) {
                 var eventTitle = info.event.title;
@@ -663,6 +752,8 @@
             }
         });
         calendar.render();
+
+        document.querySelector('.fc-customDateDropdown-button').innerHTML = '<i class="fa fa-calendar"></i>';
 
         function formatDate(date) {
             var year = date.getFullYear();
@@ -794,7 +885,7 @@
                 .then(response => response.json())
                 .then(data => {
                     dataZodiak.push(data[0]);
-                    console.log('dataZodiak', dataZodiak);
+                    // console.log('dataZodiak', dataZodiak);
                     calendar.addEventSource(data);
                     var zodiakInnerHTML = '';
 
@@ -1023,7 +1114,7 @@
         $('body').on('click', 'a[data-loop-iteration]', function(event) {
             event.preventDefault(); // Mencegah tindakan default dari anchor link
             var loopIteration = $(this).data('loop-iteration');
-            console.log(loopIteration);
+            // console.log(loopIteration);
             var modalId = 'detail-' + loopIteration;
             openModal.push(modalId); // tambahkan openModal baru ke array
 
