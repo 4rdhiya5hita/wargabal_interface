@@ -585,41 +585,41 @@
         const keterangan = @json($keterangan);
         const user = @json(session('user'));
         document.getElementById('elemenKalenderBalibtn').addEventListener('click', function() {
-            if (user && user.permission == 'Member') {
+            // if (user && user.permission == 'Member') {
                 var startISOString = newEventData.date.toISOString(); // Mendapatkan string ISO
                 var startDate = new Date(startISOString); // Mengonversi ke objek Date
                 startDate.setDate(startDate.getDate() + 1); // Menambahkan satu hari
     
                 var strDate = startDate.toISOString().split('T')[0];
                 fetchElemenKalenderBali(strDate, strDate, keterangan);
-            } else {
-                // sweet alert untuk member premium
-                Swal.fire({
-                    title: 'Error!',
-                    html: 'Anda belum menjadi <b>Member Premium</b>',
-                    icon: 'error',
-                    confirmButtonText: 'Cancel'
-                });
-            }
+            // } else {
+            //     // sweet alert untuk member premium
+            //     Swal.fire({
+            //         title: 'Error!',
+            //         html: 'Anda belum menjadi <b>Member Premium</b>',
+            //         icon: 'error',
+            //         confirmButtonText: 'Cancel'
+            //     });
+            // }
         });
 
         document.getElementById('alaAyuningDewasabtn').addEventListener('click', function() {
-            if (user && user.permission == 'Member') {
+            // if (user && user.permission == 'Member') {
                 var startISOString = newEventData.date.toISOString();
                 var startDate = new Date(startISOString); 
                 startDate.setDate(startDate.getDate() + 1); 
 
                 var strDate = startDate.toISOString().split('T')[0];
                 fetchAlaAyuningDewasa(strDate, strDate, false);
-            } else {
-                // sweet alert untuk member premium
-                Swal.fire({
-                    title: 'Error!',
-                    html: 'Anda belum menjadi <b>Member Premium</b>',
-                    icon: 'error',
-                    confirmButtonText: 'Cancel'
-                });
-            }
+            // } else {
+            //     // sweet alert untuk member premium
+            //     Swal.fire({
+            //         title: 'Error!',
+            //         html: 'Anda belum menjadi <b>Member Premium</b>',
+            //         icon: 'error',
+            //         confirmButtonText: 'Cancel'
+            //     });
+            // }
         });
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
