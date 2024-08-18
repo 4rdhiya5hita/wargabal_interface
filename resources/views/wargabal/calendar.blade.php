@@ -823,13 +823,11 @@
                         if (item.title == "Tilem") {
                             var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
                             if (selectedDate) {
-                                console.log(selectedDate);
                                 selectedDate.innerHTML = `<i class="fa fa-circle float-end"></i> <span class="fc-day-number">${item.start.split("-")[2]}</span>`;
                             }
                         } else if (item.title == "Purnama") {
                             var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
                             if (selectedDate) {
-                                console.log(selectedDate);
                                 selectedDate.innerHTML = `
                                     <span style="color: red;">
                                         <i class="fa fa-circle float-end"></i>
