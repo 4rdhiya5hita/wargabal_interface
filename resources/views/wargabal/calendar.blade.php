@@ -730,6 +730,8 @@
                 fetchKeteranganHariRaya(eventTitle);
             },
             datesRender: function(info) {
+                document.querySelector('.fc-customDateDropdown-button').innerHTML = '<i class="fa fa-calendar"></i>';
+
                 var title = info.view.title; // Mengembalikan bulan dan tahun dalam format string
                 var [monthName, year] = title.split(' ');
                 var monthIndex = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'].indexOf(monthName) + 1;
@@ -752,8 +754,6 @@
             }
         });
         calendar.render();
-
-        document.querySelector('.fc-customDateDropdown-button').innerHTML = '<i class="fa fa-calendar"></i>';
 
         function formatDate(date) {
             var year = date.getFullYear();
@@ -819,7 +819,26 @@
                     let count = 0;
 
                     data.forEach(function(item) {
-                        // jika sudah loop ke 3, maka tampilkan 'Dan lainnya ...'
+                        
+                        if (item.title == "Tilem") {
+                            var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
+                            if (selectedDate) {
+                                console.log(selectedDate);
+                                selectedDate.innerHTML = `<i class="fa fa-circle float-end"></i> <span class="fc-day-number">${item.start.split("-")[2]}</span>`;
+                            }
+                        } else if (item.title == "Purnama") {
+                            var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
+                            if (selectedDate) {
+                                console.log(selectedDate);
+                                selectedDate.innerHTML = `
+                                    <span style="color: red;">
+                                        <i class="fa fa-circle float-end"></i>
+                                    </span>
+                                    <span class="fc-day-number">${item.start.split('-')[2]}</span>
+                                `;
+                            }
+                        }
+
                         count++;
                         if (count <= 3) {
 
