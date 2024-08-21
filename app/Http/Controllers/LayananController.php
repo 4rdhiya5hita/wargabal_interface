@@ -2537,7 +2537,7 @@ class LayananController extends Controller
         $keterangan = $layanan->callKeteranganElemenKalenderBali();
         // dd($keterangan);
 
-        $auth_con = new AuthenticationController();
+        $auth_con = new AdminController();
 
         $validatedData = $request->validate([
             'tanggal_lahir_dicari' => 'required|date',

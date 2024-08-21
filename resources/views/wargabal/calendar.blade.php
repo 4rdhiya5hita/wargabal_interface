@@ -10,6 +10,18 @@
     <link href="assets/libs/@fullcalendar/timegrid/main.min.css" rel="stylesheet" type="text/css" />
 
     @include("partials/head-css")
+    <style>
+        .fullscreen {
+            width: 100vw;
+            height: 100%;
+            background-color: white; /* Mengatur warna background elemen */
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            padding-bottom: 40px;
+            overflow: hidden; /* Mencegah scroll pada elemen jika ada konten yang lebih besar */
+        }
+    </style>
 
 </head>
 
@@ -25,12 +37,13 @@
     <!-- ============================================================== -->
     <div class="main-content">
 
-        <div class="page-content">
-            <div class="container-fluid">
-
+        <div id="page-content" class="page-content">
+            <div id="container-fluid" class="container-fluid">
                 @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" => "Kalender"])
 
-                <div class="row mb-4">
+                <div id="rowLayout" class="row mb-4">
+                    <div id="calenderLayout" class="col-xl-9"></div>
+
                     <div class="col-xl-3">
                         <div class="card">
                             <div class="card-body">
@@ -48,19 +61,8 @@
                             </div>
                         </div>
                     </div> <!-- end col-->
-
-                    <div class="col-xl-9">
-                        <div class="card mt-4 mt-xl-0 mb-0">
-                            <div class="card-body">
-                                <div id="calendar">
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- end col -->
                 </div>
                 <!-- end row -->
-
-                
 
                 <!-- chooseEventForm -->
                 <div class="modal fade" id="chooseEventForm" tabindex="-1">
@@ -86,19 +88,19 @@
 
                 <div id="modalHariRaya"></div>
                 <div id="modalSelengkapnya"></div>
+                <!-- end modal-->
 
             </div>
-            <!-- end modal-->
+            <!-- container-fluid -->
         </div>
-        <!-- container-fluid -->
+        <!-- End Page-content -->
+        
+        <div id="footer">
+            @include("partials/footer")
+        </div>
     </div>
-    <!-- End Page-content -->
-
-
-    @include("partials/footer")
-</div>
-<!-- end main content-->
-
+    <!-- end main content-->
+    
 </div>
 <!-- END layout-wrapper -->
 
@@ -122,6 +124,33 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        $('.fc-view-container').css('height', '300px');
+
+        document.getElementById('calenderLayout').classList.remove('col-xl-9');
+        document.getElementById('calenderLayout').innerHTML = `
+        <div class="fullscreen">
+            <div id="calendar">
+        </div>
+        `;
+
+        document.getElementById('page-content').classList.remove('page-content');
+        document.getElementById('container-fluid').classList.remove('container-fluid');
+        document.getElementById('rowLayout').classList.remove('row');
+
+        document.getElementById('footer').classList.add('page-content');
+        document.getElementById('footer').classList.add('container-fluid');
+    } else {
+        document.getElementById('calenderLayout').innerHTML = `
+            <div class="card mt-4 mt-xl-0 mb-0">
+                <div class="card-body">
+                    <div id="calendar">
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         var openKalendar = [];
         var addEvent = $("#event-modal");
