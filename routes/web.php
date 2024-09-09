@@ -125,6 +125,7 @@ Route::middleware(['permission'])->group(function () {
     Route::post('hapus_acara_piodalan_pura/{id}', [LayananController::class, 'hapus_acara_piodalan_pura'])->name('hapus_acara_piodalan_pura');
 
     Route::get('keuangan_pura_page/{id}', [LayananController::class, 'keuangan_pura_page'])->name('keuangan_pura_page');
+    Route::post('create_keuangan_pura/{id}', [LayananController::class, 'create_keuangan_pura'])->name('create_keuangan_pura');
     Route::post('edit_keuangan_pura/{id}', [LayananController::class, 'edit_keuangan_pura'])->name('edit_keuangan_pura');
     Route::post('hapus_keuangan_pura/{id}', [LayananController::class, 'hapus_keuangan_pura'])->name('hapus_keuangan_pura');
 

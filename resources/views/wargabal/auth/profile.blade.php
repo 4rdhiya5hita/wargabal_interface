@@ -173,7 +173,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <h5>Pengajuan Edit Anda</h5>
-                            <p>Data pengajuan edit keterangan pada elemen Kalender Bali milik Anda dapat dilihat dibawah ini:</p>
+                            <p>Data pengajuan edit keterangan pada Wariga milik Anda dapat dilihat dibawah ini:</p>
                         </div>
                         <div class="row">
                         <div class="table-responsive">

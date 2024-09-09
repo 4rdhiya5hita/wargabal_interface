@@ -34,6 +34,7 @@ class CalendarController extends Controller
         $tanggal_selesai = $request->input('end');
 
         $events = array();
+        Cache::forget('info_hari_raya_calendar_' . $tanggal_mulai . '_' . $tanggal_selesai);
         $info_hari_raya_calendar = Cache::remember('info_hari_raya_calendar_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(31), function () use ($tanggal_mulai, $tanggal_selesai) {
             $layanan = new LayananController();
             $hari_raya = $layanan->callHariRaya($tanggal_mulai, $tanggal_selesai);
@@ -44,9 +45,12 @@ class CalendarController extends Controller
             foreach ($item['hari_raya'] as $key => $hari_raya) {
                 if ($hari_raya != '-') {
                     $events[] = [
-                        'title' => $hari_raya['nama'],
+                        'title' => $hari_raya['simbol'],
                         'start' => $item['tanggal'],
                         'end' => $item['tanggal'],
+                        'extendedProps' => [
+                            'name' => $hari_raya['nama']
+                        ]
                     ];
                 }
             }

@@ -31,7 +31,7 @@
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-1.png); background-size: cover;">
                                     <div class="text-white">
                                         <h4 class="text-white ps-3">Halaman Keterangan</h4>
-                                        <p class="text-white text-xs px-3">Halaman ini berisikan seluruh keterangan dari setiap Elemen Kalender Bali, Ala Ayuning Dewasa, dan Hari Raya.</p>
+                                        <p class="text-white text-xs px-3">Halaman ini berisikan seluruh keterangan dari setiap Wariga, Ala Ayuning Dewasa, dan Hari Raya.</p>
                                     </div>
                                 </div>
                             </div>

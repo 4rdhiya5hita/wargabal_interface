@@ -69,16 +69,16 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal-title">Mau cari tau apa hari ini?</h5>
+                                <h5 class="modal-title" id="modal-title">Yuk cari tau wariga hari ini</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body p-4 text-center">
                                 <div class="row">
                                     <div class="col">
-                                        <button type="button" id="elemenKalenderBalibtn" class="btn btn-lg btn-info" data-bs-dismiss="modal">Elemen Kalender Bali</button>
+                                        <button type="button" id="elemenKalenderBalibtn" class="btn btn-lg btn-info w-100" data-bs-dismiss="modal">Wariga</button>
                                     </div>
                                     <div class="col">
-                                        <button type="button" id="alaAyuningDewasabtn" class="btn btn-lg btn-info" data-bs-dismiss="modal">Ala Ayuning Dewasa</button>
+                                        <button type="button" id="alaAyuningDewasabtn" class="btn btn-lg btn-info w-100" data-bs-dismiss="modal">Ala Ayuning</button>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
 
 <script>
     if (/Mobi|Android/i.test(navigator.userAgent)) {
-        $('.fc-view-container').css('height', '300px');
+        var calendarHeight = 500;
 
         document.getElementById('calenderLayout').classList.remove('col-xl-9');
         document.getElementById('calenderLayout').innerHTML = `
@@ -133,7 +133,6 @@
             <div id="calendar">
         </div>
         `;
-
         document.getElementById('page-content').classList.remove('page-content');
         document.getElementById('container-fluid').classList.remove('container-fluid');
         document.getElementById('rowLayout').classList.remove('row');
@@ -141,6 +140,7 @@
         document.getElementById('footer').classList.add('page-content');
         document.getElementById('footer').classList.add('container-fluid');
     } else {
+        var calendarHeight = 'auto';
         document.getElementById('calenderLayout').innerHTML = `
             <div class="card mt-4 mt-xl-0 mb-0">
                 <div class="card-body">
@@ -657,6 +657,7 @@
             editable: true,
             droppable: true,
             selectable: true,
+            height: calendarHeight,
             defaultView: 'dayGridMonth',
             themeSystem: 'bootstrap',
             header: {
@@ -755,7 +756,7 @@
                 }
             },
             eventClick: function(info) {
-                var eventTitle = info.event.title;
+                var eventTitle = info.event.extendedProps.name;
                 fetchKeteranganHariRaya(eventTitle);
             },
             datesRender: function(info) {
@@ -796,6 +797,9 @@
             var keteranganHariRaya = '';
 
             hariRaya.forEach(function(elemen) {
+                let description = elemen['description'];
+                let shortDescription = description.length > 300 ? description.substring(0, 300) + '   ...' : description;
+                let fullDescription = description.length > 300 ? description : '  ';
                 if (elemen['hari_raya'] === eventTitle) { // Membandingkan dengan judul event
                     keteranganHariRaya += `
                         <div class="modal fade" id="event-modal" tabindex="-1">
@@ -817,7 +821,15 @@
                                         <div class="shadow p-4">
                                             <div class="table-responsive">
                                                 <h5>Penjelasan:</h5>
-                                                <span class="text-secondary font-size-14 mt-1 mb-0">${elemen['description']}</span>
+                                                <span class="text-secondary font-size-14 mt-1 mb-0" id="short-description">
+                                                    ${shortDescription}
+                                                </span>
+                                                <span class="text-secondary font-size-14 mt-1 mb-0 d-none" id="full-description">
+                                                    ${description}
+                                                </span>
+                                                ${fullDescription ? `
+                                                <a href="#" id="toggle-description" class="text-primary">Selengkapnya</a>
+                                                ` : ''}
                                             </div>
                                         </div>
                                     </div>
@@ -825,6 +837,22 @@
                             </div>
                         </div>
                     `;
+                    setTimeout(function() {
+                        document.getElementById('toggle-description').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            let shortDesc = document.getElementById('short-description');
+                            let fullDesc = document.getElementById('full-description');
+                            if (fullDesc.classList.contains('d-none')) {
+                                fullDesc.classList.remove('d-none');
+                                shortDesc.classList.add('d-none');
+                                this.textContent = 'Lebih sedikit';
+                            } else {
+                                fullDesc.classList.add('d-none');
+                                shortDesc.classList.remove('d-none');
+                                this.textContent = 'Selengkapnya';
+                            }
+                        });
+                    }, 100);
                 }
             });
 
@@ -849,12 +877,12 @@
 
                     data.forEach(function(item) {
                         
-                        if (item.title == "Tilem") {
+                        if (item.extendedProps.name == "Tilem") {
                             var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
                             if (selectedDate) {
                                 selectedDate.innerHTML = `<i class="fa fa-circle float-end"></i> <span class="fc-day-number">${item.start.split("-")[2]}</span>`;
                             }
-                        } else if (item.title == "Purnama") {
+                        } else if (item.extendedProps.name == "Purnama") {
                             var selectedDate = document.querySelector(`.fc-day-top[data-date="${item.start}"]`);
                             if (selectedDate) {
                                 selectedDate.innerHTML = `
@@ -883,7 +911,7 @@
     
                             var activityText = document.createElement('p');
                             activityText.classList.add('activity-text', 'mb-0');
-                            activityText.textContent = item.title;
+                            activityText.textContent = item.extendedProps.name
     
                             contentDiv.appendChild(dateDiv);
                             contentDiv.appendChild(activityText);

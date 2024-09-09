@@ -93,7 +93,7 @@
                                                     </div>
                                                     <h5 class="mb-2">Pancawara: {{ $info_ramalan_sifat['pancawara'] }}</h5>
                                                     <p style="display: none;" id="Pancawara">{{ $info_ramalan_sifat['sifat_pancawara'] }}</p>
-                                                    <div class="btn btn-primary" id="btn-Pancawara">lihat penjelasan</div>
+                                                    <div class="btn btn-primary" id="btn-Pancawara">Selengkapnya</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,7 +109,7 @@
                                                     </div>
                                                     <h5 class="mb-2">Saptawara: {{ $info_ramalan_sifat['saptawara'] }}</h5>
                                                     <p style="display: none;" id="Saptawara">{{ $info_ramalan_sifat['sifat_saptawara'] }}</p>
-                                                    <div class="btn btn-primary" id="btn-Saptawara">lihat penjelasan</div>
+                                                    <div class="btn btn-primary" id="btn-Saptawara">Selengkapnya</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -125,7 +125,7 @@
                                                     </div>
                                                     <h5 class="mb-2">Wuku: {{ $info_ramalan_sifat['wuku'] }}</h5>
                                                     <p style="display: none;" id="Wuku">{{ $info_ramalan_sifat['sifat_wuku'] }}</p>
-                                                    <div class="btn btn-primary" id="btn-Wuku">lihat penjelasan</div>
+                                                    <div class="btn btn-primary" id="btn-Wuku">Selengkapnya</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +141,7 @@
                                                     </div>
                                                     <h5 class="mb-2">Zodiak: {{ $info_ramalan_sifat['zodiak'] }}</h5>
                                                     <p style="display: none;" id="Zodiak">{{ $info_ramalan_sifat['sifat_zodiak'] }}</p>
-                                                    <div class="btn btn-primary" id="btn-Zodiak">lihat penjelasan</div>
+                                                    <div class="btn btn-primary" id="btn-Zodiak">Selengkapnya</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -309,10 +309,10 @@
         $('#btn-Pancawara').click(function() {
             // ubah style display
             if ($('#Pancawara').css('display') == 'none') {
-                $('#btn-Pancawara').text('sembunyikan penjelasan');
+                $('#btn-Pancawara').text('Lebih sedikit');
                 $('#Pancawara').css('display', 'block');
             } else {
-                $('#btn-Pancawara').text('lihat penjelasan');
+                $('#btn-Pancawara').text('Selengkapnya');
                 $('#Pancawara').css('display', 'none');
             }
         });
@@ -320,10 +320,10 @@
         $('#btn-Saptawara').click(function() {
             // ubah style display
             if ($('#Saptawara').css('display') == 'none') {
-                $('#btn-Saptawara').text('sembunyikan penjelasan');
+                $('#btn-Saptawara').text('Lebih sedikit');
                 $('#Saptawara').css('display', 'block');
             } else {
-                $('#btn-Saptawara').text('lihat penjelasan');
+                $('#btn-Saptawara').text('Selengkapnya');
                 $('#Saptawara').css('display', 'none');
             }
         });
@@ -331,10 +331,10 @@
         $('#btn-Wuku').click(function() {
             // ubah style display
             if ($('#Wuku').css('display') == 'none') {
-                $('#btn-Wuku').text('sembunyikan penjelasan');
+                $('#btn-Wuku').text('Lebih sedikit');
                 $('#Wuku').css('display', 'block');
             } else {
-                $('#btn-Wuku').text('lihat penjelasan');
+                $('#btn-Wuku').text('Selengkapnya');
                 $('#Wuku').css('display', 'none');
             }
         });
@@ -342,10 +342,10 @@
         $('#btn-Zodiak').click(function() {
             // ubah style display
             if ($('#Zodiak').css('display') == 'none') {
-                $('#btn-Zodiak').text('sembunyikan penjelasan');
+                $('#btn-Zodiak').text('Lebih sedikit');
                 $('#Zodiak').css('display', 'block');
             } else {
-                $('#btn-Zodiak').text('lihat penjelasan');
+                $('#btn-Zodiak').text('Selengkapnya');
                 $('#Zodiak').css('display', 'none');
             }
         });

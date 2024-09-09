@@ -182,7 +182,7 @@
                 puraDiv.className = 'row';
                 puraDiv.id = `info_pura_${pura.id}`;
                 puraDiv.innerHTML = `
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="ps-3">${pura.name}</h5>
@@ -196,6 +196,9 @@
                     <div class="col-md-1 mb-4">
                         <a href="${piodalanRoute.replace('ID_PLACEHOLDER', pura.id)}" type="button" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center font-size-14">Piodalan</a>
                     </div>
+                    <div class="col-md-1 mb-4">
+                        <a href="${keuanganRoute.replace('ID_PLACEHOLDER', pura.id)}" type="button" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center font-size-14">Keuangan</a>
+                    </div>
                 `;
                 container.appendChild(puraDiv);
                 renderPagination();
@@ -205,10 +208,11 @@
             const pura = infoPura.find(pura => pura.id === parseInt(selectedPura));
             const puraDiv = document.createElement('div');
             const piodalanRoute = `/piodalan_pura_page/${pura.id}`;
+            const keuanganRoute = `/keuangan_pura_page/${pura.id}`;
             puraDiv.className = 'row';
             puraDiv.id = `info_pura_${pura.id}`;
             puraDiv.innerHTML = `
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="ps-3">${pura.name}</h5>
@@ -221,6 +225,9 @@
                 </div>
                 <div class="col-md-1 mb-4">
                     <a href="${piodalanRoute}" type="button" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center font-size-14">Piodalan</a>
+                </div>
+                <div class="col-md-1 mb-4">
+                    <a href="${keuanganRoute}" type="button" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center font-size-14">Keuangan</a>
                 </div>
             `;
             const container = document.getElementById('pura-container');

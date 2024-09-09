@@ -1872,7 +1872,7 @@ class LayananController extends Controller
                 }
                 // dd($item_kalender);
                 // dd($item_piodalan);
-                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'pura_id_dicari' , 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
+                return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'pura_id_dicari', 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {
                 return redirect()->back()->withInput()->withErrors($validatedData);
             }
@@ -1956,7 +1956,6 @@ class LayananController extends Controller
 
     public function kelola_pura_page()
     {
-        Cache::forget('info_pura');
         $info_pura = Cache::remember('info_pura', now()->addDays(1), function () {
             return $this->callPura();
         });
@@ -1973,7 +1972,7 @@ class LayananController extends Controller
         $tahun_ada_piodalan = [];
 
         $adminController = new AdminController();
-        $daftar_pura_user = $adminController->callListPuraUser();       
+        $daftar_pura_user = $adminController->callListPuraUser();
         $user = session('user');
         $cek_pura_user = false;
         // $daftar_user = [];
@@ -2017,7 +2016,7 @@ class LayananController extends Controller
             $client = new Client();
             // $user = session('user');
             // $token = $user['token'];
-            
+
             $auth_controller = new AuthenticationController();
             $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
             $token = $login_token['data']['token'];
@@ -2103,7 +2102,6 @@ class LayananController extends Controller
                 return redirect()->back()->with('error', 'Gagal menghapus data piodalan!');
             }
         }
-
     }
 
     public function acara_piodalan_pura($piodalan_id, $pura_id)
@@ -2114,7 +2112,7 @@ class LayananController extends Controller
         $data_acara_piodalan_pura = $this->callAcaraPiodalanPura($piodalan_id);
         $info_acara_piodalan_pura = array_reverse($data_acara_piodalan_pura);
 
-        
+
         $adminController = new AdminController();
         $daftar_pura_user = $adminController->callListPuraUser();
         $user = session('user');
@@ -2226,6 +2224,208 @@ class LayananController extends Controller
         }
     }
 
+    public function keuangan_pura_page($id)
+    {
+        $info_pura = $this->callPuraById($id);
+        $info_keuangan_pura = $this->callKeuanganPura($id);
+        // dd($info_keuangan_pura);
+        $reverse_info_keuangan_pura = array_reverse($info_keuangan_pura['finances']);
+        // dd($reverse_info_keuangan_pura);
+        $item_keuangan = ['Banten', 'Sumbangan'];
+
+        $debit_banten = 0;
+        $kredit_banten = 0;
+        $debit_sumbangan = 0;
+        $kredit_sumbangan = 0;
+
+        $presen_debit_banten = 0;
+        $presen_kredit_banten = 0;
+        $presen_debit_sumbangan = 0;
+        $presen_kredit_sumbangan = 0;
+
+        foreach ($info_keuangan_pura['finances'] as $item) {
+            if ($item['master_item_id'] == 1) {
+                if ($item['debit_kredit'] == 'Debit') {
+                    $debit_banten += $item['jumlah'];
+                } else {
+                    $kredit_banten += $item['jumlah'];
+                }
+            } else {
+                if ($item['debit_kredit'] == 'Debit') {
+                    $debit_sumbangan += $item['jumlah'];
+                } else {
+                    $kredit_sumbangan += $item['jumlah'];
+                }
+            }
+        }
+
+        if ($debit_banten != 0 || $kredit_banten != 0) {
+
+            // Cek agar tidak ada pembagian dengan nol
+            if (($debit_banten + $debit_sumbangan) != 0) {
+                // 2 angka dibelakang koma
+                $presen_debit_banten = number_format(($debit_banten / ($debit_banten + $debit_sumbangan)) * 100, 2);
+            } else {
+                $presen_debit_banten = 0; // atau atur nilai default lain
+            }
+        
+            if (($kredit_banten + $kredit_sumbangan) != 0) {
+                $presen_kredit_banten = number_format(($kredit_banten / ($kredit_banten + $kredit_sumbangan)) * 100, 2);
+            } else {
+                $presen_kredit_banten = 0; // atau atur nilai default lain
+            }
+        }
+        
+        if ($debit_sumbangan != 0 || $kredit_sumbangan != 0) {
+        
+            if (($debit_sumbangan + $debit_banten) != 0) {
+                $presen_debit_sumbangan = number_format(($debit_sumbangan / ($debit_sumbangan + $debit_banten)) * 100, 2);
+            } else {
+                $presen_debit_sumbangan = 0; // atau atur nilai default lain
+            }
+        
+            if (($kredit_sumbangan + $kredit_banten) != 0) {
+                $presen_kredit_sumbangan = number_format(($kredit_sumbangan / ($kredit_sumbangan + $kredit_banten)) * 100, 2);
+            } else {
+                $presen_kredit_sumbangan = 0; // atau atur nilai default lain
+            }
+        }
+
+
+        $adminController = new AdminController();
+        $daftar_pura_user = $adminController->callListPuraUser();
+        $user = session('user');
+        $cek_pura_user = false;
+        // $daftar_user = [];
+        if (isset(session('user')['permission']) && session('user')['permission'] == 'Admin') {
+            $cek_pura_user = true;
+        } else if (isset(session('user')['permission'])) {
+            foreach ($daftar_pura_user as $item) {
+                // $daftar_user[] = $item['user_id'];
+                if ($item['pura_id'] == $id) {
+                    if ($item['user_id'] == $user['id']) {
+                        $cek_pura_user = true;
+                    }
+                }
+            }
+        }
+
+        return view('wargabal.kelola_pura.keuangan_pura_page', compact(
+            'reverse_info_keuangan_pura',
+            'info_keuangan_pura',
+            'item_keuangan',
+            'debit_banten',
+            'kredit_banten',
+            'debit_sumbangan',
+            'kredit_sumbangan',
+            'presen_debit_banten',
+            'presen_kredit_banten',
+            'presen_debit_sumbangan',
+            'presen_kredit_sumbangan',
+            'info_pura',
+            'daftar_pura_user',
+            'cek_pura_user'
+        ));
+    }
+
+    public function create_keuangan_pura(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'tanggal_keuangan' => 'required',
+            'item_keuangan' => 'required',
+            'debit_kredit' => 'required',
+            'jumlah_keuangan' => 'required',
+        ]);
+
+        if ($validatedData) {
+            $client = new Client();
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+            $response = $client->request('POST', $this->url_web . 'finances', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'pura_id' => $id,
+                    'tanggal' => $request->tanggal_keuangan,
+                    'master_item_id' => $request->item_keuangan,
+                    'debit_kredit' => $request->debit_kredit,
+                    'jumlah' => $request->jumlah_keuangan,
+                    'note' => $request->catatan_keuangan
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data keuangan berhasil ditambahkan!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal menambahkan data keuangan!')->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors($validatedData);
+        }
+    }
+
+    public function edit_keuangan_pura(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'tanggal_keuangan' => 'required',
+            'item_keuangan' => 'required',
+            'debit_kredit' => 'required',
+            'jumlah_keuangan' => 'required',
+        ]);
+
+        if ($validatedData) {
+            $client = new Client();
+            $auth_controller = new AuthenticationController();
+            $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+            $response = $client->request('POST', $this->url_web . 'finances/' . $id . '?_method=PUT', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'pura_id' => $id,
+                    'tanggal' => $request->tanggal_keuangan,
+                    'master_item_id' => $request->item_keuangan,
+                    'debit_kredit' => $request->debit_kredit,
+                    'jumlah' => $request->jumlah_keuangan,
+                    'note' => $request->catatan_keuangan
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if ($result['success'] == true) {
+                return redirect()->back()->with('success', 'Data keuangan berhasil diubah!');
+            } else {
+                return redirect()->back()->with('error', 'Gagal mengubah data keuangan!')->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors($validatedData);
+        }
+    }
+
+    public function hapus_keuangan_pura($id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+
+        $response = $client->request('DELETE', $this->url_web . 'finances/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ]
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        if ($result['success'] == true) {
+            return redirect()->back()->with('success', 'Data keuangan berhasil dihapus!');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menghapus data keuangan!');
+        }
+    }
+
     public function callPiodalanPura()
     {
         $client = new Client();
@@ -2269,6 +2469,25 @@ class LayananController extends Controller
         $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
 
         $response = $client->request('GET', $this->url_web . 'acaras/by-piodalan/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        $data = $result['data'];
+
+        return $data;
+    }
+
+    public function callKeuanganPura($id)
+    {
+        $client = new Client();
+        $auth_controller = new AuthenticationController();
+        $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+        $year_now = date('Y');
+
+        $response = $client->request('GET', $this->url_web . 'finances?year=' . $year_now . '&pura_id=' . $id, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $login_token['data']['token'],
                 'Accept' => 'application/json',

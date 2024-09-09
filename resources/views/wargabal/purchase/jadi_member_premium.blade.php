@@ -120,7 +120,7 @@
                                         </div>
                                         <div class="col">
                                             <h5 class="card-title">Kalender</h5>
-                                            <p class="card-desc">Dapatkan akses lengkap untuk melihat Elemen Kalender Bali dan Ala Ayuning Dewasa secara langsung dari tanggal dipilih pada menu Kalender</p>
+                                            <p class="card-desc">Dapatkan akses lengkap untuk melihat Wariga dan Ala Ayuning Dewasa secara langsung dari tanggal dipilih pada menu Kalender</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
