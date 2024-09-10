@@ -1198,13 +1198,16 @@
                 openModal.shift(); // hapus openModal pertama dari array
             }
             $('#' + modalId).modal('show');
-            $('#elemen_' + openKalendar).css('height', 0);
 
+            if (openKalendar.length > 1) {
+                openKalendar.shift(); // hapus openKalendar pertama dari array
+            }
+            $('#elemen_' + openKalendar[0]).css('height', 0);
             // $('.icon-close-modal').hide();
         });
 
         $('body').on('click', '.icon-close-detail', function() {
-            $('#elemen_' + openKalendar).css('height', '100%');
+            $('#elemen_' + openKalendar[0]).css('height', '100%');
             // $('.icon-close-modal').show();
         });
 
