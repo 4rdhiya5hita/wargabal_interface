@@ -86,10 +86,11 @@ class CalendarController extends Controller
         // ambil salah satu fungsi di layanan controller
         $layanan = new LayananController();
 
-        $events = Cache::remember('event_elemen_kalender_bali_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(31), function () use ($layanan, $tanggal_mulai, $tanggal_selesai) {
-            $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
-            return $elemen_kalender_bali;
-        });
+        $events = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        // $events = Cache::remember('event_elemen_kalender_bali_' . $tanggal_mulai . '_' . $tanggal_selesai, now()->addDays(31), function () use ($layanan, $tanggal_mulai, $tanggal_selesai) {
+        //     $elemen_kalender_bali = $layanan->callElemenKalenderBali($tanggal_mulai, $tanggal_selesai);
+        //     return $elemen_kalender_bali;
+        // });
 
         return response()->json($events);
     }

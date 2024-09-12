@@ -317,6 +317,7 @@
             fetch('/fetchElemenKalenderBali?start=' + start + '&end=' + end)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     var elemenKalenderInnerHTML = '';
 
                     data.forEach(elemen => {
