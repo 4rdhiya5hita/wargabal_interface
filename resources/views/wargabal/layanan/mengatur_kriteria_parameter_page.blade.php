@@ -64,29 +64,27 @@
                                     <div class="row mt-3">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col">
-                                                    <h5>Kriteria Dicari</h5>
-                                                    <div id="input_form"></div>
-                                                </div>
-                                                <div class="col d-flex justify-content-end">
-                                                    <a id="hapus_dicari" class="btn btn-danger">hapus kriteria dicari</a>
-                                                </div>
+                                                <h5>Kriteria Dicari</h5>
+                                                <div id="input_form"></div>
                                             </div>
                                             <div id="simpan_dicari">
                                                 <h6>-</h6>
                                             </div>
+                                            <div class="col d-flex justify-content-end">
+                                                <a id="hapus_dicari" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                <!-- <a id="hapus_dicari" class="btn btn-danger">hapus kriteria dicari</a> -->
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <div class="col">
-                                                    <h5>Kriteria Dihindari</h5>
-                                                </div>
-                                                <div class="col d-flex justify-content-end">
-                                                    <a id="hapus_dihindari" class="btn btn-danger">hapus kriteria dihindari</a>
-                                                </div>
+                                                <h5>Kriteria Dihindari</h5>
                                             </div>
                                             <div id="simpan_dihindari">
                                                 <h6>-</h6>
+                                            </div>
+                                            <div class="col d-flex justify-content-end">
+                                                <a id="hapus_dihindari" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                <!-- <a id="hapus_dihindari" class="btn btn-danger">hapus kriteria dihindari</a> -->
                                             </div>
                                         </div>
 
@@ -689,21 +687,37 @@
         
                     if (kriteria_item_dicari_all.filter(arr => arr.length > 0).length > 0) {
                         kriteria_item_dicari_all.forEach(kriteriaArr => {
-                            var h6 = document.createElement('h6');
-                            var atau = document.createElement('h6');
-        
-                            var formattedText = kriteriaArr.map(item => item.key + ': ' + item.name).join(', ');
-                            h6.textContent = formattedText;
-        
-                            if (iterasiDicari === 0) {
-                                atau.textContent = '';
-                            } else {
-                                atau.textContent = 'ATAU';
+                        var h6Container = document.createElement('h6'); // container untuk button
+                        var atau = document.createElement('h6');
+                        
+                        h6Container.textContent = iterasiDicari + 1 + '. ';
+
+                        kriteriaArr.forEach(item => {
+                            var button = document.createElement('button');
+                            button.textContent = item.key + ': ' + item.name;
+                            button.style.backgroundColor = 'yellow'; // warna kuning
+                            button.style.border = 'none';
+                            button.style.padding = '5px 10px';
+                            button.style.marginRight = '5px'; // jarak antar tombol
+                            button.style.cursor = 'pointer'; // tampilan kursor seperti button
+
+                            h6Container.appendChild(button); // tambahkan tombol ke container    
+                            if (kriteriaArr.indexOf(item) !== kriteriaArr.length - 1) {
+                                var dan = document.createElement('span');
+                                dan.textContent = ' DAN ';
+                                h6Container.appendChild(dan);
                             }
-                            simpanDicari.appendChild(atau);
-                            simpanDicari.appendChild(h6);
-                            iterasiDicari++;
                         });
+
+                        if (iterasiDicari === 0) {
+                            atau.textContent = '';
+                        } else {
+                            atau.textContent = 'ATAU';
+                        }
+                        simpanDicari.appendChild(atau);
+                        simpanDicari.appendChild(h6Container);
+                        iterasiDicari++;
+                    });
                     } else {
                         // console.log('Array dicari kosong');
                     }
@@ -771,21 +785,37 @@
 
                     if (kriteria_item_dihindari_all.filter(arr => arr.length > 0).length > 0) {
                         kriteria_item_dihindari_all.forEach(kriteriaArr => {
-                            var h6 = document.createElement('h6');
-                            var atau = document.createElement('h6');
+                        var h6Container = document.createElement('h6'); // container untuk button
+                        var atau = document.createElement('h6');
+                        
+                        h6Container.textContent = iterasiDihindari + 1 + '. ';
 
-                            var formattedText = kriteriaArr.map(item => item.key + ': ' + item.name).join(', ');
-                            h6.textContent = formattedText;
+                        kriteriaArr.forEach(item => {
+                            var button = document.createElement('button');
+                            button.textContent = item.key + ': ' + item.name;
+                            button.style.backgroundColor = 'yellow'; // warna kuning
+                            button.style.border = 'none';
+                            button.style.padding = '5px 10px';
+                            button.style.marginRight = '5px'; // jarak antar tombol
+                            button.style.cursor = 'pointer'; // tampilan kursor seperti button
 
-                            if (iterasiDihindari === 0) {
-                                atau.textContent = '';
-                            } else {
-                                atau.textContent = 'ATAU';
+                            h6Container.appendChild(button); // tambahkan tombol ke container    
+                            if (kriteriaArr.indexOf(item) !== kriteriaArr.length - 1) {
+                                var dan = document.createElement('span');
+                                dan.textContent = ' DAN ';
+                                h6Container.appendChild(dan);
                             }
-                            simpanDihindari.appendChild(atau);
-                            simpanDihindari.appendChild(h6);
-                            iterasiDihindari++;
                         });
+
+                        if (iterasiDihindari === 0) {
+                            atau.textContent = '';
+                        } else {
+                            atau.textContent = 'ATAU';
+                        }
+                        simpanDihindari.appendChild(atau);
+                        simpanDihindari.appendChild(h6Container);
+                        iterasiDihindari++;
+                    });
                     } else {
                         // console.log('Array dihindari kosong');
                     }
@@ -806,21 +836,37 @@
             
             if (kriteria_item_dicari_all.filter(arr => arr.length > 0).length > 0) {
                 kriteria_item_dicari_all.forEach(kriteriaArr => {
-                    var h6 = document.createElement('h6');
-                    var atau = document.createElement('h6');
+                var h6Container = document.createElement('h6'); // container untuk button
+                var atau = document.createElement('h6');
+                
+                h6Container.textContent = iterasiDicari + 1 + '. ';
 
-                    var formattedText = kriteriaArr.map(item => item.key + ': ' + item.name).join(', ');
-                    h6.textContent = formattedText;
+                kriteriaArr.forEach(item => {
+                    var button = document.createElement('button');
+                    button.textContent = item.key + ': ' + item.name;
+                    button.style.backgroundColor = 'yellow'; // warna kuning
+                    button.style.border = 'none';
+                    button.style.padding = '5px 10px';
+                    button.style.marginRight = '5px'; // jarak antar tombol
+                    button.style.cursor = 'pointer'; // tampilan kursor seperti button
 
-                    if (iterasiDicari === 0) {
-                        atau.textContent = '';
-                    } else {
-                        atau.textContent = 'ATAU';
+                    h6Container.appendChild(button); // tambahkan tombol ke container    
+                    if (kriteriaArr.indexOf(item) !== kriteriaArr.length - 1) {
+                        var dan = document.createElement('span');
+                        dan.textContent = ' DAN ';
+                        h6Container.appendChild(dan);
                     }
-                    simpanDicari.appendChild(atau);
-                    simpanDicari.appendChild(h6);
-                    iterasiDicari++;
                 });
+
+                if (iterasiDicari === 0) {
+                    atau.textContent = '';
+                } else {
+                    atau.textContent = 'ATAU';
+                }
+                simpanDicari.appendChild(atau);
+                simpanDicari.appendChild(h6Container);
+                iterasiDicari++;
+            });
             } else {
                 // console.log('Array dicari kosong');
             }
@@ -841,21 +887,37 @@
 
             if (kriteria_item_dihindari_all.filter(arr => arr.length > 0).length > 0) {
                 kriteria_item_dihindari_all.forEach(kriteriaArr => {
-                    var h6 = document.createElement('h6');
-                    var atau = document.createElement('h6');
+                var h6Container = document.createElement('h6'); // container untuk button
+                var atau = document.createElement('h6');
+                
+                h6Container.textContent = iterasiDihindari + 1 + '. ';
 
-                    var formattedText = kriteriaArr.map(item => item.key + ': ' + item.name).join(', ');
-                    h6.textContent = formattedText;
+                kriteriaArr.forEach(item => {
+                    var button = document.createElement('button');
+                    button.textContent = item.key + ': ' + item.name;
+                    button.style.backgroundColor = 'yellow'; // warna kuning
+                    button.style.border = 'none';
+                    button.style.padding = '5px 10px';
+                    button.style.marginRight = '5px'; // jarak antar tombol
+                    button.style.cursor = 'pointer'; // tampilan kursor seperti button
 
-                    if (iterasiDihindari === 0) {
-                        atau.textContent = '';
-                    } else {
-                        atau.textContent = 'ATAU';
+                    h6Container.appendChild(button); // tambahkan tombol ke container    
+                    if (kriteriaArr.indexOf(item) !== kriteriaArr.length - 1) {
+                        var dan = document.createElement('span');
+                        dan.textContent = ' DAN ';
+                        h6Container.appendChild(dan);
                     }
-                    simpanDihindari.appendChild(atau);
-                    simpanDihindari.appendChild(h6);
-                    iterasiDihindari++;
                 });
+
+                if (iterasiDihindari === 0) {
+                    atau.textContent = '';
+                } else {
+                    atau.textContent = 'ATAU';
+                }
+                simpanDihindari.appendChild(atau);
+                simpanDihindari.appendChild(h6Container);
+                iterasiDihindari++;
+            });
             } else {
                 // console.log('Array dihindari kosong');
             }

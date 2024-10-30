@@ -6,6 +6,8 @@
 
     @include("partials/head-css")
 
+    @include("partials/pwa/pwa_header")
+
 </head>
 
 @include("partials/body")
@@ -90,6 +92,7 @@
                                 <h4 class="card-title">Info Kita</h4>
                                 <p class="card-title-desc">Informasi terkini terkait Bali dan adat istiadatnya yang dihimpun oleh staf website Kalender Bali</p>
 
+                                @if (count($info_kita) > 0)
                                 <div class="carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
                                     <div class="carousel-inner" role="listbox">
                                         @for ($i = 0; $i < count($info_kita); $i++)
@@ -124,6 +127,11 @@
                                         <span class="sr-only">Next</span>
                                     </a>
                                 </div>
+                                @else
+                                <div class="text-center">
+                                    <h5>Tidak ada informasi terkini</h5>
+                                </div>
+                                @endif
 
                             </div>
                         </div>
@@ -139,6 +147,7 @@
                                 </div>
                             </div><!-- end card-header -->
 
+                            @if (count($info_kita) > 0)
                             <div data-simplebar class="tasklist-content p-3" style="max-height: calc(103vh - 170px);">
                                 <div id="todo-task" class="tasks">
                                     @foreach ($info_kita as $key => $item)
@@ -163,6 +172,11 @@
                                     @endforeach
                                 </div>
                             </div>
+                            @else
+                            <div class="text-center">
+                                <h5>Tidak ada informasi terkini</h5>
+                            </div>
+                            @endif
 
                         </div>
                     </div>
@@ -461,6 +475,7 @@
 
 </script>
 
+@include("partials/pwa/pwa_close")
 </body>
 
 </html>

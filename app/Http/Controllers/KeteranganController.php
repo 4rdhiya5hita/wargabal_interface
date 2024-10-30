@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class KeteranganController extends Controller
 {
-    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    // protected $url_api = 'http://localhost:8000/api/';
+    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    protected $url_api = 'http://localhost:8000/api/';
 
     public function keterangan_page()
     {
@@ -187,8 +187,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_caturwara 60, function () use ($layanan) {
-            return $layanan->keteranganCaturwa();
+        $info_keterangan = Cache::remember('info_keketerangan_caturwara', 60, function () use ($layanan) {
+            return $layanan->keteranganCaturwara();
         });
 
         return view('wargabal.keterangan.keterangan_caturwara_page', compact('keterangan', 'info_keterangan'));
@@ -204,8 +204,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_pancawara 60, function () use ($layanan) {
-            return $layanan->keteranganPancawa();
+        $info_keterangan = Cache::remember('info_keketerangan_pancawara', 60, function () use ($layanan) {
+            return $layanan->keteranganPancawara();
         });
 
         return view('wargabal.keterangan.keterangan_pancawara_page', compact('keterangan', 'info_keterangan'));
@@ -238,8 +238,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_saptawara 60, function () use ($layanan) {
-            return $layanan->keteranganSaptawa();
+        $info_keterangan = Cache::remember('info_keketerangan_saptawara', 60, function () use ($layanan) {
+            return $layanan->keteranganSaptawara();
         });
 
         return view('wargabal.keterangan.keterangan_saptawara_page', compact('keterangan', 'info_keterangan'));
@@ -255,8 +255,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_astawara 60, function () use ($layanan) {
-            return $layanan->keteranganAstawar();
+        $info_keterangan = Cache::remember('info_keketerangan_astawara', 60, function () use ($layanan) {
+            return $layanan->keteranganAstawara();
         });
 
         return view('wargabal.keterangan.keterangan_astawara_page', compact('keterangan', 'info_keterangan'));
@@ -272,8 +272,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_sangawara 60, function () use ($layanan) {
-            return $layanan->keteranganSangawa();
+        $info_keterangan = Cache::remember('info_keketerangan_sangawara', 60, function () use ($layanan) {
+            return $layanan->keteranganSangawara();
         });
 
         return view('wargabal.keterangan.keterangan_sangawara_page', compact('keterangan', 'info_keterangan'));
@@ -289,8 +289,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_dasawara 60, function () use ($layanan) {
-            return $layanan->keteranganDasawar();
+        $info_keterangan = Cache::remember('info_keketerangan_dasawara', 60, function () use ($layanan) {
+            return $layanan->keteranganDasawara();
         });
 
         return view('wargabal.keterangan.keterangan_dasawara_page', compact('keterangan', 'info_keterangan'));
@@ -357,8 +357,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = keterangan_rakaminfo_keterangan_ingkel', 60, function () use ($layanan) {
-            return $layanan->keterangan')();
+        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+            return $layanan->keteranganRakam();
         });
 
         return view('wargabal.keterangan.keterangan_rakam_page', compact('keterangan', 'info_keterangan'));
@@ -374,8 +374,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_watek_madya 60, function () use ($layanan) {
-            return $layanan->keteranganM();
+        $info_keterangan = Cache::remember('info_keketerangan_watek_madya', 60, function () use ($layanan) {
+            return $layanan->keteranganWatekMadya();
         });
 
         return view('wargabal.keterangan.keterangan_watek_madya_page', compact('keterangan', 'info_keterangan'));
@@ -391,8 +391,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_watek_alit 60, function () use ($layanan) {
-            return $layanan->keteranganA();
+        $info_keterangan = Cache::remember('info_keketerangan_watek_alit', 60, function () use ($layanan) {
+            return $layanan->keteranganWatekAlit();
         });
 
         return view('wargabal.keterangan.keterangan_watek_alit_page', compact('keterangan', 'info_keterangan'));
@@ -408,8 +408,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = keterangan_neptuinfo_keterangan_ingkel', 60, function () use ($layanan) {
-            return $layanan->keterangan')();
+        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+            return $layanan->keteranganNeptu();
         });
 
         return view('wargabal.keterangan.keterangan_neptu_page', compact('keterangan', 'info_keterangan'));
@@ -425,8 +425,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_ekajalarsi 60, function () use ($layanan) {
-            return $layanan->keteranganEkajala();
+        $info_keterangan = Cache::remember('info_keketerangan_ekajalarsi', 60, function () use ($layanan) {
+            return $layanan->keteranganEkaJalaRsi();
         });
 
         return view('wargabal.keterangan.keterangan_ekajalarsi_page', compact('keterangan', 'info_keterangan'));
@@ -442,8 +442,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_panca_sudha 60, function () use ($layanan) {
-            return $layanan->keteranganS();
+        $info_keterangan = Cache::remember('info_keketerangan_panca_sudha', 60, function () use ($layanan) {
+            return $layanan->keteranganPancaSudha();
         });
 
         return view('wargabal.keterangan.keterangan_panca_sudha_page', compact('keterangan', 'info_keterangan'));
@@ -459,8 +459,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_pangarasan 60, function () use ($layanan) {
-            return $layanan->keteranganPangara();
+        $info_keterangan = Cache::remember('info_keketerangan_pangarasan', 60, function () use ($layanan) {
+            return $layanan->keteranganPangarasan();
         });
 
         return view('wargabal.keterangan.keterangan_pangarasan_page', compact('keterangan', 'info_keterangan'));
@@ -494,7 +494,7 @@ class KeteranganController extends Controller
 
         $layanan = new LayananController();
         $info_keterangan = Cache::remember('info_keterangan_zodiak', 60, function () use ($layanan) {
-            return $layanan->keterangan'();
+            return $layanan->keteranganZodiak();
         });
 
         return view('wargabal.keterangan.keterangan_zodiak_page', compact('keterangan', 'info_keterangan'));
@@ -510,8 +510,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = keterangan_wukuinfo_keterangan_ingkel', 60, function () use ($layanan) {
-            return $layanan->keterangan') ();
+        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+            return $layanan->keteranganWuku();
         });
 
         return view('wargabal.keterangan.keterangan_wuku_page', compact('keterangan', 'info_keterangan'));
@@ -527,8 +527,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_hari_raya 60, function () use ($layanan) {
-            return $layanan->keteranganRa();
+        $info_keterangan = Cache::remember('info_keketerangan_hari_raya', 60, function () use ($layanan) {
+            return $layanan->keteranganHariRaya();
         });
 
         return view('wargabal.keterangan.keterangan_hari_raya_page', compact('keterangan', 'info_keterangan'));
@@ -544,8 +544,8 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_ala_ayuning_dewasa 60, function () use ($layanan) {
-            return $layanan->keteranganAyu();
+        $info_keterangan = Cache::remember('info_keketerangan_ala_ayuning_dewasa', 60, function () use ($layanan) {
+            return $layanan->keteranganAlaAyuningDewasa();
         });
 
         return view('wargabal.keterangan.keterangan_ala_ayuning_dewasa_page', compact('keterangan', 'info_keterangan'));

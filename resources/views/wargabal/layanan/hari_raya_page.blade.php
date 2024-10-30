@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" id="smartphone-size" style="display: block;">
                         <div class="card bg-transparent shadow-none mb-0">
                             <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-1.png); background-size: cover;">
@@ -123,7 +123,7 @@
                                     <div id="tahun_form">
                                         <label class="form-label">Tahun</label>
                                         <div class="input-group input-group-outline mb-3">
-                                            <input type="number" name="tahun_dicari" class="form-control" id="tahun_dicari" placeholder="Tahun" aria-label="Tahun" aria-describedby="basic-addon1">
+                                            <input type="number" name="tahun_dicari" value="2024" class="form-control" id="tahun_dicari" placeholder="Tahun" aria-label="Tahun" aria-describedby="basic-addon1">
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" id="btn-submit" class="btn btn-primary btn-soft w-100 mt-4 mb-0">Cari</button>
@@ -228,6 +228,12 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        $('#smartphone-size').hide();
+    } else {
+        $('#smartphone-size').show();
+    }
+
     $(document).ready(function() {
         $('input[type=radio]').change(function() {
             if (this.value == 'bulan') {
@@ -245,6 +251,7 @@
         $('#bulan_dicari').select2({
             placeholder: "Pilih Bulan",
         })
+
     });
 
     $(function() {

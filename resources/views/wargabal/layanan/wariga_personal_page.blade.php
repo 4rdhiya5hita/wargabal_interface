@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" id="smartphone-size" style="display: block;">
                         <div class="card bg-transparent shadow-none mb-0">
                             <div class="card mini-stat bg-primary">
                                 <div class="card-body mini-stat-img" style="background: url(assets/images/bg-0.png); background-size: cover;">
@@ -136,6 +136,12 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        $('#smartphone-size').hide();
+    } else {
+        $('#smartphone-size').show();
+    }
+    
     $(document).ready(function() {
         $('#bulan_dicari').select2();
 

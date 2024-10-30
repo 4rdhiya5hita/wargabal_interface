@@ -6,19 +6,23 @@
                 <div class="navbar-brand-box">
                     <a href="{{ route('index') }}" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="32">
+                            <!-- <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="32"> -->
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="19">
+                            <img src="{{ asset('assets/images/logo-lg.png') }}" alt="" height="40">
+                            <!-- <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="40"> -->
                         </span>
                     </a>
 
                     <a href="{{ route('index') }}" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="32">
+                            <!-- <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="32"> -->
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="19">
+                            <img src="{{ asset('assets/images/logo-lg.png') }}" alt="" height="40">
+                            <!-- <img src="{{ asset('assets/images/logo/logo.png') }}" alt="" height="40"> -->
                         </span>
                     </a>
                 </div>

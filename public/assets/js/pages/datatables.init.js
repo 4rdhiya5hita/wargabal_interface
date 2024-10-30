@@ -8,7 +8,7 @@ File: Datatables
 
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     const dataTablesLanguageSettings = {
         "decimal": "",
         "emptyTable": "Tidak ada data yang tersedia di tabel",
@@ -33,24 +33,32 @@ $(document).ready(function() {
             "sortDescending": ": aktifkan untuk mengurutkan kolom turun"
         }
     };
-    
     // Expose the configuration to the global scope
     window.dataTablesLanguageSettings = dataTablesLanguageSettings;
 
-    $('#datatable').DataTable({
-        language: dataTablesLanguageSettings
+    $(document).ready(function () {
+        // Inisialisasi DataTable dengan scrollX dan pengaturan bahasa
+        var table = $('#datatable').DataTable({
+            language: dataTablesLanguageSettings,
+            scrollX: true
+        });
+
+        // Inisialisasi DataTable dengan tombol
+        var tableButtons = $('#datatable-buttons').DataTable({
+            language: dataTablesLanguageSettings,
+            lengthChange: false,
+            scrollX: true, // Tambahkan scrollX untuk tabel dengan tombol
+            buttons: ['copy', 'excel', 'pdf', 'colvis']
+        });
+
+        // Tempatkan tombol pada container yang benar
+        tableButtons.buttons().container()
+            .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+
+        // Tambahkan kelas pada dropdown panjang halaman
+        $(".dataTables_length select").addClass('form-select form-select-sm');
     });
+}
+);
 
-    //Buttons examples
-    var table = $('#datatable-buttons').DataTable({
-        language: dataTablesLanguageSettings,
-        lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf', 'colvis']
-    });
 
-    table.buttons().container()
-        .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-
-    $(".dataTables_length select").addClass('form-select form-select-sm');
-    
-} );

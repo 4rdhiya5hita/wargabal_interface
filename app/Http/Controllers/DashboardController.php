@@ -72,6 +72,7 @@ class DashboardController extends Controller
         // dd(session()->all());
         // dd(session('user')['email_verified_at']);
         // dd(session('user')['token']);
+        // dd($info_kita);
 
 
         // ambil data session success atau failed

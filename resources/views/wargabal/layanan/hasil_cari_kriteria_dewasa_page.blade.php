@@ -246,7 +246,7 @@
                     </div>
 
                     <div class="d-flex justify-content-start">
-                        <a href="javascript:void(0);" onclick="window.history.back();" class="btn btn-primary mb-2">Kembali</a>
+                        <a onclick="history.back()" class="btn btn-primary mb-2">Kembali</a>
                     </div>
                 </div>
             </div>

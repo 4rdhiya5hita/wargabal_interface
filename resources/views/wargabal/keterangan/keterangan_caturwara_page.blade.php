@@ -47,7 +47,7 @@
                                 <h4 class="card-title">{{ $keterangan['nama'] }}</h4>
                                 <p class="card-title-desc">{{ $keterangan['keterangan'] }}</p>
 
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <table id="datatable" class="table table-bordered dt-container nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>No</th>
