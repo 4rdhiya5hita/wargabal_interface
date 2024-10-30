@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class KeteranganController extends Controller
 {
-    // protected $url_api = 'https://api2.kalenderbali.web.id/api/';
-    protected $url_api = 'http://localhost:8000/api/';
+    protected $url_api = 'https://api2.kalenderbali.web.id/api/';
+    // protected $url_api = 'http://localhost:8000/api/';
 
     public function keterangan_page()
     {
