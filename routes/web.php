@@ -37,15 +37,6 @@ Route::get('/verifikasi_email', [AuthenticationController::class, 'verifikasi_em
 Route::post('/verifikasi_ulang_email', [AuthenticationController::class, 'verifikasi_ulang_email'])->name('verifikasi_ulang_email');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
-
-// Admin Page
-Route::get('/transaksi_user_page', [AdminController::class, 'transaksi_user_page'])->name('transaksi_user_page');
-Route::get('/manajemen_user_page', [AdminController::class, 'manajemen_user_page'])->name('manajemen_user_page');
-Route::get('/manajemen_info_kita_page', [AdminController::class, 'manajemen_info_kita_page'])->name('manajemen_info_kita_page');
-Route::get('/pengajuan_kontribusi_page', [AdminController::class, 'pengajuan_kontribusi_page'])->name('pengajuan_kontribusi_page');
-Route::get('/pengajuan_edit_page', [AdminController::class, 'pengajuan_edit_page'])->name('pengajuan_edit_page');
-Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
-
 // Fetch
 Route::get('/fetch_contribution', [AdminController::class, 'fetch_contribution'])->name('fetch_contribution');
 
@@ -105,7 +96,20 @@ Route::get('/jadi_member_premium', [PurchaseController::class, 'jadi_member_prem
 Route::get('/pembelian_anda', [PurchaseController::class, 'pembelian_anda'])->name('pembelian_anda');
 Route::post('/purchase', [PurchaseController::class, 'purchase'])->name('purchase');
 
-Route::middleware(['permission'])->group(function () {
+// Route::middleware(['permission:Admin'])->group(function () {
+    Route::get('/admin_profile', [AdminController::class, 'profile'])->name('profile');
+    
+    // Admin Page
+    Route::get('/transaksi_user_page', [AdminController::class, 'transaksi_user_page'])->name('transaksi_user_page');
+    Route::get('/manajemen_user_page', [AdminController::class, 'manajemen_user_page'])->name('manajemen_user_page');
+    Route::get('/manajemen_info_kita_page', [AdminController::class, 'manajemen_info_kita_page'])->name('manajemen_info_kita_page');
+    Route::get('/pengajuan_kontribusi_page', [AdminController::class, 'pengajuan_kontribusi_page'])->name('pengajuan_kontribusi_page');
+    Route::get('/pengajuan_edit_page', [AdminController::class, 'pengajuan_edit_page'])->name('pengajuan_edit_page');
+// });
+
+// Route::middleware(['permission:Member'])->group(function () {
+    // User Page
+    Route::get('/member_profile', [AdminController::class, 'profile'])->name('profile');
     Route::get('/kelola_pura_page', [LayananController::class, 'kelola_pura_page'])->name('kelola_pura_page');
 
     Route::get('/manajemen_pura_user_page', [AdminController::class, 'manajemen_pura_user_page'])->name('manajemen_pura_user_page');
@@ -189,7 +193,7 @@ Route::middleware(['permission'])->group(function () {
     Route::post('/edit_pratiti/{id}', [KeteranganController::class, 'edit_pratiti'])->name('edit_pratiti');
     Route::post('/edit_zodiak/{id}', [KeteranganController::class, 'edit_zodiak'])->name('edit_zodiak');
     Route::post('/edit_wuku/{id}', [KeteranganController::class, 'edit_wuku'])->name('edit_wuku');
-});
+// });
 
 Route::get('/fetchKeteranganHariRaya', [LayananController::class, 'keteranganHariRaya'])->name('fetchKeteranganHariRaya');
 Route::get('/fetchKeteranganAlaAyuningDewasa', [LayananController::class, 'keteranganAlaAyuningDewasa'])->name('fetchKeteranganAlaAyuningDewasa');

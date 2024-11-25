@@ -152,7 +152,7 @@
                                                                 @csrf
                                                                 <div class="mb-3">
                                                                     <label for="acara" class="form-label">Acara</label>
-                                                                    <input type="text" class="form-control" id="acara" name="acara" value="{{ $value['acara'] }}">
+                                                                    <input type="text" class="form-control" id="acara_edit" name="acara" value="{{ $value['acara'] }}">
                                                                     <div class="valid-feedback">
                                                                         Ok!
                                                                     </div>
@@ -162,7 +162,7 @@
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="level" class="form-label">Level</label>
-                                                                    <select class="form-select" id="level" name="level">
+                                                                    <select class="form-select" id="level_edit" name="level">
                                                                         <option value="Nista" @if($value['level'] == "Nista") selected @endif>Nista</option>
                                                                         <option value="Madya" @if($value['level'] == "Madya") selected @endif>Madya</option>
                                                                         <option value="Utama" @if($value['level'] == "Utama") selected @endif>Utama</option>
@@ -170,7 +170,7 @@
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="pic_name" class="form-label">Nama PIC</label>
-                                                                    <input type="text" class="form-control" id="pic_name" name="pic_name" value="{{ $value['pic_name'] }}">
+                                                                    <input type="text" class="form-control" id="pic_name_edit" name="pic_name" value="{{ $value['pic_name'] }}">
                                                                     <div class="valid-feedback">
                                                                         Ok!
                                                                     </div>
@@ -180,16 +180,15 @@
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="pic_phone" class="form-label">No. Telepon PIC</label>
-                                                                    <input type="text" class="form-control" id="pic_phone" name="pic_phone" value="{{ $value['pic_phone'] }}">
+                                                                    <input type="text" class="form-control" id="pic_phone_edit" name="pic_phone" value="{{ $value['pic_phone'] }}">
                                                                     <div class="valid-feedback">
                                                                         Ok!
                                                                     </div>
-                                                                    <div class="invalid-feedback">
-                                                                        No. Telepon PIC harus diisi!
+                                                                    <div class="invalid-feedback" id="invalid-pic_phone_edit">
                                                                     </div>
                                                                 </div>
                                                                 <input type="hidden" name="date" value="{{ $value['date'] }}">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                <button type="submit" id="btn_submit_form_edit" class="btn btn-primary">Simpan</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -232,7 +231,7 @@
                                                         @csrf
                                                         <div class="mb-3">
                                                             <label for="acara" class="form-label">Acara</label>
-                                                            <input type="text" class="form-control" id="acara" name="acara" placeholder="Contoh: Sembahyang Bersama" required>
+                                                            <input type="text" class="form-control" id="acara_create" name="acara" placeholder="Contoh: Sembahyang Bersama" required>
                                                             <div class="valid-feedback">
                                                                 Ok!
                                                             </div>
@@ -242,7 +241,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="level" class="form-label">Level</label>
-                                                            <select class="form-select" id="level" name="level">
+                                                            <select class="form-select" id="level_create" name="level">
                                                                 <option value="Pilih Level">Pilih Level</option>
                                                                 <option value="Nista">Nista</option>
                                                                 <option value="Madya">Madya</option>
@@ -251,7 +250,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="pic_name" class="form-label">Nama PIC</label>
-                                                            <input type="text" class="form-control" id="pic_name" name="pic_name" placeholder="Contoh: I Wayan Darma" required>
+                                                            <input type="text" class="form-control" id="pic_name_create" name="pic_name" placeholder="Contoh: I Wayan Darma" required>
                                                             <div class="valid-feedback">
                                                                 Ok!
                                                             </div>
@@ -261,17 +260,16 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="pic_phone" class="form-label">No. Telepon PIC</label>
-                                                            <input type="text" class="form-control" id="pic_phone" name="pic_phone" placeholder="Contoh: 081234567890" required>
+                                                            <input type="text" class="form-control" id="pic_phone_create" name="pic_phone" placeholder="Contoh: 081234567890" required>
                                                             <div class="valid-feedback">
                                                                 Ok!
                                                             </div>
-                                                            <div class="invalid-feedback">
-                                                                No. Telepon PIC harus diisi!
+                                                            <div class="invalid-feedback" id="invalid-pic_phone_create">
                                                             </div>
                                                         </div>
                                                         <!-- date -->
                                                         <input type="hidden" name="date" value="{{ $info_piodalan_pura['date'] }}">
-                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                        <button type="submit" id="btn_submit_form_create" class="btn btn-primary">Simpan</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -331,89 +329,185 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
 <script>
-    $error_appear = [];
-
-    $('#acara').on('input', function() {
-        var acara = $('#acara').val();
+    $error_appear_create = [];
+    $('#acara_create').on('input', function() {
+        var acara = $('#acara_create').val();
         if (acara.length <= 0) {
-            $('#acara').addClass('is-invalid');
-            $('#acara').removeClass('is-valid');
+            $('#acara_create').addClass('is-invalid');
+            $('#acara_create').removeClass('is-valid');
             $('#invalid-acara').html('Acara harus diisi');
             $('#valid-acara').html('');
-            $error_appear.push('acara');
+            $error_appear_create.push('acara');
         } else {
-            $('#acara').addClass('is-valid');
-            $('#acara').removeClass('is-invalid');
+            $('#acara_create').addClass('is-valid');
+            $('#acara_create').removeClass('is-invalid');
             $('#invalid-acara').html('');
             $('#valid-acara').html('Ok!');
-            $error_appear = $error_appear.filter(item => item !== 'acara');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'acara');
         }
     });
 
-    $('#level').on('input', function() {
-        var level = $('#level').val();
+    $('#level_create').on('input', function() {
+        var level = $('#level_create').val();
         if (level.length <= 0 || level == 'Pilih Level') {
-            $('#level').addClass('is-invalid');
-            $('#level').removeClass('is-valid');
+            $('#level_create').addClass('is-invalid');
+            $('#level_create').removeClass('is-valid');
             $('#invalid-level').html('Level harus dipilih');
             $('#valid-level').html('');
-            $error_appear.push('level');
+            $error_appear_create.push('level');
         } else {
-            $('#level').addClass('is-valid');
-            $('#level').removeClass('is-invalid');
+            $('#level_create').addClass('is-valid');
+            $('#level_create').removeClass('is-invalid');
             $('#invalid-level').html('');
             $('#valid-level').html('Ok!');
-            $error_appear = $error_appear.filter(item => item !== 'level');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'level');
         }
     });
 
-    $('#pic_name').on('input', function() {
-        var pic_name = $('#pic_name').val();
+    $('#pic_name_create').on('input', function() {
+        var pic_name = $('#pic_name_create').val();
         if (pic_name.length <= 0) {
-            $('#pic_name').addClass('is-invalid');
-            $('#pic_name').removeClass('is-valid');
+            $('#pic_name_create').addClass('is-invalid');
+            $('#pic_name_create').removeClass('is-valid');
             $('#invalid-pic_name').html('Nama PIC harus diisi');
             $('#valid-pic_name').html('');
-            $error_appear.push('pic_name');
+            $error_appear_create.push('pic_name');
         } else {
-            $('#pic_name').addClass('is-valid');
-            $('#pic_name').removeClass('is-invalid');
+            $('#pic_name_create').addClass('is-valid');
+            $('#pic_name_create').removeClass('is-invalid');
             $('#invalid-pic_name').html('');
             $('#valid-pic_name').html('Ok!');
-            $error_appear = $error_appear.filter(item => item !== 'pic_name');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'pic_name');
         }
     });
 
-    $('#pic_phone').on('input', function() {
-        var pic_phone = $('#pic_phone').val();
+    $('#pic_phone_create').on('input', function() {
+        var pic_phone = $('#pic_phone_create').val();
         if (pic_phone.length <= 0) {
-            $('#pic_phone').addClass('is-invalid');
-            $('#pic_phone').removeClass('is-valid');
-            $('#invalid-pic_phone').html('No. Telepon PIC harus diisi');
-            $('#valid-pic_phone').html('');
-            $error_appear.push('pic_phone');
+            $('#pic_phone_create').addClass('is-invalid');
+            $('#pic_phone_create').removeClass('is-valid');
+            $('#invalid-pic_phone_create').html('No. Telepon PIC harus diisi');
+            $('#valid-pic_phone_create').html('');
+            $error_appear_create.push('pic_phone');
+        } else if (isNaN(pic_phone)) {
+            $('#pic_phone_create').addClass('is-invalid');
+            $('#pic_phone_create').removeClass('is-valid');
+            $('#invalid-pic_phone_create').html('No. Telepon PIC harus berupa angka');
+            $('#valid-pic_phone_create').html('');
+            $error_appear_create.push('pic_phone');
         } else {
-            $('#pic_phone').addClass('is-valid');
-            $('#pic_phone').removeClass('is-invalid');
+            $('#pic_phone_create').addClass('is-valid');
+            $('#pic_phone_create').removeClass('is-invalid');
             $('#invalid-pic_phone').html('');
             $('#valid-pic_phone').html('Ok!');
-            $error_appear = $error_appear.filter(item => item !== 'pic_phone');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'pic_phone');
         }
     });
 
-    $('#btn_submit_form').on('click', function() {
-        var acara = $('#acara').val();
-        var level = $('#level').val();
-        var pic_name = $('#pic_name').val();
-        var pic_phone = $('#pic_phone').val();
-        var check = $error_appear.includes('acara') || $error_appear.includes('level') || $error_appear.includes('pic_name') || $error_appear.includes('pic_phone');
+    $('#btn_submit_form_create').on('click', function() {
+        var acara = $('#acara_create').val();
+        var level = $('#level_create').val();
+        var pic_name = $('#pic_name_create').val();
+        var pic_phone = $('#pic_phone_create').val();
+        var check = $error_appear_create.includes('acara') || $error_appear_create.includes('level') || $error_appear_create.includes('pic_name') || $error_appear_create.includes('pic_phone');
 
-        if (acara.length <= 0 || level.length <= 0 || pic_name.length <= 0 || pic_phone.length <= 0 || check == true) {
+        if (acara.length <= 0 || level.length <= 0 || level == "Pilih Level" || pic_name.length <= 0 || pic_phone.length <= 0 || check == true) {
             // ubah type button submit ke button agar tidak submit form
-            $('#btn_submit_form').attr('type', 'button');
+            $('#btn_submit_form_create').attr('type', 'button');
         } else {
             // ubah type button submit ke submit agar bisa submit form
-            $('#btn_submit_form').attr('type', 'submit');
+            $('#btn_submit_form_create').attr('type', 'submit');
+        }
+    });
+
+    $error_appear_edit = [];
+    $('#acara_edit').on('input', function() {
+        var acara = $('#acara_edit').val();
+        if (acara.length <= 0) {
+            $('#acara_edit').addClass('is-invalid');
+            $('#acara_edit').removeClass('is-valid');
+            $('#invalid-acara').html('Acara harus diisi');
+            $('#valid-acara').html('');
+            $error_appear_edit.push('acara');
+        } else {
+            $('#acara_edit').addClass('is-valid');
+            $('#acara_edit').removeClass('is-invalid');
+            $('#invalid-acara').html('');
+            $('#valid-acara').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'acara');
+        }
+    });
+
+    $('#level_edit').on('input', function() {
+        var level = $('#level_edit').val();
+        if (level.length <= 0 || level == 'Pilih Level') {
+            $('#level_edit').addClass('is-invalid');
+            $('#level_edit').removeClass('is-valid');
+            $('#invalid-level').html('Level harus dipilih');
+            $('#valid-level').html('');
+            $error_appear_edit.push('level');
+        } else {
+            $('#level_edit').addClass('is-valid');
+            $('#level_edit').removeClass('is-invalid');
+            $('#invalid-level').html('');
+            $('#valid-level').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'level');
+        }
+    });
+
+    $('#pic_name_edit').on('input', function() {
+        var pic_name = $('#pic_name_edit').val();
+        if (pic_name.length <= 0) {
+            $('#pic_name_edit').addClass('is-invalid');
+            $('#pic_name_edit').removeClass('is-valid');
+            $('#invalid-pic_name').html('Nama PIC harus diisi');
+            $('#valid-pic_name').html('');
+            $error_appear_edit.push('pic_name');
+        } else {
+            $('#pic_name_edit').addClass('is-valid');
+            $('#pic_name_edit').removeClass('is-invalid');
+            $('#invalid-pic_name').html('');
+            $('#valid-pic_name').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'pic_name');
+        }
+    });
+
+    $('#pic_phone_edit').on('input', function() {
+        var pic_phone = $('#pic_phone_edit').val();
+        if (pic_phone.length <= 0) {
+            $('#pic_phone_edit').addClass('is-invalid');
+            $('#pic_phone_edit').removeClass('is-valid');
+            $('#invalid-pic_phone_edit').html('No. Telepon PIC harus diisi');
+            $('#valid-pic_phone_edit').html('');
+            $error_appear_edit.push('pic_phone');
+        } else if (isNaN(pic_phone)) {
+            $('#pic_phone_edit').addClass('is-invalid');
+            $('#pic_phone_edit').removeClass('is-valid');
+            $('#invalid-pic_phone_edit').html('No. Telepon PIC harus berupa angka');
+            $('#valid-pic_phone_edit').html('');
+            $error_appear_edit.push('pic_phone');
+        } else {
+            $('#pic_phone_edit').addClass('is-valid');
+            $('#pic_phone_edit').removeClass('is-invalid');
+            $('#invalid-pic_phone').html('');
+            $('#valid-pic_phone').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'pic_phone');
+        }
+    });
+
+    $('#btn_submit_form_edit').on('click', function() {
+        var acara = $('#acara_edit').val();
+        var level = $('#level_edit').val();
+        var pic_name = $('#pic_name_edit').val();
+        var pic_phone = $('#pic_phone_edit').val();
+        var check = $error_appear_edit.includes('acara') || $error_appear_edit.includes('level') || $error_appear_edit.includes('pic_name') || $error_appear_edit.includes('pic_phone');
+
+        if (acara.length <= 0 || level.length <= 0 || level == "Pilih Level" || pic_name.length <= 0 || pic_phone.length <= 0 || check == true) {
+            // ubah type button submit ke button agar tidak submit form
+            $('#btn_submit_form_edit').attr('type', 'button');
+        } else {
+            // ubah type button submit ke submit agar bisa submit form
+            $('#btn_submit_form_edit').attr('type', 'submit');
         }
     });
 

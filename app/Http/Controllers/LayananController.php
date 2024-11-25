@@ -1635,9 +1635,6 @@ class LayananController extends Controller
         // Kriteria yang dihindari
         $kriteriaDihindari = json_decode($request->input('kriteria_dihindari'), true);
 
-        // Simpan kriteria ke dalam file
-        $this->simpanKriteriaKeFile($user['id'], $kriteriaDicari, $kriteriaDihindari);        
-
         // Inisialisasi variabel untuk menyimpan logika AND dan OR
         $logicANDdicari = [];
         $logicORdicari = [];
@@ -1950,6 +1947,7 @@ class LayananController extends Controller
                 $pura_dicari = $request->pura_dicari;
                 $item_piodalan = [];
                 $item_kalender = [];
+                $pura_id_dicari = 0;
 
                 foreach ($info_piodalan as $item) {
                     if ($item['pura'] != "-") {
@@ -1962,7 +1960,6 @@ class LayananController extends Controller
                         }
                     }
                 }
-                // dd($item_kalender);
                 // dd($item_piodalan);
                 return view('wargabal.layanan.pencarian_piodalan_page', compact('item_piodalan', 'item_kalender', 'pura_dicari', 'pura_id_dicari', 'bulan_dicari', 'tahun_dicari', 'cari_dengan', 'keterangan'));
             } else {

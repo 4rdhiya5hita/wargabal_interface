@@ -191,11 +191,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($info_pengajuan_keterangan) == 0)
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak ada data</td>
-                                    </tr>
-                                    @else
                                     @foreach ($info_pengajuan_keterangan as $key => $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -231,7 +226,6 @@
                                         <td>{{ $date_pengajuan }}</td>
                                     </tr>
                                     @endforeach
-                                    @endif
                                 </tbody>
                             </table>
                         </div>

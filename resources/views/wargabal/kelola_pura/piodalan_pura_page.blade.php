@@ -219,7 +219,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="tanggal_piodalan" class="form-label">Tanggal Piodalan</label>
-                                            <input type="date" class="form-control" id="tanggal_piodalan" name="tanggal_piodalan" value="{{ $value['date'] }}">
+                                            <input type="date" class="form-control" id="tanggal_piodalan_edit" name="tanggal_piodalan" value="{{ $value['date'] }}">
                                             <div class="valid-feedback">
                                                 Ok!
                                             </div>
@@ -229,7 +229,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi_piodalan" class="form-label">Deskripsi Piodalan</label>
-                                            <textarea class="form-control" id="deskripsi_piodalan" name="deskripsi_piodalan" rows="3">{{ $value['description'] }}</textarea>
+                                            <textarea class="form-control" id="deskripsi_piodalan_edit" name="deskripsi_piodalan" rows="3">{{ $value['description'] }}</textarea>
                                             <div class="valid-feedback">
                                                 Ok!
                                             </div>
@@ -239,14 +239,14 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="level_piodalan" class="form-label">Level Piodalan</label>
-                                            <select class="form-select" id="level_piodalan" name="level_piodalan">
+                                            <select class="form-select" id="level_piodalan_edit" name="level_piodalan">
                                                 <option value="Nista" @if($value['level'] == "Nista") selected @endif>Nista</option>
                                                 <option value="Madya" @if($value['level'] == "Madya") selected @endif>Madya</option>
                                                 <option value="Utama" @if($value['level'] == "Utama") selected @endif>Utama</option>
                                             </select>
                                         </div>
                                         <input type="hidden" name="pura_id" value="{{ $value['pura_id'] }}">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <button type="submit" id="btn_submit_form_edit" class="btn btn-primary">Simpan</button>
                                     </form>
                                 </div>
                             </div>
@@ -288,7 +288,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="tanggal_piodalan" class="form-label">Tanggal Piodalan</label>
-                                            <input type="date" class="form-control" id="tanggal_piodalan" name="tanggal_piodalan" required>
+                                            <input type="date" class="form-control" id="tanggal_piodalan_create" name="tanggal_piodalan" required>
                                             <div class="valid-feedback">
                                                 Ok!
                                             </div>
@@ -298,7 +298,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="deskripsi_piodalan" class="form-label">Deskripsi Piodalan</label>
-                                            <textarea class="form-control" id="deskripsi_piodalan" name="deskripsi_piodalan" rows="3" required></textarea>
+                                            <textarea class="form-control" id="deskripsi_piodalan_create" name="deskripsi_piodalan" rows="3" required></textarea>
                                             <div class="valid-feedback">
                                                 Ok!
                                             </div>
@@ -308,14 +308,14 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="level_piodalan" class="form-label">Level Piodalan</label>
-                                            <select class="form-select" id="level_piodalan" name="level_piodalan" required>
+                                            <select class="form-select" id="level_piodalan_create" name="level_piodalan" required>
                                                 <option value="Pilih Level">Pilih Level</option>
                                                 <option value="Nista">Nista</option>
                                                 <option value="Madya">Madya</option>
                                                 <option value="Utama">Utama</option>
                                             </select>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <button type="submit" id="btn_submit_form_create" class="btn btn-primary">Simpan</button>
                                     </form>
                                 </div>
                             </div>
@@ -403,6 +403,140 @@
             $('#hasilTanggalPiodalanPura').html(hasilTanggalPiodalanPura);
             
         });
+    });
+
+    $error_appear_create = [];
+    $('#tanggal_piodalan_create').on('input', function() {
+        var piodalan = $('#tanggal_piodalan_create').val();
+        if (piodalan.length <= 0) {
+            $('#tanggal_piodalan_create').addClass('is-invalid');
+            $('#tanggal_piodalan_create').removeClass('is-valid');
+            $('#invalid-piodalan').html('Tanggal piodalan harus diisi');
+            $('#valid-piodalan').html('');
+            $error_appear_create.push('piodalan');
+        } else {
+            $('#tanggal_piodalan_create').addClass('is-valid');
+            $('#tanggal_piodalan_create').removeClass('is-invalid');
+            $('#invalid-piodalan').html('');
+            $('#valid-piodalan').html('Ok!');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'piodalan');
+        }
+    });
+
+    $('#level_piodalan_create').on('input', function() {
+        var level = $('#level_piodalan_create').val();
+        if (level.length <= 0 || level == 'Pilih Level') {
+            $('#level_piodalan_create').addClass('is-invalid');
+            $('#level_piodalan_create').removeClass('is-valid');
+            $('#invalid-level').html('Level piodalan harus dipilih');
+            $('#valid-level').html('');
+            $error_appear_create.push('level');
+        } else {
+            $('#level_piodalan_create').addClass('is-valid');
+            $('#level_piodalan_create').removeClass('is-invalid');
+            $('#invalid-level').html('');
+            $('#valid-level').html('Ok!');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'level');
+        }
+    });
+
+    $('#deskripsi_piodalan_create').on('input', function() {
+        var deskripsi_piodalan = $('#deskripsi_piodalan_create').val();
+        if (deskripsi_piodalan.length <= 0) {
+            $('#deskripsi_piodalan_create').addClass('is-invalid');
+            $('#deskripsi_piodalan_create').removeClass('is-valid');
+            $('#invalid-deskripsi_piodalan_create').html('Deskripsi piodalan harus diisi');
+            $('#valid-deskripsi_piodalan_create').html('');
+            $error_appear_create.push('deskripsi_piodalan');
+        } else {
+            $('#deskripsi_piodalan_create').addClass('is-valid');
+            $('#deskripsi_piodalan_create').removeClass('is-invalid');
+            $('#invalid-deskripsi_piodalan_create').html('');
+            $('#valid-deskripsi_piodalan_create').html('Ok!');
+            $error_appear_create = $error_appear_create.filter(item => item !== 'deskripsi_piodalan');
+        }
+    });
+
+    $('#btn_submit_form_create').on('click', function() {
+        var tanggal_piodalan = $('#tanggal_piodalan_create').val();
+        var level_piodalan = $('#level_piodalan_create').val();
+        var deskripsi_piodalan = $('#deskripsi_piodalan_create').val();
+        var check = $error_appear_create.includes('tanggal_piodalan') || $error_appear_create.includes('level_piodalan') || $error_appear_create.includes('deskripsi_piodalan');
+
+        if (tanggal_piodalan.length <= 0 || level_piodalan.length <= 0 || level_piodalan == "Pilih Level" || deskripsi_piodalan.length <= 0 || check == true) {
+            // ubah type button submit ke button agar tidak submit form
+            $('#btn_submit_form_create').attr('type', 'button');
+        } else {
+            // ubah type button submit ke submit agar bisa submit form
+            $('#btn_submit_form_create').attr('type', 'submit');
+        }
+    });
+
+    $error_appear_edit = [];
+    $('#tanggal_piodalan_edit').on('input', function() {
+        var piodalan = $('#tanggal_piodalan_edit').val();
+        if (piodalan.length <= 0) {
+            $('#tanggal_piodalan_edit').addClass('is-invalid');
+            $('#tanggal_piodalan_edit').removeClass('is-valid');
+            $('#invalid-piodalan').html('Tanggal piodalan harus diisi');
+            $('#valid-piodalan').html('');
+            $error_appear_edit.push('piodalan');
+        } else {
+            $('#tanggal_piodalan_edit').addClass('is-valid');
+            $('#tanggal_piodalan_edit').removeClass('is-invalid');
+            $('#invalid-piodalan').html('');
+            $('#valid-piodalan').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'piodalan');
+        }
+    });
+
+    $('#level_piodalan_edit').on('input', function() {
+        var level = $('#level_piodalan_edit').val();
+        if (level.length <= 0 || level == 'Pilih Level') {
+            $('#level_piodalan_edit').addClass('is-invalid');
+            $('#level_piodalan_edit').removeClass('is-valid');
+            $('#invalid-level').html('Level piodalan harus dipilih');
+            $('#valid-level').html('');
+            $error_appear_edit.push('level');
+        } else {
+            $('#level_piodalan_edit').addClass('is-valid');
+            $('#level_piodalan_edit').removeClass('is-invalid');
+            $('#invalid-level').html('');
+            $('#valid-level').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'level');
+        }
+    });
+
+    $('#deskripsi_piodalan_edit').on('input', function() {
+        var deskripsi_piodalan = $('#deskripsi_piodalan_edit').val();
+        if (deskripsi_piodalan.length <= 0) {
+            $('#deskripsi_piodalan_edit').addClass('is-invalid');
+            $('#deskripsi_piodalan_edit').removeClass('is-valid');
+            $('#invalid-deskripsi_piodalan_edit').html('Deskripsi piodalan harus diisi');
+            $('#valid-deskripsi_piodalan_edit').html('');
+            $error_appear_edit.push('deskripsi_piodalan');
+        } else {
+            $('#deskripsi_piodalan_edit').addClass('is-valid');
+            $('#deskripsi_piodalan_edit').removeClass('is-invalid');
+            $('#invalid-deskripsi_piodalan_edit').html('');
+            $('#valid-deskripsi_piodalan_edit').html('Ok!');
+            $error_appear_edit = $error_appear_edit.filter(item => item !== 'deskripsi_piodalan');
+        }
+    });
+
+    $('#btn_submit_form_edit').on('click', function() {
+        var tanggal_piodalan = $('#tanggal_piodalan_edit').val();
+        var level_piodalan = $('#level_piodalan_edit').val();
+        var deskripsi_piodalan = $('#deskripsi_piodalan_edit').val();
+        var check = $error_appear_edit.includes('tanggal_piodalan') || $error_appear_edit.includes('level_piodalan') || $error_appear_edit.includes('deskripsi_piodalan');
+
+        if (tanggal_piodalan.length <= 0 || level_piodalan.length <= 0 || level_piodalan == "Pilih Level" || deskripsi_piodalan.length <= 0 || check == true) {
+            // ubah type button submit ke button agar tidak submit form
+            $('#btn_submit_form_edit').attr('type', 'button');
+        } else {
+            // ubah type button submit ke submit agar bisa submit form
+            $('#btn_submit_form_edit').attr('type', 'submit');
+        }
     });
 
     function createMailtoLink(email, subject, body) {
