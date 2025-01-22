@@ -39,7 +39,51 @@
 
         <div id="page-content" class="page-content">
             <div id="container-fluid" class="container-fluid">
-                @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" => "Kalender"])
+                <div class="row">
+                    <div class="col-md-6">
+                        @include("partials/page-title", ["pagetitle" =>"Wargabal", "subtitle" => "Kalender"])
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="d-flex justify-content-end align-items-end">
+                                <button type="button" class="btn btn-primary my-3 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#unduh">
+                                    <i class="mdi mdi-download"></i>
+                                    <span class="d-xl-inline-block">Unduh Kalender</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="unduh" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal-title">Pilih Tahun Kalender</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form action="{{ route('calendarPDF') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="mb-3">
+                                            <label for="tahun">Tahun</label>
+                                            <input type="number" class="form-control" name="year" placeholder="contoh: 2000, 2018, ..." value="{{ date('Y') }}" required>
+                                            <div class="invalid-feedback">Tahun harus diisi!</div>
+                                            <div class="valid-feedback">Ok!</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary w-md waves-effect waves-light">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div id="rowLayout" class="row mb-4">
                     <div id="calenderLayout" class="col-xl-9"></div>
@@ -310,6 +354,16 @@
             const formattedDate = `${dayName}, ${parseInt(day, 10)} ${monthNames[parseInt(month, 10) - 1]} ${year}`;
 
             return formattedDate;
+        }
+
+        function formatStartEnd(month, year) {
+            start = new Date(year, month-1, 1);
+            end = new Date(year, month, 0);
+            
+            const dateStart = formatDate(start);
+            const dateEnd = formatDate(end);
+
+            return [dateStart, dateEnd];
         }
 
         function fetchElemenKalenderBali(start, end, keterangan) {
@@ -740,8 +794,8 @@
 
                                 calendar.gotoDate(new Date(start));
                                 fetchZodiak(bulan);
-                                fetchPiodalan(start, end);
-                                fetchHariRaya(start, end);
+                                fetchPiodalan(start, end, bulan, tahun);
+                                fetchHariRaya(start, end, bulan, tahun);
                                 fetchAlaAyuningDewasa(start, end, 'fungsi');
                                 
                                 document.querySelector('.fc-customDateDropdown-button').innerHTML = '<i class="fa fa-calendar"></i>';
@@ -775,8 +829,8 @@
                 dataPiodalan.splice(0, dataPiodalan.length);
                 dataAlaAyuningDewasa.splice(0, dataAlaAyuningDewasa.length);
                 fetchZodiak(monthIndex);
-                fetchPiodalan(start, end);
-                fetchHariRaya(start, end);
+                fetchPiodalan(start, end, monthIndex, year);
+                fetchHariRaya(start, end, monthIndex, year);
                 fetchAlaAyuningDewasa(start, end, 'fungsi');
             },
             dateClick: function(info) {
@@ -866,8 +920,12 @@
             modal.show();
         }
 
-        function fetchHariRaya(start, end) {
-            fetch('/fetchHariRaya?start=' + start + '&end=' + end)
+        function fetchHariRaya(start, end, month, year) {
+            dateStartEnd = formatStartEnd(month, year);
+            dateStart = dateStartEnd[0];
+            dateEnd = dateStartEnd[1];
+
+            fetch('/fetchHariRaya?start=' + dateStart + '&end=' + dateEnd)
                 .then(response => response.json())
                 .then(data => {
                     calendar.removeAllEvents();
@@ -986,8 +1044,12 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
 
-        function fetchPiodalan(start, end) {
-            fetch('/fetchPiodalan?start=' + start + '&end=' + end)
+        function fetchPiodalan(start, end, month, year) {
+            dateStartEnd = formatStartEnd(month, year);
+            dateStart = dateStartEnd[0];
+            dateEnd = dateStartEnd[1];
+
+            fetch('/fetchPiodalan?start=' + dateStart + '&end=' + dateEnd)
                 .then(response => response.json())
                 .then(data => {
                     dataPiodalan.push(data);
@@ -996,15 +1058,54 @@
                     let count = 0;
 
                     data.forEach(piodalan => {
-                        if (piodalan.pura != '-') {
+                        if (piodalan.pura !== '-' && Array.isArray(piodalan.pura) && piodalan.pura[count]) {
+                            var tanggalIndonesia = formatDateIndonesia(piodalan.tanggal);
                             count++;
                             if (count <= 3) {
                                 piodalanInnerHTML += `
-                                    <div class="card-body mini-stat-img" style="background: url(assets/images/bg-3.png); background-size: cover;">
+                                    <div class="card-body mini-stat-img" data-bs-toggle="modal" data-bs-target="#piodalanPura${piodalan.tanggal}" style="background: url(assets/images/bg-3.png); background-size: cover;">
                                         <h6>${piodalan.hari}</h6>
                                         <div class="text-dark">
                                             <span class="badge bg-primary"></span><span class="mx-2">+${piodalan.pura.length} Pura</span>
                                         </div>
+
+                                        <div class="modal fade" id="piodalanPura${piodalan.tanggal}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modal-title">${piodalan.hari}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="bg-primary p-2 mx-4 mt-4">
+                                                        <h5 class="modal-title text-white">Tanggal: ${tanggalIndonesia}</h5>
+                                                    </div>
+                                                    <div class="modal-body px-4 pb-4">
+                                                        <div class="table-responsive">
+                                                            <table class="table align-items-center justify-content-center mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>No</th>
+                                                                        <th>Nama Pura</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>`;
+                                                                piodalan.pura.forEach((pura, index) => {
+                                                                    piodalanInnerHTML += `
+                                                                        <tr>
+                                                                            <td style="text-align: center; vertical-align: middle;">${index + 1}</td>
+                                                                            <td>${pura.nama_pura}</td>
+                                                                        </tr>
+                                                                    `;
+                                                                });
+                                                                piodalanInnerHTML += `
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 `;
                             } else if (count == 4) {

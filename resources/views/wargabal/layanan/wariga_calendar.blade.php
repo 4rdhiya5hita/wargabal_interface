@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="d-grid">
-                                    <button id="elemenTanggalLahirbtn" class="btn btn-dark" id="btn-new-event mb-2" data-bs-dismiss="modal"><i class="mdi mdi-circle-outline"></i> Elemen Tanggal Lahir</button>
+                                    <button id="elemenTanggalLahirbtn" class="btn btn-dark" id="btn-new-event mb-2" data-bs-dismiss="modal"><i class="mdi mdi-circle-outline"></i> Wariga Tanggal Lahir</button>
                                 </div>
                                 <div class="d-grid mt-2">
                                     <button id="dewasaTanggalLahirbtn" class="btn btn-dark" id="btn-new-event" data-bs-dismiss="modal"><i class="mdi mdi-circle-outline"></i> Dewasa Tanggal Lahir</button>
@@ -103,7 +103,7 @@
                                 <div class="directory-bg text-center">
                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-info-rgb), 0.7);">
                                         <h4>
-                                            <span class="text-white font-weight-bold">Elemen Tanggal Lahir</span>
+                                            <span class="text-white font-weight-bold">Wariga Tanggal Lahir</span>
                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                 <i class="mdi mdi-close"></i>
                                             </a>

@@ -91,7 +91,7 @@
                                                 <div class="directory-bg text-center">
                                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
                                                         <h4>
-                                                            <span class="text-white font-weight-bold">Detail Elemen Kalender</span>
+                                                            <span class="text-white font-weight-bold">Detail Wariga</span>
                                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                                 <i class="mdi mdi-close"></i>
                                                             </a>
@@ -270,7 +270,7 @@
                                                 <div class="directory-bg text-center">
                                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
                                                         <h4>
-                                                            <span class="text-white font-weight-bold">Detail Elemen Kalender</span>
+                                                            <span class="text-white font-weight-bold">Detail Wariga</span>
                                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                                 <i class="mdi mdi-close"></i>
                                                             </a>
@@ -389,7 +389,7 @@
                                                 <div class="directory-bg text-center">
                                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
                                                         <h4>
-                                                            <span class="text-white font-weight-bold">Detail Elemen Kalender</span>
+                                                            <span class="text-white font-weight-bold">Detail Wariga</span>
                                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                                 <i class="mdi mdi-close"></i>
                                                             </a>
@@ -639,7 +639,7 @@
                                                 <div class="directory-bg text-center">
                                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
                                                         <h4>
-                                                            <span class="text-white font-weight-bold">Detail Elemen Kalender</span>
+                                                            <span class="text-white font-weight-bold">Detail Wariga</span>
                                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                                 <i class="mdi mdi-close"></i>
                                                             </a>
@@ -757,7 +757,7 @@
                                                 <div class="directory-bg text-center">
                                                     <div class="directory-overlay" style="background-color: rgba(var(--bs-primary-rgb), 0.7);">
                                                         <h4>
-                                                            <span class="text-white font-weight-bold">Detail Elemen Kalender</span>
+                                                            <span class="text-white font-weight-bold">Detail Wariga</span>
                                                             <a href="#" class="text-white close float-end icon-close-modal" data-bs-dismiss="modal" aria-hidden="true">
                                                                 <i class="mdi mdi-close"></i>
                                                             </a>

@@ -136,7 +136,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $response = $client->request('GET', $this->url_api . 'cariElemenKalenderBali?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
+        $response = $client->request('GET', $this->url_api . 'cariWariga?tanggal_mulai=' . $tanggal_mulai . '&tanggal_selesai=' . $tanggal_selesai, [
             'headers' => $headers
         ]);
         $result = json_decode($response->getBody()->getContents(), true);
@@ -246,7 +246,7 @@ class LayananController extends Controller
     {
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
-        $data = Cache::remember('keterangan_ingkel', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_ingkel', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganIngkel', [
                 'headers' => $headers
             ]);
@@ -262,7 +262,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_jejepan', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_jejepan', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganJejepan', [
                 'headers' => $headers
             ]);
@@ -278,7 +278,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_lintang', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_lintang', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganLintang', [
                 'headers' => $headers
             ]);
@@ -294,7 +294,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_rakam', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_rakam', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganRakam', [
                 'headers' => $headers
             ]);
@@ -310,7 +310,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_watek_madya', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_watek_madya', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganWatekMadya', [
                 'headers' => $headers
             ]);
@@ -326,7 +326,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_watek_alit', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_watek_alit', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganWatekAlit', [
                 'headers' => $headers
             ]);
@@ -342,7 +342,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_neptu', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_neptu', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganNeptu', [
                 'headers' => $headers
             ]);
@@ -358,7 +358,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_eka_jala_rsi', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_eka_jala_rsi', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganEkaJalaRsi', [
                 'headers' => $headers
             ]);
@@ -374,7 +374,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_panca_sudha', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_panca_sudha', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganPancaSudha', [
                 'headers' => $headers
             ]);
@@ -390,7 +390,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_pangarasan', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_pangarasan', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganPangarasan', [
                 'headers' => $headers
             ]);
@@ -406,7 +406,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_pratiti', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_pratiti', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganPratiti', [
                 'headers' => $headers
             ]);
@@ -422,7 +422,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_zodiak', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_zodiak', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganZodiak', [
                 'headers' => $headers
             ]);
@@ -438,7 +438,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_ekawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_ekawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganEkawara', [
                 'headers' => $headers
             ]);
@@ -454,7 +454,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_dwiwara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_dwiwara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganDwiwara', [
                 'headers' => $headers
             ]);
@@ -470,7 +470,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_triwara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_triwara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganTriwara', [
                 'headers' => $headers
             ]);
@@ -486,7 +486,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_caturwara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_caturwara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganCaturwara', [
                 'headers' => $headers
             ]);
@@ -502,7 +502,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_pancawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_pancawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganPancawara', [
                 'headers' => $headers
             ]);
@@ -518,7 +518,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_sadwara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_sadwara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganSadwara', [
                 'headers' => $headers
             ]);
@@ -534,7 +534,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_saptawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_saptawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganSaptawara', [
                 'headers' => $headers
             ]);
@@ -550,7 +550,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_astawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_astawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganAstawara', [
                 'headers' => $headers
             ]);
@@ -566,7 +566,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_sangawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_sangawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganSangawara', [
                 'headers' => $headers
             ]);
@@ -582,7 +582,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_dasawara', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_dasawara', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganDasawara', [
                 'headers' => $headers
             ]);
@@ -598,7 +598,7 @@ class LayananController extends Controller
         $client = new Client();
         $headers = ['x-api-key' => env('X_API_KEY')];
         // cache
-        $data = Cache::remember('keterangan_wuku', now()->addDays(365), function () use ($client, $headers) {
+        $data = Cache::remember('info_keterangan_wuku', now()->addDays(365), function () use ($client, $headers) {
             $response = $client->request('GET', $this->url_api . 'keteranganWuku', [
                 'headers' => $headers
             ]);

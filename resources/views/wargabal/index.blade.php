@@ -34,6 +34,7 @@
                                 <p class="text-muted mb-3">Temukan info hari raya berikutnya dibawah ini</p>
                                 <div class="card bg-transparent shadow-none">
                                     <div class="task-board">
+                                        
                                         @php $hitung = 0; @endphp
                                         @foreach ($info_hari_raya as $key => $item)
                                         @if ($hitung >= 7) @break @endif
@@ -72,12 +73,14 @@
                                         @endif
 
                                         @endforeach
-                                        <div class="d-flex align-items-center" style="height: 150px;">
-                                            <a href="{{ route('hari_raya_page') }}">
-                                                <img src="../assets/images/arrow-right-circle.svg" width="70" height="70">
-                                            </a>
-                                        </div>
+
+                                        <a href="{{ route('hari_raya_page') }}" style="position: absolute; right: 0; top: 40%; transform: translateY(-50%);">
+                                            <img src="../assets/images/arrow-right-circle-white.svg" width="70" height="70">
+                                        </a>
+
                                     </div>
+                                </div>
+                                    
                                 </div>
                             </div>
                         </div>

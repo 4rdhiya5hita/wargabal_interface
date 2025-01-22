@@ -106,17 +106,18 @@
             @if (isset(session('user')['permission']))
             @if (session('user')['permission'] == "Guest")
             <div class="dropdown d-lg-inline-block align-self-center mx-3">
-                <button type="button" class="btn btn-primary waves-effect waves-light">
+                <a href="{{ route('jadi_member_premium') }}" type="button" class="btn btn-primary waves-effect waves-light">
+                    <i class="mdi mdi-star"></i>
                     <span class="d-xl-inline-block">Premium</span>
-                </button>
+                </a>
             </div>
             @endif
             @else
             <div class="dropdown d-lg-inline-block align-self-center mx-3">
-                <button type="button" class="btn btn-primary waves-effect waves-light">
+                <a href="{{ route('jadi_member_premium') }}" type="button" class="btn btn-primary waves-effect waves-light">
                     <i class="mdi mdi-star"></i>
                     <span class="d-xl-inline-block">Premium</span>
-                </button>
+                </a>
             </div>
             @endif
 

@@ -207,7 +207,7 @@
                                                     @csrf
                                                     <div class="mb-3">
                                                         <label for="kontribusi" class="form-label">Deskripsi Kontribusi</label>
-                                                        <input type="text" class="form-control" id="kontribusi" name="kontribusi" placeholder="Coba: ahli padewasan">
+                                                        <input type="text" class="form-control" id="kontribusi" name="kontribusi" value="Sebagai Ahli Padewasan" disabled>
                                                         <div class="valid-feedback">
                                                             Ok!
                                                         </div>

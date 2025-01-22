@@ -9,6 +9,7 @@ use App\Http\Controllers\ExtrasLexaController;
 use App\Http\Controllers\KeteranganController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MainLexaController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,10 @@ Route::post('/delete_info_kita', [AdminController::class, 'delete_info_kita'])->
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::get('/calendar', [CalendarController::class, 'calendar'])->name('calendar');
+Route::post('/calendarPDF', [PDFController::class, 'generateCalendarPDF'])->name('calendarPDF');
+Route::get('/calendarTemplate', [PDFController::class, 'calendarTemplate'])->name('calendarTemplate');
+Route::get('/download', [PDFController::class, 'download'])->name('download');
+
 Route::get('/fetchHariRaya', [CalendarController::class, 'fetchHariRaya'])->name('fetchHariRaya');
 Route::get('/fetchAlaAyuningDewasa', [CalendarController::class, 'fetchAlaAyuningDewasa'])->name('fetchAlaAyuningDewasa');
 Route::get('/fetchElemenKalenderBali', [CalendarController::class, 'fetchElemenKalenderBali'])->name('fetchElemenKalenderBali');
@@ -96,7 +101,7 @@ Route::get('/jadi_member_premium', [PurchaseController::class, 'jadi_member_prem
 Route::get('/pembelian_anda', [PurchaseController::class, 'pembelian_anda'])->name('pembelian_anda');
 Route::post('/purchase', [PurchaseController::class, 'purchase'])->name('purchase');
 
-// Route::middleware(['permission:Admin'])->group(function () {
+Route::middleware(['permission:Admin'])->group(function () {
     Route::get('/admin_profile', [AdminController::class, 'profile'])->name('profile');
     
     // Admin Page
@@ -105,9 +110,9 @@ Route::post('/purchase', [PurchaseController::class, 'purchase'])->name('purchas
     Route::get('/manajemen_info_kita_page', [AdminController::class, 'manajemen_info_kita_page'])->name('manajemen_info_kita_page');
     Route::get('/pengajuan_kontribusi_page', [AdminController::class, 'pengajuan_kontribusi_page'])->name('pengajuan_kontribusi_page');
     Route::get('/pengajuan_edit_page', [AdminController::class, 'pengajuan_edit_page'])->name('pengajuan_edit_page');
-// });
+});
 
-// Route::middleware(['permission:Member'])->group(function () {
+Route::middleware(['permission:Guest,Member,Admin'])->group(function () {
     // User Page
     Route::get('/member_profile', [AdminController::class, 'profile'])->name('profile');
     Route::get('/kelola_pura_page', [LayananController::class, 'kelola_pura_page'])->name('kelola_pura_page');
@@ -193,7 +198,8 @@ Route::post('/purchase', [PurchaseController::class, 'purchase'])->name('purchas
     Route::post('/edit_pratiti/{id}', [KeteranganController::class, 'edit_pratiti'])->name('edit_pratiti');
     Route::post('/edit_zodiak/{id}', [KeteranganController::class, 'edit_zodiak'])->name('edit_zodiak');
     Route::post('/edit_wuku/{id}', [KeteranganController::class, 'edit_wuku'])->name('edit_wuku');
-// });
+});
+
 
 Route::get('/fetchKeteranganHariRaya', [LayananController::class, 'keteranganHariRaya'])->name('fetchKeteranganHariRaya');
 Route::get('/fetchKeteranganAlaAyuningDewasa', [LayananController::class, 'keteranganAlaAyuningDewasa'])->name('fetchKeteranganAlaAyuningDewasa');

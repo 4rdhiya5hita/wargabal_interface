@@ -187,7 +187,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_caturwara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_caturwara', 60, function () use ($layanan) {
             return $layanan->keteranganCaturwara();
         });
 
@@ -204,7 +204,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_pancawara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_pancawara', 60, function () use ($layanan) {
             return $layanan->keteranganPancawara();
         });
 
@@ -238,7 +238,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_saptawara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_saptawara', 60, function () use ($layanan) {
             return $layanan->keteranganSaptawara();
         });
 
@@ -255,7 +255,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_astawara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_astawara', 60, function () use ($layanan) {
             return $layanan->keteranganAstawara();
         });
 
@@ -272,7 +272,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_sangawara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_sangawara', 60, function () use ($layanan) {
             return $layanan->keteranganSangawara();
         });
 
@@ -289,7 +289,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_dasawara', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_dasawara', 60, function () use ($layanan) {
             return $layanan->keteranganDasawara();
         });
 
@@ -357,7 +357,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_rakam', 60, function () use ($layanan) {
             return $layanan->keteranganRakam();
         });
 
@@ -374,7 +374,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_watek_madya', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_watek_madya', 60, function () use ($layanan) {
             return $layanan->keteranganWatekMadya();
         });
 
@@ -391,7 +391,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_watek_alit', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_watek_alit', 60, function () use ($layanan) {
             return $layanan->keteranganWatekAlit();
         });
 
@@ -408,7 +408,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_neptu', 60, function () use ($layanan) {
             return $layanan->keteranganNeptu();
         });
 
@@ -425,7 +425,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_ekajalarsi', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_ekajalarsi', 60, function () use ($layanan) {
             return $layanan->keteranganEkaJalaRsi();
         });
 
@@ -442,7 +442,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_panca_sudha', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_panca_sudha', 60, function () use ($layanan) {
             return $layanan->keteranganPancaSudha();
         });
 
@@ -459,7 +459,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_pangarasan', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_pangarasan', 60, function () use ($layanan) {
             return $layanan->keteranganPangarasan();
         });
 
@@ -510,7 +510,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keterangan_ingkel', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_wuku', 60, function () use ($layanan) {
             return $layanan->keteranganWuku();
         });
 
@@ -527,7 +527,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_hari_raya', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_hari_raya', 60, function () use ($layanan) {
             return $layanan->keteranganHariRaya();
         });
 
@@ -544,7 +544,7 @@ class KeteranganController extends Controller
         }
 
         $layanan = new LayananController();
-        $info_keterangan = Cache::remember('info_keketerangan_ala_ayuning_dewasa', 60, function () use ($layanan) {
+        $info_keterangan = Cache::remember('info_keterangan_ala_ayuning_dewasa', 60, function () use ($layanan) {
             return $layanan->keteranganAlaAyuningDewasa();
         });
 
@@ -569,6 +569,9 @@ class KeteranganController extends Controller
     // EDIT KETERANGAN
     public function edit_ala_ayuning_dewasa(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 2;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editAlaAyuningDewasa($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -580,6 +583,9 @@ class KeteranganController extends Controller
 
     public function edit_hari_raya(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 1;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editHariRaya($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -591,6 +597,9 @@ class KeteranganController extends Controller
 
     public function edit_ekawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 15;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editEkawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -602,6 +611,9 @@ class KeteranganController extends Controller
 
     public function edit_dwiwara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 16;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editDwiwara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -613,6 +625,9 @@ class KeteranganController extends Controller
 
     public function edit_triwara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 17;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editTriwara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -624,6 +639,9 @@ class KeteranganController extends Controller
 
     public function edit_caturwara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 18;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editCaturwara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -635,6 +653,9 @@ class KeteranganController extends Controller
 
     public function edit_pancawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 19;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editPancawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -646,6 +667,9 @@ class KeteranganController extends Controller
 
     public function edit_sadwara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 20;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editSadwara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -657,6 +681,9 @@ class KeteranganController extends Controller
 
     public function edit_saptawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 21;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editSaptawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -668,6 +695,9 @@ class KeteranganController extends Controller
 
     public function edit_astawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 22;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editAstawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -679,6 +709,9 @@ class KeteranganController extends Controller
 
     public function edit_sangawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 23;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editSangawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -690,6 +723,9 @@ class KeteranganController extends Controller
 
     public function edit_dasawara(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 24;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editDasawara($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -701,6 +737,10 @@ class KeteranganController extends Controller
 
     public function edit_ingkel(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 3;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
+
         $response = $this->editIngkel($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -712,6 +752,9 @@ class KeteranganController extends Controller
 
     public function edit_jejepan(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 4;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editJejepan($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -723,6 +766,9 @@ class KeteranganController extends Controller
 
     public function edit_lintang(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 5;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editLintang($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -734,6 +780,9 @@ class KeteranganController extends Controller
 
     public function edit_rakam(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 8;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editRakam($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -745,6 +794,9 @@ class KeteranganController extends Controller
 
     public function edit_watek_madya(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 9;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editWatekMadya($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -756,6 +808,9 @@ class KeteranganController extends Controller
 
     public function edit_watek_alit(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 10;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editWatekAlit($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -767,6 +822,9 @@ class KeteranganController extends Controller
 
     public function edit_neptu(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 11;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editNeptu($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -778,6 +836,9 @@ class KeteranganController extends Controller
 
     public function edit_ekajalarsi(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 12;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editEkajalarsi($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -789,6 +850,9 @@ class KeteranganController extends Controller
 
     public function edit_panca_sudha(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 6;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editPancaSudha($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -800,6 +864,9 @@ class KeteranganController extends Controller
 
     public function edit_pangarasan(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 7;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editPangarasan($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -811,6 +878,9 @@ class KeteranganController extends Controller
 
     public function edit_pratiti(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 14;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editPratiti($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -822,6 +892,9 @@ class KeteranganController extends Controller
 
     public function edit_zodiak(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 13;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editZodiak($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -833,6 +906,9 @@ class KeteranganController extends Controller
 
     public function edit_wuku(Request $request, $id)
     {
+        $admin_controller = new AdminController();
+        $key_id = 25;
+        $admin_controller->edit_pengajuan_by_admin($request, $key_id);
         $response = $this->editWuku($request, $id);
 
         if ($response['pesan'] == 'Sukses') {
@@ -853,6 +929,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_ala_ayuning_dewasa');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -870,6 +947,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_hari_raya');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -888,6 +966,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_ekawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -906,6 +985,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_dwiwara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -924,6 +1004,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_triwara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -942,6 +1023,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_caturwara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -960,6 +1042,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_pancawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -978,6 +1061,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_sadwara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -996,6 +1080,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_saptawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1014,6 +1099,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_astawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1032,6 +1118,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_sangawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1050,6 +1137,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_dasawara');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1068,6 +1156,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_ingkel');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1086,6 +1175,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_jejepan');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1104,6 +1194,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_lintang');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1122,6 +1213,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_rakam');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1140,6 +1232,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_watek_madya');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1158,6 +1251,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_watek_alit');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1176,6 +1270,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_neptu');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1194,6 +1289,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_ekajalarsi');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1212,6 +1308,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_panca_sudha');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1230,6 +1327,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_pangarasan');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1248,6 +1346,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_pratiti');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1266,6 +1365,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_zodiak');
 
         $response = json_decode($response->getBody()->getContents(), true);
 
@@ -1284,6 +1384,7 @@ class KeteranganController extends Controller
                 'keterangan' => $request->keterangan
             ]
         ]);
+        Cache::forget('info_keterangan_wuku');
 
         $response = json_decode($response->getBody()->getContents(), true);
 

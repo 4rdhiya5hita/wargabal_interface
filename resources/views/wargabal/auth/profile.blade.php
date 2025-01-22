@@ -37,7 +37,7 @@
                                         <div class="pt-4 pb-3">
                                             <h4 class="text-white ps-3">Yuk Bergabung Member Premium! Nikmati seluruh keuntungannya!</h4>
                                             <p class="text-white text-xs px-3">Dapatkan fitur yang lebih lengkap dengan bergabung menjadi Member Premium.</p>
-                                            <a href="{{ route('login') }}" class="btn btn-light mx-3">Bergabung Sekarang</a>
+                                            <a href="{{ route('jadi_member_premium') }}" class="btn btn-light mx-3">Bergabung Sekarang</a>
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                     @if (session('user')['contribution_desc'] == null)
                                     <input type="contribution_desc" class="form-control" id="contribution_desc" name="contribution_desc" placeholder="-" style="background-color: #f0f0f0;" disabled>
                                     @else
-                                    <input type="contribution_desc" class="form-control" id="contribution_desc" name="contribution_desc" placeholder="-" style="background-color: #f0f0f0;" disabled>
+                                    <input type="contribution_desc" class="form-control" id="contribution_desc" name="contribution_desc" placeholder="-" style="background-color: #f0f0f0;" disabled> 
                                     @endif
                                 </div>
                             </div>
@@ -161,8 +161,9 @@
                             @endif
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="contribution_status">Status Kontribusi Anda</label>
-                                    <input type="text" class="form-control" id="contribution_status" name="contribution_status" placeholder="Tidak ada kontribusi" style="background-color: #f0f0f0;" disabled>
+                                    <label for="contribution_status">Status Kontribusi Anda</label> 
+                                    <span><i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="Apabila kontribusi yang Anda ajukan tidak mengalami perubahan selama satu minggu atau lebih, maka kontribusi Anda ditolak. Anda dapat menghubungi Admin melalui kontak email kami. Terimakasih"></i></span>
+                                    <input type="text" class="form-control" id="contribution_status" name="contribution_status" placeholder="Tidak ada kontribusi." style="background-color: #f0f0f0;" disabled>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +249,7 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="kontribusi" class="form-label">Deskripsi Kontribusi</label>
-                                        <input type="text" class="form-control" id="kontribusi" name="kontribusi" placeholder="Coba: ahli padewasan">
+                                        <input type="text" class="form-control" id="kontribusi" name="kontribusi" value="Sebagai Ahli Padewasan" disabled>
                                         <div class="valid-feedback">
                                             Ok!
                                         </div>

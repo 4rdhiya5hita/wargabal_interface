@@ -4632,13 +4632,13 @@ body[data-layout=horizontal] .chat-conversation {
 }
 
 .task-list {
-  min-width: 280px;
+  min-width: 200px;
   white-space: normal;
 }
 @media (min-width: 576px) {
   .task-list {
-    width: 388px;
-    min-width: 388px;
+    width: 308px;
+    min-width: 308px;
   }
 }
 .task-list:not(:last-child) {

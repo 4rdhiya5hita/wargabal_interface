@@ -90,6 +90,7 @@ class AdminController extends Controller
         $client = new Client();
         $auth_controller = new AuthenticationController();
         $login_token = $auth_controller->login_api('super@gmail.com', 'strKtJn:*7');
+        // dd($login_token['data']['token']);
 
         $edit_contribution_status = $client->request('POST', $this->url_web . 'users/change-contribution-status/' . $request['id'], [
             'headers' => [
@@ -102,6 +103,19 @@ class AdminController extends Controller
         ]);
 
         $result = json_decode($edit_contribution_status->getBody()->getContents(), true);
+
+        $add_contribution_desc = $client->request('POST', $this->url_web . 'users/add-contribution-desc', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $login_token['data']['token'],
+                'Accept' => 'application/json',
+            ],
+            'form_params' => [
+                'contribution_desc' => $request['contribution_desc'],
+            ]
+        ]);
+        
+        $result2 = json_decode($add_contribution_desc->getBody()->getContents(), true);
+
         if ($result['success'] == true) {
             return redirect()->back()->with('success', 'Status kontribusi berhasil diubah!');
         } else {
@@ -263,6 +277,33 @@ class AdminController extends Controller
 
         return $edit_keterangan;
     }
+
+    public function edit_pengajuan_by_admin(Request $request, $key_id)
+    {
+        $keterangan_controller = new KeteranganController();
+        $list_pengajuan_keterangan = $keterangan_controller->callListPengajuanKeterangan();
+
+        foreach ($list_pengajuan_keterangan as $pengajuan_keterangan) {
+            if ($pengajuan_keterangan['key_id'] == $key_id) {
+                if ($pengajuan_keterangan['item_name'] == $request->nama) {
+                    if ($pengajuan_keterangan['keterangan'] != $request->keterangan) {
+                        $client = new Client();
+                        $headers = env('X_API_KEY');
+                        $client->request('POST', $this->url_api . 'editPengajuanKeterangansByAdmin', [
+                            'headers' => [
+                                'x-api-key' => $headers
+                            ],
+                            'form_params' => [
+                                'id' => $pengajuan_keterangan['id'],
+                                'status_keterangan' => 2,
+                            ]
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+        
 
     public function fetch_contribution()
     {

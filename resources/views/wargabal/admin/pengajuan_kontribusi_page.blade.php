@@ -132,6 +132,16 @@
                                                                     <option value="0" @if($value['contribution_status'] == 0) selected @endif>Belum berkontribusi</option>
                                                                 </select>
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label for="kontribusi" class="form-label">Deskripsi Kontribusi</label>
+                                                                <input type="text" class="form-control" id="kontribusi" name="contribution_desc" value="{{ $value['contribution_desc'] }}" placeholder="Coba: ahli padewasan">
+                                                                <div class="valid-feedback">
+                                                                    Ok!
+                                                                </div>
+                                                                <div class="invalid-feedback">
+                                                                    kontribusi harus diisi!
+                                                                </div>
+                                                            </div>
                                                             <input type="hidden" name="id" value="{{ $value['id'] }}">
                                                             <div class="text-end">
                                                                 <button type="submit" class="btn btn-primary w-md">Simpan</button>
